@@ -1,0 +1,1 @@
+json.extract! @profile, :user_token

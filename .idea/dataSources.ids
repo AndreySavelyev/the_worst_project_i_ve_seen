@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="Rails OnlinePay: development" uuid="784c371e-3275-4e02-a87c-db177f6a0f05">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails OnlinePay: test" uuid="d2ae96af-4a74-46e5-bc9c-0108c04a49db">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails OnlinePay: production" uuid="8aa30647-5f56-4e4e-ac8e-152e84b0ecfc">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>

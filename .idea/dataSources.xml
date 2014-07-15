@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="4003625424">
+    <data-source source="LOCAL" name="Rails OnlinePay: development" uuid="784c371e-3275-4e02-a87c-db177f6a0f05">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:OnlinePay_development</jdbc-url>
+      <user-name>dsds</user-name>
+      <user-password>df9b</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails OnlinePay: test" uuid="d2ae96af-4a74-46e5-bc9c-0108c04a49db">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:OnlinePay_test</jdbc-url>
+      <user-name>dsds</user-name>
+      <user-password>df9b</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails OnlinePay: production" uuid="8aa30647-5f56-4e4e-ac8e-152e84b0ecfc">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:OnlinePay_production</jdbc-url>
+      <user-name>dsds</user-name>
+      <user-password>df9b</user-password>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

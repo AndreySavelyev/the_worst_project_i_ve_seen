@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: dsds
+  password: 1
+
+development:
+  <<: *default
+  database: OnlinePay_development
+test:
+  <<: *default
+  database: OnlinePay_test
+production:
+  <<: *default
+  database: OnlinePay_production
