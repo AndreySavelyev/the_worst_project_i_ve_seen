@@ -111,6 +111,33 @@ class ProfilesController < ApplicationController
     @newUser.user_token = @newUser.id;
   end
 
+  def confirm
+    #проверка входных данных
+    @sign_in = SignIn.new(confirm_params);
+    @userNotFound=true;
+    # поиск аккаунта по емэйл
+    @newUser = Profile.find_by_user_token(@sign_in.user_token);
+    if(@newUser != nil)
+      @userNotFound=false;
+    end
+
+    @newUser = Profile.new
+    @newUser.result = 0;
+    @newUser.message = "ok";
+    if(@userNotFound)
+      @newUser.result = 6;
+      @newUser.message = "token not valid";
+      respond_to do |format|
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
+      return;
+    end
+
+    respond_to do |format|
+      format.json { render :signup_error, status: :ok, location: profiles_url }
+    end
+  end
+
   def sendmail(sign_up, subject)
     if(true)#turning off email sending
       return;
@@ -198,7 +225,13 @@ class ProfilesController < ApplicationController
     def profile_params
       params.require(:profile).permit(:user_token, :fb_token, :pic_url, :name, :surname, :phone, :iban, :reg_num, :birthday, :company_name, :email, :password, :salt, :created_at, :updated_at)
     end
-    # Never trust parameters from the scary internet, only allow the white list through.
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def confirm_params
+    params.require(:signin).permit(:user_token)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
   def signin_params
     params.require(:signin).permit(:email,:password,:fb_token, :phone)
   end
