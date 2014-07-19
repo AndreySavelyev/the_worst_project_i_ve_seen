@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20140702030410) do
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "result"
+    t.string   "message"
   end
 
 end

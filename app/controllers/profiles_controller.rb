@@ -15,15 +15,43 @@ class ProfilesController < ApplicationController
   def signin
     #проверка входных данных
     @sign_in = SignIn.new(signin_params);
-    # поиск аккаунта по емэйл
-    @newUser = Profile.find_by_email(@sign_in.email);
-    if(@newUser == nil)
-      @searchResult = Profile.new
-      respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :show, status: :ok, location: profiles_url }
+    @userNotFound=true;
+
+    if(@sign_in.email !=nil)
+      if(@sign_in.fb_token == nil) #decline authorisation via email+fb_token
+        # поиск аккаунта по емэйл
+        @newUser = Profile.find_by_email(@sign_in.email);
+        if(@newUser != nil)
+          @userNotFound=false;
+        end
+      end
+    else if(@sign_in.fb_token !=nil)
+           #поиск по FB ID
+           if(@userNotFound)
+             @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
+             @userNotFound =( @newUser == nil);
+           end
+         end
+    end
+
+    if(!@userNotFound)
+      #checking user password
+      @user_password = Digest::SHA2.hexdigest(@newUser.salt + @sign_in.password);
+      if(@user_password != @newUser.password)
+        @userNotFound=true;
       end
     end
+
+    if(@userNotFound)
+      @newUser = Profile.new
+      @newUser.result = 5;
+      @newUser.message = "user not found or incorrect password";
+      respond_to do |format|
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
+      return;
+    end
+
     sendmail(@sign_in, "sign-in");
   end
 
@@ -36,40 +64,57 @@ class ProfilesController < ApplicationController
     # найти юзера в бд
     @searchResult =  Profile.find_by_email(@sign_up.email)
 
+    @newUser = Profile.new;
+    # если не нашли, значит продолжаем
+    if(@sign_up.password1!=@sign_up.password2)
+      @newUser.result = 1;
+      @newUser.message = "password1 not equal password2";
+      respond_to do |format|
+        #оставил перенаправление на неработающую страницу сознательно
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
+      return;
+    end
+
     if (@searchResult!=nil)
+      @newUser.result = 2;
+      @newUser.message = "already registered";
       sendmail(@sign_up, "already registered");
       respond_to do |format|
         #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :show, status: :ok, location: profiles_url }
+        format.json { render :signup_error, status: :error, location: profiles_url }
       end
-    end
-    # если не нашли, значит продолжаем
-    if(@sign_up.password1!=@sign_up.password2)
-      respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :show, status: :ok, location: profiles_url }
-      end
+      return;
     end
 
-    @newUser= Profile.new;
     @newUser.email = @sign_up.email;
     @newUser.salt = SecureRandom.hex;
     @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
     # добавляем запись
     #if\
-    if(@newUser.save)
-      sendmail(@sign_up, "registered");
-      @newUser.user_token = @newUser.id;
-    else
+    if(!@newUser.save)
+      @newUser.result = 4;
+      @newUser.message = "registered";
+      #  #some error
+      respond_to do |format|
+        #оставил перенаправление на неработающую страницу сознательно
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
       sendmail(@sign_up, "not registered");
+      return;
     end
+
+    @newUser.result = 0;
+    @newUser.message = "registered";
     #  #User was successfully created.
-    #else
-    #  #some error
-    #end
+    sendmail(@sign_up, "registered");
+    @newUser.user_token = @newUser.id;
   end
 
   def sendmail(sign_up, subject)
+    if(true)#turning off email sending
+      return;
+    end
     if sign_up.valid?
       #respond_to do |format|
         Emailer.email_lead(sign_up.email, subject).deliver;

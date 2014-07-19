@@ -16,8 +16,10 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :salt
       t.datetime :created_at
       t.datetime :updated_at
+      t.integer :result
+      t.string :message
 
-      t.timestamps
+          t.timestamps
     end
   end
 end
