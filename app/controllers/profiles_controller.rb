@@ -138,6 +138,17 @@ class ProfilesController < ApplicationController
     end
   end
 
+  # GET /tabs
+  def tabs
+    @app_token= request.headers['app-token'];
+    @user_token= request.headers['user-token'];
+    @profile = Tabs.new;
+    @profile.services=Array.new(1);
+    @testService=Services.new;
+    @testService.promolink="http:\\ya.ru";
+    @profile.services[0]=@testService;
+  end
+
   def sendmail(sign_up, subject)
     if(true)#turning off email sending
       return;

@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   post '/signin', to: 'profiles#signin'
   post '/signup', to: 'profiles#signup'
   post '/confirm', to: 'profiles#confirm'
+  get '/tabs', to: 'profiles#tabs'
 
 end
