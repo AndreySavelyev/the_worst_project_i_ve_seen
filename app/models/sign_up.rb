@@ -8,6 +8,7 @@ class SignUp <  EmailValidator
   attr_accessor :password2;
   attr_accessor :fid;
   attr_accessor :user_token;
+  attr_accessor :phone;
 
   validates :email, presence: true, email: true
 

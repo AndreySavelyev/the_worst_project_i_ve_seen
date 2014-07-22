@@ -59,13 +59,33 @@ class ProfilesController < ApplicationController
     @sign_up = SignUp.new(signup_params)
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-    @log.info(@sign_up)
+    @log.info('@sign_up')
+    @log.info( @sign_up)
+    @byEmailSearchResult= nil;
+    if(@sign_up.email)
+      # найти юзера в бд by E-Mail
+      @byEmailSearchResult = ( Profile.find_by_email(@sign_up.email));
+    end
+    @byPhoneSearchResult=nil
 
-    # найти юзера в бд
-    @searchResult =  Profile.find_by_email(@sign_up.email)
+    if(@sign_up.phone!=nil)
+      # найти юзера в бд by Phone
+      @byPhoneSearchResult = ( Profile.find_by_phone(@sign_up.phone) );
+    end
+    @byFidSearchResult=nil;
+
+    if(@sign_up.fid!=nil)
+      # найти юзера в бд by Fid
+      @byFidSearchResult = ( Profile.find_by_fb_token(@sign_up.fid) );
+    end
+
+    @searchNotUnique = (@byEmailSearchResult!=nil) || (@byFidSearchResult!=nil) || (@byPhoneSearchResult!=nil);
+    @log.info('@searchNotUnique')
+    @log.info(@searchNotUnique)
 
     @newUser = Profile.new;
-    # если не нашли, значит продолжаем
+
+          # если не нашли, значит продолжаем
     if(@sign_up.password1!=@sign_up.password2)
       @newUser.result = 1;
       @newUser.message = "password1 not equal password2";
@@ -76,7 +96,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    if (@searchResult!=nil)
+    if (@searchNotUnique)
       @newUser.result = 2;
       @newUser.message = "already registered";
       sendmail(@sign_up, "already registered");
@@ -90,6 +110,7 @@ class ProfilesController < ApplicationController
     @newUser.email = @sign_up.email;
     @newUser.salt = SecureRandom.hex;
     @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
+    @newUser.phone = @sign_up.phone;
     # добавляем запись
     #if\
     if(!@newUser.save)
@@ -147,6 +168,7 @@ class ProfilesController < ApplicationController
     @testService=Services.new;
     @testService.promolink="http:\\ya.ru";
     @profile.services[0]=@testService;
+
   end
 
   def sendmail(sign_up, subject)
@@ -164,7 +186,6 @@ class ProfilesController < ApplicationController
 #      end
     end
   end
-
 
   # GET /profiles
   # GET /profiles.json
@@ -249,7 +270,7 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signup_params
-    params.require(:signup).permit(:email, :password1, :password2)
+    params.require(:signup).permit(:email,:password1,:password2,:phone)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

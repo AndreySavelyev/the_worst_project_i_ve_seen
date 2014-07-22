@@ -1,1 +1,1 @@
-json.extract! @profile, :social,  :services
+json.extract! @profile, :social,:services
