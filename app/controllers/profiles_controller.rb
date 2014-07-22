@@ -62,10 +62,7 @@ class ProfilesController < ApplicationController
     @log.info('@sign_up')
     @log.info( @sign_up)
     @byEmailSearchResult= nil;
-    if(@sign_up.email)
-      # найти юзера в бд by E-Mail
-      @byEmailSearchResult = ( Profile.find_by_email(@sign_up.email));
-    end
+
     @byPhoneSearchResult=nil
 
     if(@sign_up.phone!=nil)
@@ -74,9 +71,13 @@ class ProfilesController < ApplicationController
     end
     @byFidSearchResult=nil;
 
-    if(@sign_up.fid!=nil)
+    if(@sign_up.fb_token!=nil)
       # найти юзера в бд by Fid
-      @byFidSearchResult = ( Profile.find_by_fb_token(@sign_up.fid) );
+      @byFidSearchResult = ( Profile.find_by_fb_token(@sign_up.fb_token) );
+    else if(@sign_up.email)
+           # найти юзера в бд by E-Mail
+           @byEmailSearchResult = ( Profile.find_by_email(@sign_up.email));
+         end
     end
 
     @searchNotUnique = (@byEmailSearchResult!=nil) || (@byFidSearchResult!=nil) || (@byPhoneSearchResult!=nil);
@@ -108,9 +109,12 @@ class ProfilesController < ApplicationController
     end
 
     @newUser.email = @sign_up.email;
+    @log.info( @sign_up.fb_token)
+    @newUser.fb_token = @sign_up.fb_token;
     @newUser.salt = SecureRandom.hex;
     @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
     @newUser.phone = @sign_up.phone;
+    @newUser.user_token = SecureRandom.hex;
     # добавляем запись
     #if\
     if(!@newUser.save)
@@ -129,7 +133,6 @@ class ProfilesController < ApplicationController
     @newUser.message = "registered";
     #  #User was successfully created.
     sendmail(@sign_up, "registered");
-    @newUser.user_token = @newUser.id;
   end
 
   def confirm
@@ -172,9 +175,6 @@ class ProfilesController < ApplicationController
   end
 
   def sendmail(sign_up, subject)
-    if(true)#turning off email sending
-      return;
-    end
     if sign_up.valid?
       #respond_to do |format|
         Emailer.email_lead(sign_up.email, subject).deliver;
@@ -270,7 +270,7 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signup_params
-    params.require(:signup).permit(:email,:password1,:password2,:phone)
+    params.require(:signup).permit(:email,:password1,:password2,:phone, :fb_token)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
