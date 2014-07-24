@@ -164,26 +164,97 @@ class ProfilesController < ApplicationController
 
   # GET /tabs
   def tabs
+
+    @log = Logger.new(STDOUT)
+    @log.level = Logger::INFO
+
     @app_token= request.headers['app-token'];
     @user_token= request.headers['user-token'];
-    @profile = Tabs.new;
-    @profile.services=Array.new(1);
-    @testService=Services.new;
-    @testService.promolink="http:\\ya.ru";
-    @profile.services[0]=@testService;
+    #validating user token
 
+    #collecting some data for user
+    @user= Profile.find_by_user_token(@user_token);
+    @app=Application.find_by_appToken(@app_token);
+
+    if(@user==nil)
+      @newUser = Profile.new
+      @newUser.result = 6;
+      @newUser.message = "token not valid";
+      respond_to do |format|
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
+      return;
+    end
+
+    if(@app==nil)
+      @newUser = Profile.new
+      @newUser.result = 7;
+      @newUser.message = "app token not valid";
+      respond_to do |format|
+        format.json { render :signup_error, status: :error, location: profiles_url }
+      end
+      return;
+    end
+
+
+    @apps = Array.new
+    @app.providers.collect do |provider|
+      @apps << {
+          :id => provider.id,
+          :pic=> provider.pic,
+          :apidata=> provider.apiData
+      } end
+
+    @socialCol = Array.new
+    @user.feeds.collect do |feed|
+      @socialCol << {
+          :id => feed.id,
+          :date => feed.feedDate,
+          :likes=> 10,
+          :message=> feed.message,
+          :userpic=> feed.profile.pic_url,
+          :type=> feed.feedType
+      } end
+
+
+    @hotOffers = Array.new
+    @user.hot_offers.collect do |hotOffer|
+      @hotOffers << {
+          :id => hotOffer.id,
+          :title => hotOffer.title,
+          :currency=> hotOffer.currency,
+          :price=>hotOffer.price,
+          :username=> hotOffer.profile.name,
+          :userpic=> hotOffer.profile.pic_url,
+          :pic=> hotOffer.pic_url
+      } end
+
+
+    @services = Services.new;
+    @services.promolink="http://chargebutton.com/";
+    @services.provider = @apps;
+
+    @social = Services.new;
+    @social.promolink="http://chargebutton.com/api.html";
+    @social.feeditem = @socialCol;
+
+    @shopping = Services.new;
+    @shopping.promolink="http://chargebutton.com/new.html";
+    @shopping.hotoffer = @hotOffers;
+
+    @tabs = Tabs.new;
+    @tabs.services=@services;
+    @tabs.social =@social;
+    @tabs.shopping= @shopping;
+
+    respond_to do |format|
+      format.json { render :json => @tabs.as_json, status: :ok }
+    end
   end
 
   def sendmail(sign_up, subject)
     if sign_up.valid?
-      #respond_to do |format|
         Emailer.email_lead(sign_up.email, subject).deliver;
-#        format.json {render json: sign_up, status: :ok, content_type: 'application/json'}
- #     end
-#    else
-#      respond_to do |format|
-#        format.json {render json: { :errors => sign_up.errors.as_json }, status: 420, content_type: 'application/json'}
-#      end
     end
   end
 

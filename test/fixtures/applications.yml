@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  version: MyString
+  appToken: MyString
+  validUntil: 2014-07-24 00:18:48
+
+two:
+  version: MyString
+  appToken: MyString
+  validUntil: 2014-07-24 00:18:48

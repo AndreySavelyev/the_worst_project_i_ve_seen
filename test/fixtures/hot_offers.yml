@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  currency: MyString
+  price: 1
+  profile_id: 
+
+two:
+  title: MyString
+  currency: MyString
+  price: 1
+  profile_id: 

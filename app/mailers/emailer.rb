@@ -6,7 +6,6 @@ class Emailer < ActionMailer::Base
     @log.level = Logger::INFO
     @log.info("create email for #{form_email} #{subject}")
     @lead_email  = form_email #переменная дл  шаблона
-    mail(to:    'loskutnikov@inbox.ru',#'v.kovalevskiy@cardpay.com'
-         subject: subject)
+    mail(to: form_email, subject: subject)
   end
 end

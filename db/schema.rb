@@ -11,10 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702030410) do
+ActiveRecord::Schema.define(version: 20140723202548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applications", force: true do |t|
+    t.string   "version"
+    t.string   "appToken"
+    t.datetime "validUntil"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "feeds", force: true do |t|
+    t.date     "feedDate"
+    t.string   "message"
+    t.string   "feedType"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feeds", ["profile_id"], name: "index_feeds_on_profile_id", using: :btree
+
+  create_table "hot_offers", force: true do |t|
+    t.string   "title"
+    t.string   "currency"
+    t.integer  "price"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "hot_offers", ["profile_id"], name: "index_hot_offers_on_profile_id", using: :btree
 
   create_table "profiles", force: true do |t|
     t.string   "user_token"
@@ -35,5 +65,15 @@ ActiveRecord::Schema.define(version: 20140702030410) do
     t.integer  "result"
     t.string   "message"
   end
+
+  create_table "providers", force: true do |t|
+    t.string   "pic"
+    t.string   "apiData"
+    t.integer  "application_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "providers", ["application_id"], name: "index_providers_on_application_id", using: :btree
 
 end
