@@ -1,5 +1,9 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_profile, only: [:tabs, :confirm]
+  before_action :set_app_profile, only: [:tabs]
+  before_action :signin_params, only: [:signin]
+  before_action :signup_params, only: [:signup]
+
   skip_before_filter :verify_authenticity_token
 
   def update_profile
@@ -13,41 +17,24 @@ class ProfilesController < ApplicationController
   end
 
   def signin
-    #проверка входных данных
-    @sign_in = SignIn.new(signin_params);
-    @userNotFound=true;
-
-    if(@sign_in.email !=nil)
-      if(@sign_in.fb_token == nil) #decline authorisation via email+fb_token
-        # поиск аккаунта по емэйл
-        @newUser = Profile.find_by_email(@sign_in.email);
-        if(@newUser != nil)
-          @userNotFound=false;
-        end
-      end
-    else if(@sign_in.fb_token !=nil)
-           #поиск по FB ID
-           if(@userNotFound)
-             @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
-             @userNotFound =( @newUser == nil);
-           end
-         end
+    if(@sign_in.email) #decline authorisation via email+fb_token
+      # поиск аккаунта по емэйл
+      @newUser = Profile.find_by_email(@sign_in.email);
+    else
+      @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
     end
 
-    if(!@userNotFound)
+    if(@newUser)
       #checking user password
       @user_password = Digest::SHA2.hexdigest(@newUser.salt + @sign_in.password);
-      if(@user_password != @newUser.password)
-        @userNotFound=true;
-      end
     end
 
-    if(@userNotFound)
+    unless @newUser || (@user_password == @newUser.password)
       @newUser = Profile.new
       @newUser.result = 5;
       @newUser.message = "user not found or incorrect password";
       respond_to do |format|
-        format.json { render :signup_error, status: :error, location: profiles_url }
+        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
       end
       return;
     end
@@ -56,58 +43,26 @@ class ProfilesController < ApplicationController
   end
 
   def signup
-    @sign_up = SignUp.new(signup_params)
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
     @log.info('@sign_up')
     @log.info( @sign_up)
-    @byEmailSearchResult= nil;
 
-    @byPhoneSearchResult=nil
 
-    if(@sign_up.phone!=nil)
-      # найти юзера в бд by Phone
-      @byPhoneSearchResult = ( Profile.find_by_phone(@sign_up.phone) );
+    if(@sign_up.phone && Profile.find_by_phone(@sign_up.phone) )
+      decline_already_registered
+      return;
     end
-    @byFidSearchResult=nil;
-
-    if(@sign_up.fb_token!=nil)
-      # найти юзера в бд by Fid
-      @byFidSearchResult = ( Profile.find_by_fb_token(@sign_up.fb_token) );
-    else if(@sign_up.email)
-           # найти юзера в бд by E-Mail
-           @byEmailSearchResult = ( Profile.find_by_email(@sign_up.email));
-         end
+    if(@sign_up.fb_token && Profile.find_by_fb_token(@sign_up.fb_token) )
+      decline_already_registered
+      return;
     end
-
-    @searchNotUnique = (@byEmailSearchResult!=nil) || (@byFidSearchResult!=nil) || (@byPhoneSearchResult!=nil);
-    @log.info('@searchNotUnique')
-    @log.info(@searchNotUnique)
+    if(@sign_up.email && Profile.find_by_email(@sign_up.email))
+      decline_already_registered
+      return;
+    end
 
     @newUser = Profile.new;
-
-          # если не нашли, значит продолжаем
-    if(@sign_up.password1!=@sign_up.password2)
-      @newUser.result = 1;
-      @newUser.message = "password1 not equal password2";
-      respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :signup_error, status: :error, location: profiles_url }
-      end
-      return;
-    end
-
-    if (@searchNotUnique)
-      @newUser.result = 2;
-      @newUser.message = "already registered";
-      sendmail(@sign_up, "already registered");
-      respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :signup_error, status: :error, location: profiles_url }
-      end
-      return;
-    end
-
     @newUser.email = @sign_up.email;
     @log.info( @sign_up.fb_token)
     @newUser.fb_token = @sign_up.fb_token;
@@ -119,10 +74,8 @@ class ProfilesController < ApplicationController
     #if\
     if(!@newUser.save)
       @newUser.result = 4;
-      @newUser.message = "registered";
-      #  #some error
+      @newUser.message = "not registered";
       respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
         format.json { render :signup_error, status: :error, location: profiles_url }
       end
       sendmail(@sign_up, "not registered");
@@ -136,27 +89,8 @@ class ProfilesController < ApplicationController
   end
 
   def confirm
-    #проверка входных данных
-    @sign_in = SignIn.new(confirm_params);
-    @userNotFound=true;
-    # поиск аккаунта по емэйл
-    @newUser = Profile.find_by_user_token(@sign_in.user_token);
-    if(@newUser != nil)
-      @userNotFound=false;
-    end
 
-    @newUser = Profile.new
-    @newUser.result = 0;
-    @newUser.message = "ok";
-    if(@userNotFound)
-      @newUser.result = 6;
-      @newUser.message = "token not valid";
-      respond_to do |format|
-        format.json { render :signup_error, status: :error, location: profiles_url }
-      end
-      return;
-    end
-
+    @newUser = Profile.new(            :result => 0,            :message => "ok")
     respond_to do |format|
       format.json { render :signup_error, status: :ok, location: profiles_url }
     end
@@ -164,170 +98,139 @@ class ProfilesController < ApplicationController
 
   # GET /tabs
   def tabs
-
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-
-    @app_token= request.headers['app-token'];
-    @user_token= request.headers['user-token'];
     #validating user token
-
-    #collecting some data for user
-    @user= Profile.find_by_user_token(@user_token);
-    @app=Application.find_by_appToken(@app_token);
-
-    if(@user==nil)
-      @newUser = Profile.new
-      @newUser.result = 6;
-      @newUser.message = "token not valid";
-      respond_to do |format|
-        format.json { render :signup_error, status: :error, location: profiles_url }
-      end
-      return;
-    end
-
-    if(@app==nil)
-      @newUser = Profile.new
-      @newUser.result = 7;
-      @newUser.message = "app token not valid";
-      respond_to do |format|
-        format.json { render :signup_error, status: :error, location: profiles_url }
-      end
-      return;
-    end
-
-
-    @apps = Array.new
-    @app.providers.collect do |provider|
-      @apps << {
-          :id => provider.id,
-          :pic=> provider.pic,
-          :apidata=> provider.apiData
-      } end
-
-    @socialCol = Array.new
-    @user.feeds.collect do |feed|
-      @socialCol << {
-          :id => feed.id,
-          :date => feed.feedDate,
-          :likes=> 10,
-          :message=> feed.message,
-          :userpic=> feed.profile.pic_url,
-          :type=> feed.feedType
-      } end
-
-
-    @hotOffers = Array.new
-    @user.hot_offers.collect do |hotOffer|
-      @hotOffers << {
-          :id => hotOffer.id,
-          :title => hotOffer.title,
-          :currency=> hotOffer.currency,
-          :price=>hotOffer.price,
-          :username=> hotOffer.profile.name,
-          :userpic=> hotOffer.profile.pic_url,
-          :pic=> hotOffer.pic_url
-      } end
-
-
-    @services = Services.new;
-    @services.promolink="http://chargebutton.com/";
-    @services.provider = @apps;
-
-    @social = Services.new;
-    @social.promolink="http://chargebutton.com/api.html";
-    @social.feeditem = @socialCol;
-
-    @shopping = Services.new;
-    @shopping.promolink="http://chargebutton.com/new.html";
-    @shopping.hotoffer = @hotOffers;
-
-    @tabs = Tabs.new;
-    @tabs.services=@services;
-    @tabs.social =@social;
-    @tabs.shopping= @shopping;
-
+    @tabs = ProfilesHelper::get_tabs_format(@user,@app);
     respond_to do |format|
       format.json { render :json => @tabs.as_json, status: :ok }
     end
   end
 
-  def sendmail(sign_up, subject)
-    if sign_up.valid?
-        Emailer.email_lead(sign_up.email, subject).deliver;
+  def brief
+    @hotOffers = Object
+    @hotOffers =
+        {
+            :brief=>{
+                :likes => '231',
+                :currency => 'usd',
+                :balance => '30.380',
+                :name => 'john smith',
+                :mood => 4,
+                :userpic => 'url'
+            }
+        }
+    respond_to do |format|
+      format.json { render :json => @hotOffers.as_json, status: :ok }
     end
   end
 
-  # GET /profiles
-  # GET /profiles.json
-  def index
-    @profiles = Profile.all
-  end
+  def catalog
+    #@path = PathModel.new(catalog_params)
 
-  # GET /profiles/1
-  # GET /profiles/1.json
-  def show
-  end
-
-  # GET /profiles/new
-  def new
-    @profile = Profile.new
-  end
-
-  # GET /profiles/1/edit
-  def edit
-  end
-
-  # POST /profiles
-  # POST /profiles.json
-  def create
-    @profile = Profile.new(profile_params)
+    @catalog = Object
+    @catalog =
+        {
+            :catalog=>{
+                :id=>"84574vgdxgugdxgy",
+                :pic=> "url",
+                :path=> "/shopping/tvsets",
+                :name=>"tv sets",
+            }
+        }
 
     respond_to do |format|
-      if @profile.save
-        format.html { redirect_to @profile, notice: 'Profile was successfully created.' }
-        format.json { render :show, status: :created, location: @profile }
-      else
-        format.html { render :new }
-        format.json { render json: @profile.errors, status: :unprocessable_entity }
-      end
+      format.json { render :json => @catalog.as_json, status: :ok }
     end
   end
 
-  # PATCH/PUT /profiles/1
-  # PATCH/PUT /profiles/1.json
-  def update
-    respond_to do |format|
-      if @profile.update(profile_params)
-        format.html { redirect_to @profile, notice: 'Profile was successfully updated.' }
-        format.json { render :show, status: :ok, location: @profile }
-      else
-        format.html { render :edit }
-        format.json { render json: @profile.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  def feed
+    #@path = PathModel.new(catalog_params)
 
-  # DELETE /profiles/1
-  # DELETE /profiles/1.json
-  def destroy
-    @profile.destroy
+    @hotOffers = Array.new
+    @hotOffers << {
+        :id => '84574vgdxgugdxgy',
+        :pic => 'url',
+        :path => 'usd',
+        :name => '30.380'
+    }
     respond_to do |format|
-      format.html { redirect_to profiles_url, notice: 'Profile was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json { render :json => @hotOffers.as_json, status: :ok }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_profile
-      @profile = Profile.find(params[:id])
+  def decline_required_param(param_name)
+    @newUser = Profile.new
+    @newUser.result = 8;
+    @newUser.message = "require param #%param_name%";
+    sendmail(@sign_up, "already registered");
+    respond_to do |format|
+      #оставил перенаправление на неработающую страницу сознательно
+      format.json { render :signup_error, status: :error, location: profiles_url }
     end
+    return;
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def profile_params
-      params.require(:profile).permit(:user_token, :fb_token, :pic_url, :name, :surname, :phone, :iban, :reg_num, :birthday, :company_name, :email, :password, :salt, :created_at, :updated_at)
+  def decline_already_registered
+    @newUser = Profile.new
+    @newUser.result = 2;
+    @newUser.message = "already registered";
+    sendmail(@sign_up, "already registered");
+    respond_to do |format|
+      #оставил перенаправление на неработающую страницу сознательно
+      format.json { render :signup_error, status: :error, location: profiles_url }
     end
+  end
+
+  def sendmail(sign_up, subject)
+    if sign_up.valid?
+      Emailer.email_lead(sign_up.email, subject).deliver;
+    end
+  end
+
+  def set_user_profile
+    @user_token = request.headers['user-token'];
+    #collecting some data for user
+    @user = Profile.find_by_user_token(@user_token);
+    check_user_token_valid(@user);
+  end
+
+  def set_app_profile
+    @app_token = request.headers['app-token'];
+    @app = Application.find_by_appToken(@app_token);
+    check_app_token_valid(@app);
+  end
+
+  def check_user_token_valid(user)
+    unless(user)
+      @newUser = Profile.new;
+      @newUser =
+          {
+              :result => 6,
+              :message => "app token not valid"
+          }
+      respond_to do |format|
+        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
+      end
+      return;
+    end
+  end
+
+  def check_app_token_valid(app)
+    unless(app)
+      @newUser = Profile.new;
+      @newUser =
+          {
+              :result => 7,
+              :message => "app token not valid"
+          }
+      respond_to do |format|
+        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
+      end
+      return;
+    end
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def confirm_params
@@ -336,16 +239,50 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signin_params
-    params.require(:signin).permit(:email,:password,:fb_token, :phone)
+    @sign_in = SignIn.new(params.require(:signin).permit(:email,:password,:fb_token, :phone))
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signup_params
-    params.require(:signup).permit(:email,:password1,:password2,:phone, :fb_token)
+    @sign_up = SignUp.new( params.require(:signup).permit(:email,:password1,:password2,:phone, :fb_token))
+
+    if(@sign_up.password1!=@sign_up.password2)
+      @newUser = Profile.new;
+      @newUser.result = 1;
+      @newUser.message = "password1 not equal password2";
+      respond_to do |format|
+        #оставил перенаправление на неработающую страницу сознательно
+        format.json { render :signup_error, status: :not_implemented, location: profiles_url }
+      end
+      @sign_up=nil;
+      return;
+    end
+    unless(@sign_up.phone)
+      decline_required_param('phone');
+      @sign_up=nil;
+      return;
+    end
+    unless(@sign_up.email || @sign_up.fb_token)
+      unless(@sign_up.fb_token)
+        decline_required_param('fb_token');
+        @sign_up=nil;
+        return;
+      end
+      unless(@sign_up.email)
+        decline_required_param('email');
+        @sign_up=nil;
+        return;
+      end
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def profile_params
     params.require(:updatep_rofile).permit(:email, :password, :fb_token, :phone)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def catalog_params
+    params.require(:PathModel).permit(:path)
   end
 end
