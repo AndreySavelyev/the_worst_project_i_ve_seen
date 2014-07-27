@@ -1,1 +1,0 @@
-json.extract! @searchResult, :id, :user_token, :fb_token, :pic_url, :name, :surname, :phone, :iban, :reg_num, :birthday, :company_name, :email, :password, :salt, :created_at, :updated_at, :created_at, :updated_at
