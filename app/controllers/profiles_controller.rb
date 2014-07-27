@@ -29,13 +29,12 @@ class ProfilesController < ApplicationController
       @user_password = Digest::SHA2.hexdigest(@newUser.salt + @sign_in.password);
     end
 
-    unless @newUser || (@user_password == @newUser.password)
-      @newUser = Profile.new
-      @newUser.result = 5;
-      @newUser.message = "user not found or incorrect password";
-      respond_to do |format|
-        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
-      end
+    unless @newUser && (@user_password == @newUser.password)
+        @result = Object
+        @result = {:result => 5 ,:message => "user not found or incorrect password"}
+        respond_to do |format|
+          format.json { render :json => @result.as_json, status: :unauthorized }
+        end
       return;
     end
 
@@ -73,13 +72,11 @@ class ProfilesController < ApplicationController
     # добавляем запись
     #if\
     if(!@newUser.save)
-      @newUser.result = 4;
-      @newUser.message = "not registered";
+      @result = Object
+      @result = {:result => 4,:message => "not registered"}
       respond_to do |format|
-        format.json { render :signup_error, status: :error, location: profiles_url }
+        format.json { render :json => @result.as_json, status: :error }
       end
-      sendmail(@sign_up, "not registered");
-      return;
     end
 
     @newUser.result = 0;
@@ -89,10 +86,12 @@ class ProfilesController < ApplicationController
   end
 
   def confirm
-
-    @newUser = Profile.new(            :result => 0,            :message => "ok")
+    @result = Object
+    @result =  {:result=>0, :message=>"ok" }
+    @getResult=Object.new
+    @getResult={:confirm=>@result}
     respond_to do |format|
-      format.json { render :signup_error, status: :ok, location: profiles_url }
+      format.json { render :json => @getResult.as_json, status: :ok }
     end
   end
 
@@ -223,25 +222,18 @@ class ProfilesController < ApplicationController
 
   :private
   def decline_required_param(param_name)
-    @newUser = Profile.new
-    @newUser.result = 8;
-    @newUser.message = "require param #%param_name%";
-    sendmail(@sign_up, "already registered");
+    @result = Object
+    @result = {:result => 8,:message => "require param"}
     respond_to do |format|
-      #оставил перенаправление на неработающую страницу сознательно
-      format.json { render :signup_error, status: :error, location: profiles_url }
+      format.json { render :json => @result.as_json, status: :error }
     end
-    return;
   end
 
   def decline_already_registered
-    @newUser = Profile.new
-    @newUser.result = 2;
-    @newUser.message = "already registered";
-    sendmail(@sign_up, "already registered");
+    @result = Object
+    @result = {:result => 2,:message => "already registered"}
     respond_to do |format|
-      #оставил перенаправление на неработающую страницу сознательно
-      format.json { render :signup_error, status: :error, location: profiles_url }
+      format.json { render :json => @result.as_json, status: :error }
     end
   end
 
@@ -266,14 +258,10 @@ class ProfilesController < ApplicationController
 
   def check_user_token_valid(user)
     unless(user)
-      @newUser = Profile.new;
-      @newUser =
-          {
-              :result => 6,
-              :message => "token not valid"
-          }
+      @result = Object
+      @result = {:result => 6,:message => "token not valid"}
       respond_to do |format|
-        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
+        format.json { render :json => @result.as_json, status: :unauthorized }
       end
       return;
     end
@@ -281,14 +269,10 @@ class ProfilesController < ApplicationController
 
   def check_app_token_valid(app)
     unless(app)
-      @newUser = Profile.new;
-      @newUser =
-          {
-              :result => 7,
-              :message => "app token not valid"
-          }
+      @result = Object
+      @result = {:result => 7,:message => "app token not valid"}
       respond_to do |format|
-        format.json { render :signup_error, status: :unauthorized, location: profiles_url }
+        format.json { render :json => @result.as_json, status: :unauthorized }
       end
       return;
     end
@@ -309,12 +293,10 @@ class ProfilesController < ApplicationController
     @sign_up = SignUp.new( params.require(:signup).permit(:email,:password1,:password2,:phone, :fb_token))
 
     if(@sign_up.password1!=@sign_up.password2)
-      @newUser = Profile.new;
-      @newUser.result = 1;
-      @newUser.message = "password1 not equal password2";
+      @result = Object
+      @result = {:result => 1,:message => "password1 not equal password2"}
       respond_to do |format|
-        #оставил перенаправление на неработающую страницу сознательно
-        format.json { render :signup_error, status: :not_implemented, location: profiles_url }
+        format.json { render :json => @result.as_json, status: :error }
       end
       @sign_up=nil;
       return;
