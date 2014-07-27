@@ -62,8 +62,6 @@ ActiveRecord::Schema.define(version: 20140723202548) do
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "result"
-    t.string   "message"
   end
 
   create_table "providers", force: true do |t|
