@@ -145,17 +145,20 @@ class ProfilesController < ApplicationController
   end
 
   def feed
-    #@path = PathModel.new(catalog_params)
-
-    @hotOffers = Array.new
-    @hotOffers << {
-        :id => '84574vgdxgugdxgy',
-        :pic => 'url',
-        :path => 'usd',
-        :name => '30.380'
+    @feeds = Array.new
+    @feeds << {
+        :type=>"charge", #available types[charge, charge new, request, request new]
+        :global=> 0,
+        :likes=> 34,
+        :date=>"2014-12-01",
+        :pic=> "url",
+        :id=> "fgghh56788ffhjj"
     }
+    @feed=Object.new
+    @feed={:feed=>@feeds}
+
     respond_to do |format|
-      format.json { render :json => @hotOffers.as_json, status: :ok }
+      format.json { render :json => @feed.as_json, status: :ok }
     end
   end
 
