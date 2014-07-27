@@ -182,8 +182,15 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+  def recieve_pay
+    @like=Object.new
+    @like={:result=>0}
+    respond_to do |format|
+      format.json { render :json => @like.as_json, status: :ok }
+    end
+  end
 
-  private
+  :private
   def decline_required_param(param_name)
     @newUser = Profile.new
     @newUser.result = 8;
