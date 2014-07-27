@@ -162,6 +162,14 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def like
+    @like=Object.new
+    @like={:like=>0}
+    respond_to do |format|
+      format.json { render :json => @like.as_json, status: :ok }
+    end
+  end
+
   private
   def decline_required_param(param_name)
     @newUser = Profile.new
