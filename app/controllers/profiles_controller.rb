@@ -1,8 +1,9 @@
 class ProfilesController < ApplicationController
-  before_action :set_user_profile, except: [:signin,:signup]# only: [:tabs, :confirm]
+  before_action :set_user_profile, except: [:signin,:signup, :confirm]
   before_action :set_app_profile
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
+  before_action :confirm_params, only: [:confirm]
 
   skip_before_filter :verify_authenticity_token
 
@@ -38,6 +39,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
+    check_user_token_valid(@newUser);
     sendmail(@sign_in, "sign-in");
   end
 
@@ -69,6 +71,8 @@ class ProfilesController < ApplicationController
     @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
     @newUser.phone = @sign_up.phone;
     @newUser.user_token = SecureRandom.hex;
+    @newUser.reg_token= SecureRandom.hex;
+    @newUser.confirm_type=0;#not confirmed
     # добавляем запись
     #if\
     if(!@newUser.save)
@@ -87,7 +91,39 @@ class ProfilesController < ApplicationController
 
   def confirm
     @result = Object
+    @user_token = request.headers['user-token'];
+    @user = Profile.find_by_user_token(@user_token);
+
+    unless @user
+      @result = {:result => 5 ,:message => "user not found or incorrect password"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :unauthorized }
+      end
+      return;
+    end
+
+    unless @user.reg_token == @reg_token
+      @result = {:result => 9 ,:message => "confirm token not valid"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :unauthorized }
+      end
+      return;
+    end
+
     @result =  {:result=>0, :message=>"ok" }
+    if @user && @user.confirm_type!=0
+      @result =  {:result=>0, :message=>"already confirmed" }
+    end
+
+    unless @user.update(confirm_type:1)
+      @result = {:result => 10 ,:message => "registration not confirmed. internal server error"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :internal_server_error }
+      end
+      return;
+    end
+
+
     @getResult=Object.new
     @getResult={:confirm=>@result}
     respond_to do |format|
@@ -257,9 +293,10 @@ class ProfilesController < ApplicationController
   end
 
   def check_user_token_valid(user)
-    unless(user)
+    if(!user ||  (user.confirm_type==0))
       @result = Object
-      @result = {:result => 6,:message => "token not valid"}
+      @error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
+      @result = {:result => 6,:message =>@error_text }
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :unauthorized }
       end
@@ -280,13 +317,13 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def confirm_params
-    params.require(:signin).permit(:user_token)
+   @reg_token = params.require(:confirm).permit(:token)['token']
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def signin_params
-    @sign_in = SignIn.new(params.require(:signin).permit(:email,:password,:fb_token, :phone))
-  end
+    def signin_params
+      @sign_in = SignIn.new(params.require(:signin).permit(:email,:password,:fb_token, :phone))
+    end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signup_params

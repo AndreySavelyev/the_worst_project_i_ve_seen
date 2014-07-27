@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723202548) do
+ActiveRecord::Schema.define(version: 20140727173051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20140723202548) do
     t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "pic_url"
   end
 
   add_index "hot_offers", ["profile_id"], name: "index_hot_offers_on_profile_id", using: :btree
@@ -62,6 +63,8 @@ ActiveRecord::Schema.define(version: 20140723202548) do
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "reg_token"
+    t.integer  "confirm_type"
   end
 
   create_table "providers", force: true do |t|
