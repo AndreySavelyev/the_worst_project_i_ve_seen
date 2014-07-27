@@ -155,7 +155,7 @@ class ProfilesController < ApplicationController
         :id=> "fgghh56788ffhjj"
     }
     @feed=Object.new
-    @feed={:feed=>@feeds}
+    @feed={:feed=>@feeds, :Hi=>"fefefef"}
 
     respond_to do |format|
       format.json { render :json => @feed.as_json, status: :ok }
@@ -164,12 +164,18 @@ class ProfilesController < ApplicationController
 
   def like
     @like=Object.new
-    @like={:like=>0}
+    @like={:result=>0}
     respond_to do |format|
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
-
+  def social_money_send
+    @like=Object.new
+    @like={:result=>0}
+    respond_to do |format|
+      format.json { render :json => @like.as_json, status: :ok }
+    end
+  end
   private
   def decline_required_param(param_name)
     @newUser = Profile.new

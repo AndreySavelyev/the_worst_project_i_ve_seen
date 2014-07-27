@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   post '/catalog', to: 'profiles#catalog'
   post '/social/feed', to: 'profiles#feed'
   post '/social/like', to: 'profiles#like'
-  post '/catalog', to: 'profiles#catalog'
+  post '/social/money/send', to: 'profiles#social_money_send'
   get '/tabs', to: 'profiles#tabs'
 end
