@@ -189,26 +189,38 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
-def social_money_get
+  def social_money_get
 
-  @gets = Array.new
-  @gets <<  {
-      :id =>"salkjh234jhkjfh9432y",
-      :fromID => "salkjh234jhkjfh9432y",
-      :name => "John Smith",
-      :pic =>  "url",
-      :type =>  "charge", #charge request or money send request
-      :amount => 100.00,
-      :currency => "eur",
-      :message => "Please send me some money for a new car."
-  }
-  @getResult=Object.new
-  @getResult={:moneyRequest=>@gets}
+    @gets = Array.new
+    @gets <<  {
+        :id =>"salkjh234jhkjfh9432y",
+        :fromID => "salkjh234jhkjfh9432y",
+        :name => "John Smith",
+        :pic =>  "url",
+        :type =>  "charge", #charge request or money send request
+        :amount => 100.00,
+        :currency => "eur",
+        :message => "Please send me some money for a new car."
+    }
+    @getResult=Object.new
+    @getResult={:moneyRequest=>@gets}
 
-  respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    respond_to do |format|
+      format.json { render :json => @getResult.as_json, status: :ok }
+    end
   end
-end
+
+  def get_new_requests
+    @gets = Object
+    @gets =  {:new=>5 }
+    @getResult=Object.new
+    @getResult={:requests=>@gets}
+    respond_to do |format|
+      format.json { render :json => @getResult.as_json, status: :ok }
+    end
+  end
+
+
   :private
   def decline_required_param(param_name)
     @newUser = Profile.new
