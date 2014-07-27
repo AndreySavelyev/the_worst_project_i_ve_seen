@@ -30,21 +30,21 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5283019" vertical-offset="700" max-vertical-offset="2057">
-              <caret line="157" column="25" selection-start-line="157" selection-start-column="25" selection-end-line="157" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.8218029" vertical-offset="1019" max-vertical-offset="2176">
+              <caret line="184" column="2" selection-start-line="184" selection-start-column="2" selection-end-line="184" selection-end-column="2" />
               <folding>
                 <element signature="e#584#1342#0" expanded="false" />
                 <element signature="e#1346#2644#0" expanded="false" />
                 <element signature="e#3143#3568#0" expanded="false" />
                 <element signature="e#3572#3981#0" expanded="false" />
-                <element signature="e#4766#5160#0" expanded="false" />
-                <element signature="e#5164#5529#0" expanded="false" />
-                <element signature="e#5533#5657#0" expanded="false" />
-                <element signature="e#5661#5859#0" expanded="false" />
-                <element signature="e#5863#6021#0" expanded="false" />
-                <element signature="e#6025#6380#0" expanded="false" />
-                <element signature="e#6384#6736#0" expanded="false" />
-                <element signature="e#7198#8143#0" expanded="false" />
+                <element signature="e#4944#5338#0" expanded="false" />
+                <element signature="e#5342#5707#0" expanded="false" />
+                <element signature="e#5711#5835#0" expanded="false" />
+                <element signature="e#5839#6037#0" expanded="false" />
+                <element signature="e#6041#6199#0" expanded="false" />
+                <element signature="e#6203#6558#0" expanded="false" />
+                <element signature="e#6562#6914#0" expanded="false" />
+                <element signature="e#7376#8321#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -504,11 +504,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1552" height="842" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1552" height="842" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2857143" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2857143" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281471" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32956153" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -916,29 +916,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config/routes.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.259542" vertical-offset="0" max-vertical-offset="524">
-          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.35639414" vertical-offset="0" max-vertical-offset="477">
+          <caret line="10" column="64" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5283019" vertical-offset="700" max-vertical-offset="2057">
-          <caret line="157" column="25" selection-start-line="157" selection-start-column="25" selection-end-line="157" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.8218029" vertical-offset="1019" max-vertical-offset="2176">
+          <caret line="184" column="2" selection-start-line="184" selection-start-column="2" selection-end-line="184" selection-end-column="2" />
           <folding>
             <element signature="e#584#1342#0" expanded="false" />
             <element signature="e#1346#2644#0" expanded="false" />
             <element signature="e#3143#3568#0" expanded="false" />
             <element signature="e#3572#3981#0" expanded="false" />
-            <element signature="e#4766#5160#0" expanded="false" />
-            <element signature="e#5164#5529#0" expanded="false" />
-            <element signature="e#5533#5657#0" expanded="false" />
-            <element signature="e#5661#5859#0" expanded="false" />
-            <element signature="e#5863#6021#0" expanded="false" />
-            <element signature="e#6025#6380#0" expanded="false" />
-            <element signature="e#6384#6736#0" expanded="false" />
-            <element signature="e#7198#8143#0" expanded="false" />
+            <element signature="e#4944#5338#0" expanded="false" />
+            <element signature="e#5342#5707#0" expanded="false" />
+            <element signature="e#5711#5835#0" expanded="false" />
+            <element signature="e#5839#6037#0" expanded="false" />
+            <element signature="e#6041#6199#0" expanded="false" />
+            <element signature="e#6203#6558#0" expanded="false" />
+            <element signature="e#6562#6914#0" expanded="false" />
+            <element signature="e#7376#8321#0" expanded="false" />
           </folding>
         </state>
       </provider>
