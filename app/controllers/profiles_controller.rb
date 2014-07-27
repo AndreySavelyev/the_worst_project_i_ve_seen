@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
-  before_action :set_user_profile, only: [:tabs, :confirm]
-  before_action :set_app_profile, only: [:tabs]
+  before_action :set_user_profile, except: [:signin,:signup]# only: [:tabs, :confirm]
+  before_action :set_app_profile
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
 
@@ -270,7 +270,7 @@ class ProfilesController < ApplicationController
       @newUser =
           {
               :result => 6,
-              :message => "app token not valid"
+              :message => "token not valid"
           }
       respond_to do |format|
         format.json { render :signup_error, status: :unauthorized, location: profiles_url }
