@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   post '/social/money/send', to: 'profiles#social_money_send'
   post '/social/money/charge', to: 'profiles#social_money_charge'
   post '/social/money/recieve', to: 'profiles#recieve_pay'
+  get '/social/money/get', to: 'profiles#social_money_get'
   get '/tabs', to: 'profiles#tabs'
 end

@@ -155,7 +155,7 @@ class ProfilesController < ApplicationController
         :id=> "fgghh56788ffhjj"
     }
     @feed=Object.new
-    @feed={:feed=>@feeds, :Hi=>"fefefef"}
+    @feed={:feed=>@feeds}
 
     respond_to do |format|
       format.json { render :json => @feed.as_json, status: :ok }
@@ -189,7 +189,26 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+def social_money_get
 
+  @gets = Array.new
+  @gets <<  {
+      :id =>"salkjh234jhkjfh9432y",
+      :fromID => "salkjh234jhkjfh9432y",
+      :name => "John Smith",
+      :pic =>  "url",
+      :type =>  "charge", #charge request or money send request
+      :amount => 100.00,
+      :currency => "eur",
+      :message => "Please send me some money for a new car."
+  }
+  @getResult=Object.new
+  @getResult={:moneyRequest=>@gets}
+
+  respond_to do |format|
+    format.json { render :json => @getResult.as_json, status: :ok }
+  end
+end
   :private
   def decline_required_param(param_name)
     @newUser = Profile.new
