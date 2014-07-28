@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_user_profile, except: [:signin,:signup, :confirm]
-  before_action :set_app_profile
+  before_action :set_app_profile, except: [:confirm]
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
   before_action :confirm_params, only: [:confirm]
@@ -86,13 +86,13 @@ class ProfilesController < ApplicationController
     @newUser.result = 0;
     @newUser.message = "registered";
     #  #User was successfully created.
-    sendmail(@sign_up, "registered");
+    send_confirm_mail(@sign_up, "https://api.onlinepay.com/confirm?token=#{@reg_token}");
   end
 
   def confirm
     @result = Object
-    @user_token = request.headers['user-token'];
-    @user = Profile.find_by_user_token(@user_token);
+    @reg_token = request.params['token'];
+    @user = Profile.find_by_reg_token(@reg_token);
 
     unless @user
       @result = {:result => 5 ,:message => "user not found or incorrect password"}
@@ -279,6 +279,11 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def send_confirm_mail(sign_up, link)
+    if sign_up.valid?
+      Emailer.email_confirm(sign_up.email, link).deliver;
+    end
+  end
   def set_user_profile
     @user_token = request.headers['user-token'];
     #collecting some data for user
@@ -317,7 +322,7 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def confirm_params
-   @reg_token = params.require(:confirm).permit(:token)['token']
+  # @reg_token = params.require(:confirm).permit(:token)['token']
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
