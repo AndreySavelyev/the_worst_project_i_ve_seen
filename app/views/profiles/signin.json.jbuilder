@@ -1,2 +1,2 @@
-json.extract! @newUser, :email,:password, :fb_token
+json.extract! @newUser, :user_token
 #:accountid,

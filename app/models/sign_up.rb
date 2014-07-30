@@ -4,10 +4,11 @@ class SignUp <  EmailValidator
   extend ActiveModel::Naming
 
   attr_accessor :email;
+  attr_accessor :fb_token;
+ # attr_accessor :user_token;
   attr_accessor :password1;
   attr_accessor :password2;
-#  attr_accessor :fid;
-#  attr_accessor :user_token;
+  attr_accessor :phone;
 
   validates :email, presence: true, email: true
 

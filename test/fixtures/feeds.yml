@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  feedDate: 2014-07-23
+  message: MyString
+  feedType: MyString
+  profile_id: 
+
+two:
+  feedDate: 2014-07-23
+  message: MyString
+  feedType: MyString
+  profile_id: 

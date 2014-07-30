@@ -7,6 +7,7 @@ attr_accessor :email;
 attr_accessor :password;
 attr_accessor :fb_token;
 attr_accessor :phone;
+attr_accessor :user_token;
 
 validates :email, presence: true, email: true
 
