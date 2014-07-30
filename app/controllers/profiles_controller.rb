@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
   before_action :confirm_params, only: [:confirm]
+ # before_action :save_profile_params, only: [:save_profile]
 
   skip_before_filter :verify_authenticity_token
 
@@ -15,6 +16,93 @@ class ProfilesController < ApplicationController
   # проверка текущего пароля
   # если указан второй пароль, значит идет смена пароля
   #
+  end
+
+  def get_profile
+    @profile = Object
+    @profile =
+        {
+            :profile=>
+                {
+                    :email=>@user.email,
+                    :type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':@user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
+                    :firstName=>@user.name,
+                    :lastName=>@user.surname,
+                    :phone=>@user.phone,
+                    :fid=>@user.fb_token,
+                    :birthday=>@user.birthday,
+                    :address=>@user.address,
+                    :company_name=>@user.company_name,
+                    :web_site=>@user.web_site
+                }
+        }
+
+    respond_to do |format|
+      format.json { render :json => @profile.as_json, status: :ok }
+    end
+  end
+
+  def save_profile
+    @profile =
+        {
+            email: request.params[:profile][:email],
+            type: request.params[:profile][:type], #available types[personal, green, biz, biz partner, pale]
+            firstName: request.params[:profile][:firstName],
+            lastName: request.params[:profile][:lastName],
+            phone: request.params[:profile][:phone],
+            fid: request.params[:profile][:fid],
+            birthday: request.params[:profile][:birthday],
+            address: request.params[:profile][:address],
+            company_name: request.params[:profile][:company_name],
+            web_site: request.params[:profile][:web_site]
+        }
+
+    #@user.update(type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':
+    # @user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
+    if request.params[:profile][:type]
+      case request.params[:profile][:type]
+        when 'personal'
+          @user.wallet_type=1
+        when 'green'
+          @user.wallet_type=2
+        when 'biz'
+          @user.wallet_type=3
+        when 'biz partner'
+          @user.wallet_type=4
+        when 'pale'
+          @user.wallet_type=5
+      end
+
+      if request.params[:profile][:email]
+        @user.email=request.params[:profile][:email]
+      end
+    end
+    if request.params[:profile][:firstName]
+      @user.name=request.params[:profile][:firstName]
+    end
+    if request.params[:profile][:lastName]
+      @user.surname=request.params[:profile][:lastName]
+    end
+    if request.params[:profile][:phone]
+      @user.phone=request.params[:profile][:phone]
+    end
+    if  request.params[:profile][:fid]
+      @user.fb_token= request.params[:profile][:fid]
+    end
+    if request.params[:profile][:birthday]
+      @user.birthday=request.params[:profile][:birthday]
+    end
+    if request.params[:profile][:address]
+      @user.address=request.params[:profile][:address]
+    end
+    if request.params[:profile][:company_name]
+      @user.company_name=request.params[:profile][:company_name]
+    end
+    if request.params[:profile][:web_site]
+      @user.web_site=request.params[:profile][:web_site]
+    end
+    @user.save!
+    get_profile
   end
 
   def signin
@@ -83,8 +171,6 @@ class ProfilesController < ApplicationController
       end
     end
 
-    @newUser.result = 0;
-    @newUser.message = "registered";
     #  #User was successfully created.
     send_confirm_mail(@sign_up, "https://api.onlinepay.com/confirm?token=#{@reg_token}");
   end
@@ -130,7 +216,6 @@ class ProfilesController < ApplicationController
       format.json { render :json => @getResult.as_json, status: :ok }
     end
   end
-
   # GET /tabs
   def tabs
     @log = Logger.new(STDOUT)
@@ -196,6 +281,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @feed.as_json, status: :ok }
     end
   end
+
   def like
     @like=Object.new
     @like={:result=>0}
@@ -203,6 +289,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+
   def social_money_send
     @like=Object.new
     @like={:result=>0}
@@ -210,6 +297,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+
   def social_money_charge
     @like=Object.new
     @like={:result=>0}
@@ -217,6 +305,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+
   def recieve_pay
     @like=Object.new
     @like={:result=>0}
@@ -224,6 +313,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @like.as_json, status: :ok }
     end
   end
+
   def social_money_get
 
     @gets = Array.new
@@ -254,7 +344,6 @@ class ProfilesController < ApplicationController
       format.json { render :json => @getResult.as_json, status: :ok }
     end
   end
-
 
   :private
   def decline_required_param(param_name)
@@ -370,5 +459,12 @@ class ProfilesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
     params.require(:PathModel).permit(:path)
+  end
+
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def save_profile_params
+    params.require(:profile)
+    .permit(:email, :type, :firstName, :lastName, :phone, :fid, :birthday, :address, :company_name, :web_site)
   end
 end

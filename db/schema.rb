@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727173051) do
+ActiveRecord::Schema.define(version: 20140730031719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(version: 20140727173051) do
   create_table "hot_offers", force: true do |t|
     t.string   "title"
     t.string   "currency"
+    t.string   "pic_url"
     t.integer  "price"
     t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "pic_url"
   end
 
   add_index "hot_offers", ["profile_id"], name: "index_hot_offers_on_profile_id", using: :btree
@@ -56,7 +56,6 @@ ActiveRecord::Schema.define(version: 20140727173051) do
     t.string   "phone"
     t.string   "iban"
     t.string   "reg_num"
-    t.datetime "birthday"
     t.string   "company_name"
     t.string   "email"
     t.string   "password"
@@ -65,6 +64,10 @@ ActiveRecord::Schema.define(version: 20140727173051) do
     t.datetime "updated_at"
     t.string   "reg_token"
     t.integer  "confirm_type"
+    t.string   "web_site"
+    t.string   "address"
+    t.integer  "wallet_type"
+    t.date     "birthday"
   end
 
   create_table "providers", force: true do |t|
