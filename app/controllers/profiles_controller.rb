@@ -45,8 +45,6 @@ class ProfilesController < ApplicationController
   def save_profile
     @profile =
         {
-            #email: request.params[:profile][:email],
-            #type: request.params[:profile][:type], #available types[personal, green, biz, biz partner, pale]
             firstName: request.params[:profile][:firstName],
             lastName: request.params[:profile][:lastName],
             phone: request.params[:profile][:phone],
@@ -57,26 +55,6 @@ class ProfilesController < ApplicationController
             web_site: request.params[:profile][:web_site]
         }
 
-    #@user.update(type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':
-    #@user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
-    #if request.params[:profile][:type]
-    #  case request.params[:profile][:type]
-    #    when 'personal'
-    #      @user.wallet_type=1
-    #    when 'green'
-    #      @user.wallet_type=2
-    #    when 'biz'
-    #      @user.wallet_type=3
-    #    when 'biz partner'
-    #      @user.wallet_type=4
-    #    when 'pale'
-    #      @user.wallet_type=5
-    #  end
-    #
-    #  if request.params[:profile][:email]
-    #    @user.email=request.params[:profile][:email]
-    #  end
-    #end
     if request.params[:profile][:firstName]
       @user.name=request.params[:profile][:firstName]
     end
@@ -127,7 +105,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    check_user_token_valid(@newUser);
+    #check_user_token_valid(@newUser);
     sendmail(@sign_in, "sign-in");
   end
 
@@ -465,7 +443,6 @@ class ProfilesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def save_profile_params
     params.require(:profile)
-    .permit(#:email, :type,
-        :firstName, :lastName, :phone, :fid, :birthday, :address, :company_name, :web_site)
+    .permit(:firstName, :lastName, :phone, :fid, :birthday, :address, :company_name, :web_site)
   end
 end
