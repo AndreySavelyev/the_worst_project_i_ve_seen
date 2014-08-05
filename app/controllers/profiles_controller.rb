@@ -150,7 +150,7 @@ class ProfilesController < ApplicationController
     end
 
     #  #User was successfully created.
-    send_confirm_mail(@sign_up, "https://api.onlinepay.com/confirm?token=#{@reg_token}");
+    send_confirm_mail(@sign_up, "https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}");
   end
 
   def confirm
