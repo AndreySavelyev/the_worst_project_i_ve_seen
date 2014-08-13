@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  available: 1
+  holded: 1
+  belongs_to: 
+  belongs_to: 
+
+two:
+  available: 1
+  holded: 1
+  belongs_to: 
+  belongs_to: 

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   resources :profiles
   post '/signin', to: 'profiles#signin', format: 'json'
-  post '/signup', to: 'profiles#signup', format: 'json'
+  post '/signup', to: 'profiles#signUp', format: 'json'
+  get '/signoff', to: 'profiles#signOff', format: 'json'
   #post '/confirm', to: 'profiles#confirm', format: 'json'
   get '/confirm', to: 'profiles#confirm', format: 'json'
   post '/brief', to: 'profiles#brief', format: 'json'

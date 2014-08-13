@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  CurrencyTo: 1
+  CurrencyFrom: 1
+  Rate: 1
+  SetUpDate: 2014-08-11 10:54:32
+
+two:
+  CurrencyTo: 1
+  CurrencyFrom: 1
+  Rate: 1
+  SetUpDate: 2014-08-11 10:54:32
