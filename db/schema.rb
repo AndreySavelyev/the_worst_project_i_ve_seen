@@ -98,15 +98,6 @@ ActiveRecord::Schema.define(version: 20140813040340) do
 
   add_index "providers", ["application_id"], name: "index_providers_on_application_id", using: :btree
 
-  create_table "requests", force: true do |t|
-    t.integer  "req_type"
-    t.integer  "req_status"
-    t.integer  "source"
-    t.integer  "target"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "sessions", force: true do |t|
     t.string   "SessionId",      null: false
     t.datetime "TimeToDie"
@@ -127,6 +118,15 @@ ActiveRecord::Schema.define(version: 20140813040340) do
   end
 
   add_index "wallet_messages", ["Request_id"], name: "index_wallet_messages_on_Request_id", using: :btree
+
+  create_table "wallet_requests", force: true do |t|
+    t.integer  "req_type"
+    t.integer  "req_status"
+    t.integer  "sourceWallet_id"
+    t.integer  "targetWallet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "wallets", force: true do |t|
     t.integer  "available"
