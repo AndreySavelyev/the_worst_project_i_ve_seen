@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20140813040340) do
   create_table "iso_currencies", force: true do |t|
     t.string   "Alpha3Code",   limit: 3
     t.integer  "Numeric3Code"
-    t.string   "Name"
+    t.string   "IsoName"
     t.integer  "Precision"
     t.datetime "created_at"
     t.datetime "updated_at"
