@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140812160324) do
+ActiveRecord::Schema.define(version: 20140813040340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,18 @@ ActiveRecord::Schema.define(version: 20140812160324) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sessions", force: true do |t|
+    t.string   "SessionId",      null: false
+    t.datetime "TimeToDie"
+    t.integer  "profile_id"
+    t.integer  "application_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["application_id"], name: "index_sessions_on_application_id", using: :btree
+  add_index "sessions", ["profile_id"], name: "index_sessions_on_profile_id", using: :btree
 
   create_table "wallet_messages", force: true do |t|
     t.string   "message"

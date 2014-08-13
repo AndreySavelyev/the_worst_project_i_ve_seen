@@ -1,2 +1,1 @@
-json.extract! @newUser, :user_token
-#:accountid,
+json.extract! @newUser.session, :SessionId, :TimeToDie

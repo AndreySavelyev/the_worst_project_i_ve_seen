@@ -1,9 +1,14 @@
 class ProfilesController < ApplicationController
-  before_action :set_user_profile, except: [:signin,:signup, :confirm, :get_profile]
-  before_action :set_user_profile_without_check_registration, only: [ :get_profile]
-  before_action :set_app_profile, except: [:confirm]
+
+  #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
+  before_action :set_user_from_session_and_check_registration, except: [:signin,:signUp, :confirm, :get_profile]
+  #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
+  before_action :set_user_from_session, only: [ :get_profile]
+  #проверка app-token только для  :signin,:signUp
+  before_action :set_app_profile, only: [ :signin,:signUp]
+
   before_action :signin_params, only: [:signin]
-  before_action :signup_params, only: [:signup]
+  before_action :signup_params, only: [:signUp]
   before_action :confirm_params, only: [:confirm]
  # before_action :save_profile_params, only: [:save_profile]
 
@@ -107,11 +112,51 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    #check_user_token_valid(@newUser);
+    @session=create_session(@newUser);
     sendmail(@sign_in, "sign-in");
   end
 
-  def signup
+  def signOff
+    @result = Object
+    @result = {:result => 0 ,:message => "session destroyed"}
+    if(@user.session)
+      unless(@user.session.delete)
+        @result = {:result => 10 ,:message => "session destroy error"}
+      end
+    end
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :unauthorized }
+    end
+  end
+
+  def checkSessionValid(session)
+    unless(session)
+      return false;
+    end
+
+    if(session.TimeToDie<Time.now)
+      return false;
+    end
+    return true;
+  end
+
+  def create_session(user)
+    unless (user.session)
+      session=Session.new
+      session.SessionId= SecureRandom.hex;
+      session.TimeToDie= Time.now + 1.hour;
+      user.session=session
+    else
+      session= user.session;
+    end
+    session.application=@app
+    session.SessionId= SecureRandom.hex;
+    session.TimeToDie= Time.now + 1.hour;
+    session.save;
+    return session;
+  end
+
+  def signUp
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
     @log.info('@sign_up')
@@ -201,7 +246,7 @@ class ProfilesController < ApplicationController
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
     #validating user token
-    @tabs = ProfilesHelper::get_tabs_format(@user,@app);
+    @tabs = ProfilesHelper::get_tabs_format(@user,@user.session.application);
     respond_to do |format|
       format.json { render :json => @tabs.as_json, status: :ok }
     end
@@ -354,15 +399,24 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def set_user_profile_without_check_registration
-    @user_token = request.headers['user-token'];
-    #collecting some data for user
-    @user = Profile.find_by_user_token(@user_token);
+  def set_user_from_session_and_check_registration
+    set_user_from_session
+    check_user_token_valid(@user);
   end
 
-  def set_user_profile
-    set_user_profile_without_check_registration
-    check_user_token_valid(@user);
+  def set_user_from_session
+    session_token = request.headers['session-token'];
+    #collecting some data for user
+    user_session = Session.find_by_SessionId(session_token);
+    unless(checkSessionValid(user_session))
+      result = Object
+      result = {:result => 11,:message =>"session not valid" }
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :unauthorized }
+        return;
+      end
+    end
+    @user=user_session.profile;
   end
 
   def set_app_profile
