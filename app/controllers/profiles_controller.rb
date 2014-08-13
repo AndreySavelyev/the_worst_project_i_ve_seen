@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
-  before_action :set_user_profile, except: [:signin,:signup, :confirm]
+  before_action :set_user_profile, except: [:signin,:signup, :confirm, :get_profile]
+  before_action :set_user_profile_without_check_registration, only: [ :get_profile]
   before_action :set_app_profile, except: [:confirm]
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
@@ -33,7 +34,8 @@ class ProfilesController < ApplicationController
                     :birthday=>@user.birthday,
                     :address=>@user.address,
                     :company_name=>@user.company_name,
-                    :web_site=>@user.web_site
+                    :web_site=>@user.web_site,
+                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0)
                 }
         }
 
@@ -351,10 +353,15 @@ class ProfilesController < ApplicationController
       Emailer.email_confirm(sign_up.email, link).deliver;
     end
   end
-  def set_user_profile
+
+  def set_user_profile_without_check_registration
     @user_token = request.headers['user-token'];
     #collecting some data for user
     @user = Profile.find_by_user_token(@user_token);
+  end
+
+  def set_user_profile
+    set_user_profile_without_check_registration
     check_user_token_valid(@user);
   end
 
