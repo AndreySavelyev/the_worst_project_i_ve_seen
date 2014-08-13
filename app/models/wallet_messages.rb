@@ -1,3 +1,3 @@
 class WalletMessages < ActiveRecord::Base
-  belongs_to :Request
+  belongs_to :wallet_request
 end
