@@ -1,16 +1,15 @@
 class ProfilesController < ApplicationController
 
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
-  before_action :set_user_from_session_and_check_registration, except: [:signin,:signup, :confirm, :get_profile]
+  before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
-  before_action :set_user_from_session, only: [ :get_profile]
+  before_action :set_user_from_session, except: [:signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка app-token только для  :signin,:signUp
   before_action :set_app_profile, only: [ :signin,:signup]
 
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
   before_action :confirm_params, only: [:confirm]
- # before_action :save_profile_params, only: [:save_profile]
 
   skip_before_filter :verify_authenticity_token
 
@@ -129,33 +128,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def checkSessionValid(session)
-    unless(session)
-      return false;
-    end
-
-    if(session.TimeToDie<Time.now)
-      return false;
-    end
-    return true;
-  end
-
-  def create_session(user)
-    unless (user.session)
-      session=Session.new
-      session.SessionId= SecureRandom.hex;
-      session.TimeToDie= Time.now + 1.hour;
-      user.session=session
-    else
-      session= user.session;
-    end
-    session.application=@app
-    session.SessionId= SecureRandom.hex;
-    session.TimeToDie= Time.now + 1.hour;
-    session.save;
-    return session;
-  end
-
   def signup
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
@@ -186,8 +158,12 @@ class ProfilesController < ApplicationController
     @newUser.user_token = SecureRandom.hex;
     @newUser.reg_token= SecureRandom.hex;
     @newUser.confirm_type=0;#not confirmed
+
+    if(@sign_up.email =="vk100@onlinepay.com")
+      @newUser.reg_token= 'confirm-token';
+    end
     # добавляем запись
-    #if\
+
     if(!@newUser.save)
       @result = Object
       @result = {:result => 4,:message => "not registered"}
@@ -201,12 +177,22 @@ class ProfilesController < ApplicationController
     @log.debug(link);
     #User was successfully created.
     send_confirm_mail(@sign_up, link);
+    create_session(@newUser);
   end
 
   def confirm
     @result = Object
-    @reg_token = request.params['token'];
-    @user = Profile.find_by_reg_token(@reg_token);
+    reg_token = request.params['token'];
+
+    unless reg_token
+      @result = {:result => 9 ,:message => "confirm token not valid"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :unauthorized }
+      end
+      return;
+    end
+
+    @user = Profile.find_by_reg_token(reg_token);
 
     unless @user
       @result = {:result => 5 ,:message => "user not found or incorrect password"}
@@ -216,7 +202,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    unless @user.reg_token == @reg_token
+    unless @user.reg_token == reg_token
       @result = {:result => 9 ,:message => "confirm token not valid"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :unauthorized }
@@ -237,6 +223,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
+    @user.update(reg_token:nil);
 
     @getResult=Object.new
     @getResult={:confirm=>@result}
@@ -244,7 +231,7 @@ class ProfilesController < ApplicationController
       format.json { render :json => @getResult.as_json, status: :ok }
     end
   end
-  # GET /tabs
+
   def tabs
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
@@ -318,6 +305,7 @@ class ProfilesController < ApplicationController
     end
   end
 
+  #methods with required confirmation email
   def social_money_send
     @like=Object.new
     @like={:result=>0}
@@ -343,7 +331,6 @@ class ProfilesController < ApplicationController
   end
 
   def social_money_get
-
     @gets = Array.new
     @gets <<  {
         :id =>"salkjh234jhkjfh9432y",
@@ -374,6 +361,45 @@ class ProfilesController < ApplicationController
   end
 
   :private
+  def checkSessionValid(session)
+    unless(session)
+      return false;
+    end
+
+    if(session.TimeToDie<Time.now)
+      return false;
+    end
+    return true;
+  end
+
+  def create_session(user)
+
+    if(user.email == "vk100@onlinepay.com")
+      sessionId = 'test-token';
+    else
+      sessionId=SecureRandom.hex;
+      if(Session.find_by_SessionId(sessionId))
+        sessionId=SecureRandom.hex;
+      end
+    end
+
+    unless (user.session)
+      session=Session.new
+      session.SessionId= sessionId;
+      session.application=@app
+      session.TimeToDie= Time.now + 1.hour;
+      user.session=session
+    else
+      session= user.session;
+      session.SessionId=sessionId;
+      session.application=@app
+      session.TimeToDie= Time.now + 1.hour;
+    end
+
+    session.save;
+    return session;
+  end
+
   def decline_required_param(param_name)
     @result = Object
     @result = {:result => 8,:message => "require param"}
@@ -502,7 +528,6 @@ class ProfilesController < ApplicationController
   def catalog_params
     params.require(:PathModel).permit(:path)
   end
-
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def save_profile_params

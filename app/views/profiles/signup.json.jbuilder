@@ -1,1 +1,1 @@
-json.extract! @newUser, :user_token
+json.extract! @newUser.session, :SessionId
