@@ -134,7 +134,6 @@ class ProfilesController < ApplicationController
     @log.info('@sign_up')
     @log.info( @sign_up)
 
-
     if(@sign_up.phone && Profile.find_by_phone(@sign_up.phone) )
       decline_already_registered
       return;
@@ -500,11 +499,11 @@ class ProfilesController < ApplicationController
       @sign_up=nil;
       return;
     end
-    unless(@sign_up.phone)
-      decline_required_param('phone');
-      @sign_up=nil;
-      return;
-    end
+   #unless(@sign_up.phone)
+   #  decline_required_param('phone');
+   #  @sign_up=nil;
+   #  return;
+   #end
     unless(@sign_up.email || @sign_up.fb_token)
       unless(@sign_up.fb_token)
         decline_required_param('fb_token');
