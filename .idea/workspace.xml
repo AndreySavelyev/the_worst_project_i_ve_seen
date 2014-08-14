@@ -30,12 +30,13 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35809523" vertical-offset="2889" max-vertical-offset="5202">
-              <caret line="380" column="33" selection-start-line="380" selection-start-column="33" selection-end-line="380" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.3504762" vertical-offset="904" max-vertical-offset="3723">
+              <caret line="95" column="8" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
               <folding>
                 <element signature="e#871#1147#0" expanded="false" />
                 <element signature="e#1151#2130#0" expanded="false" />
                 <element signature="e#4329#4687#0" expanded="false" />
+                <element signature="e#4691#6183#0" expanded="false" />
                 <element signature="e#6187#7683#0" expanded="false" />
                 <element signature="e#7687#7966#0" expanded="false" />
                 <element signature="e#7970#8395#0" expanded="false" />
@@ -47,13 +48,15 @@
                 <element signature="e#9790#9955#0" expanded="false" />
                 <element signature="e#9959#10519#0" expanded="false" />
                 <element signature="e#10523#10757#0" expanded="false" />
-                <element signature="e#11584#11811#0" expanded="false" />
-                <element signature="e#11815#12039#0" expanded="false" />
-                <element signature="e#12043#12167#0" expanded="false" />
-                <element signature="e#12171#12301#0" expanded="false" />
-                <element signature="e#12305#12420#0" expanded="false" />
-                <element signature="e#12424#12905#0" expanded="false" />
-                <element signature="e#12909#13067#0" expanded="false" />
+                <element signature="e#10772#10937#0" expanded="false" />
+                <element signature="e#10941#11578#0" expanded="false" />
+                <element signature="e#11582#11809#0" expanded="false" />
+                <element signature="e#11813#12037#0" expanded="false" />
+                <element signature="e#12041#12165#0" expanded="false" />
+                <element signature="e#12169#12299#0" expanded="false" />
+                <element signature="e#12303#12418#0" expanded="false" />
+                <element signature="e#12422#12903#0" expanded="false" />
+                <element signature="e#12907#13065#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -467,7 +470,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34697932" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34658188" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32707182" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -884,12 +887,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35809523" vertical-offset="2889" max-vertical-offset="5202">
-          <caret line="380" column="33" selection-start-line="380" selection-start-column="33" selection-end-line="380" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.3504762" vertical-offset="904" max-vertical-offset="3723">
+          <caret line="95" column="8" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
           <folding>
             <element signature="e#871#1147#0" expanded="false" />
             <element signature="e#1151#2130#0" expanded="false" />
             <element signature="e#4329#4687#0" expanded="false" />
+            <element signature="e#4691#6183#0" expanded="false" />
             <element signature="e#6187#7683#0" expanded="false" />
             <element signature="e#7687#7966#0" expanded="false" />
             <element signature="e#7970#8395#0" expanded="false" />
@@ -901,13 +905,15 @@
             <element signature="e#9790#9955#0" expanded="false" />
             <element signature="e#9959#10519#0" expanded="false" />
             <element signature="e#10523#10757#0" expanded="false" />
-            <element signature="e#11584#11811#0" expanded="false" />
-            <element signature="e#11815#12039#0" expanded="false" />
-            <element signature="e#12043#12167#0" expanded="false" />
-            <element signature="e#12171#12301#0" expanded="false" />
-            <element signature="e#12305#12420#0" expanded="false" />
-            <element signature="e#12424#12905#0" expanded="false" />
-            <element signature="e#12909#13067#0" expanded="false" />
+            <element signature="e#10772#10937#0" expanded="false" />
+            <element signature="e#10941#11578#0" expanded="false" />
+            <element signature="e#11582#11809#0" expanded="false" />
+            <element signature="e#11813#12037#0" expanded="false" />
+            <element signature="e#12041#12165#0" expanded="false" />
+            <element signature="e#12169#12299#0" expanded="false" />
+            <element signature="e#12303#12418#0" expanded="false" />
+            <element signature="e#12422#12903#0" expanded="false" />
+            <element signature="e#12907#13065#0" expanded="false" />
           </folding>
         </state>
       </provider>
