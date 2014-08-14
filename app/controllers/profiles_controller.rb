@@ -1,14 +1,14 @@
 class ProfilesController < ApplicationController
 
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
-  before_action :set_user_from_session_and_check_registration, except: [:signin,:signUp, :confirm, :get_profile]
+  before_action :set_user_from_session_and_check_registration, except: [:signin,:signup, :confirm, :get_profile]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
   before_action :set_user_from_session, only: [ :get_profile]
   #проверка app-token только для  :signin,:signUp
-  before_action :set_app_profile, only: [ :signin,:signUp]
+  before_action :set_app_profile, only: [ :signin,:signup]
 
   before_action :signin_params, only: [:signin]
-  before_action :signup_params, only: [:signUp]
+  before_action :signup_params, only: [:signup]
   before_action :confirm_params, only: [:confirm]
  # before_action :save_profile_params, only: [:save_profile]
 
@@ -109,7 +109,7 @@ class ProfilesController < ApplicationController
         respond_to do |format|
           format.json { render :json => @result.as_json, status: :unauthorized }
         end
-      return;
+        return;
     end
 
     @session=create_session(@newUser);
@@ -156,7 +156,7 @@ class ProfilesController < ApplicationController
     return session;
   end
 
-  def signUp
+  def signup
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
     @log.info('@sign_up')
@@ -194,10 +194,13 @@ class ProfilesController < ApplicationController
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :error }
       end
+      return;
     end
 
-    #  #User was successfully created.
-    send_confirm_mail(@sign_up, "https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}");
+    link="https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
+    @log.debug(link);
+    #User was successfully created.
+    send_confirm_mail(@sign_up, link);
   end
 
   def confirm
@@ -413,8 +416,8 @@ class ProfilesController < ApplicationController
       result = {:result => 11,:message =>"session not valid" }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
-        return;
       end
+      return;
     end
     @user=user_session.profile;
   end
