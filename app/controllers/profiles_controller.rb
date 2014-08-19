@@ -116,6 +116,11 @@ class ProfilesController < ApplicationController
     return_session(@session)
   end
 
+  def check_session
+    set_user_from_session
+    return_session(@user.session)
+  end
+
   def signOff
     @result = Object
     @result = {:result => 0 ,:message => "session destroyed"}
@@ -184,9 +189,9 @@ class ProfilesController < ApplicationController
         return;
     end
 
-    @user = Profile.find_by_reg_token(reg_token);
+    user = Profile.find_by_reg_token(reg_token);
 
-    unless @user
+    unless user
       @result = {:result => 5 ,:message => "user not found or incorrect password"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :unauthorized }
@@ -194,7 +199,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    unless @user.reg_token == reg_token
+    unless user.reg_token == reg_token
       @result = {:result => 9 ,:message => "confirm token not valid"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :unauthorized }
@@ -203,11 +208,11 @@ class ProfilesController < ApplicationController
     end
 
     @result =  {:result=>0, :message=>"ok" }
-    if @user && @user.confirm_type!=0
+    if user && user.confirm_type!=0
       @result =  {:result=>0, :message=>"already confirmed" }
     end
 
-    unless @user.update(confirm_type:1)
+    unless user.update(confirm_type:1)
       @result = {:result => 10 ,:message => "registration not confirmed. internal server error"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :internal_server_error }
@@ -215,7 +220,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    @user.update(reg_token:nil);
+    user.update(reg_token:nil);
 
     @getResult=Object.new
     @getResult={:confirm=>@result}
@@ -354,12 +359,6 @@ class ProfilesController < ApplicationController
 
   :private
 
-  def return_session(session)
-    @result = {:result => 0 ,:message => "ok", :expiration => session.TimeToDie}
-    respond_to do |format|
-      format.json { render :json => @result.as_json, status: :ok }
-    end
-  end
 
   def checkSessionValid(session)
     unless(session)
@@ -445,6 +444,13 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def return_session(session)
+    @result = {:result => 0 ,:message => "ok", :expiration => session ? session.TimeToDie : ""}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :ok }
+    end
+  end
+
   def set_user_from_session_and_check_registration
     set_user_from_session
     check_user_token_valid(@user);
@@ -453,16 +459,15 @@ class ProfilesController < ApplicationController
   def set_user_from_session
     session_token = request.headers['session-token'];
     #collecting some data for user
-    user_session = Session.find_by_SessionId(session_token);
-    unless(checkSessionValid(user_session))
-      result = Object
-      result = {:result => 11,:message =>"session not valid" }
+    session = Session.find_by_SessionId(session_token);
+    unless(checkSessionValid(session))
+      result = {:result => 11,:message =>"session not valid", :expiration => session ? session.TimeToDie : "" }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end
       return;
     end
-    @user=user_session.profile;
+    @user=session.profile;
   end
 
   def set_app_profile
@@ -473,11 +478,11 @@ class ProfilesController < ApplicationController
 
   def check_user_token_valid(user)
     if(!user ||  (user.confirm_type==0))
-      @result = Object
-      @error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
-      @result = {:result => 6,:message =>@error_text }
+      result = Object
+      error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
+      result = {:result => 6,:message =>error_text }
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :unauthorized }
+        format.json { render :json => result.as_json, status: :unauthorized }
       end
       return;
     end
