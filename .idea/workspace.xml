@@ -30,13 +30,29 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39076376" vertical-offset="1191" max-vertical-offset="8483">
-              <caret line="181" column="39" selection-start-line="181" selection-start-column="39" selection-end-line="181" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.7531083" vertical-offset="1140" max-vertical-offset="4369">
+              <caret line="432" column="5" selection-start-line="432" selection-start-column="5" selection-end-line="432" selection-end-column="5" />
               <folding>
                 <element signature="e#1164#2143#0" expanded="false" />
                 <element signature="e#2147#3553#0" expanded="false" />
                 <element signature="e#3557#4375#0" expanded="false" />
                 <element signature="e#4466#4824#0" expanded="false" />
+                <element signature="e#4828#5989#0" expanded="false" />
+                <element signature="e#5993#7496#0" expanded="false" />
+                <element signature="e#7500#7779#0" expanded="false" />
+                <element signature="e#7783#8208#0" expanded="false" />
+                <element signature="e#8212#8621#0" expanded="false" />
+                <element signature="e#8625#9041#0" expanded="false" />
+                <element signature="e#9045#9203#0" expanded="false" />
+                <element signature="e#9251#9422#0" expanded="false" />
+                <element signature="e#9426#9599#0" expanded="false" />
+                <element signature="e#9603#9768#0" expanded="false" />
+                <element signature="e#9772#10332#0" expanded="false" />
+                <element signature="e#10336#10570#0" expanded="false" />
+                <element signature="e#10756#11393#0" expanded="false" />
+                <element signature="e#11397#11624#0" expanded="false" />
+                <element signature="e#11628#11852#0" expanded="false" />
+                <element signature="e#11857#12072#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -457,7 +473,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="31" />
+      <option name="time" value="32" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -804,13 +820,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39076376" vertical-offset="1191" max-vertical-offset="8483">
-          <caret line="181" column="39" selection-start-line="181" selection-start-column="39" selection-end-line="181" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.7531083" vertical-offset="1140" max-vertical-offset="4369">
+          <caret line="432" column="5" selection-start-line="432" selection-start-column="5" selection-end-line="432" selection-end-column="5" />
           <folding>
             <element signature="e#1164#2143#0" expanded="false" />
             <element signature="e#2147#3553#0" expanded="false" />
             <element signature="e#3557#4375#0" expanded="false" />
             <element signature="e#4466#4824#0" expanded="false" />
+            <element signature="e#4828#5989#0" expanded="false" />
+            <element signature="e#5993#7496#0" expanded="false" />
+            <element signature="e#7500#7779#0" expanded="false" />
+            <element signature="e#7783#8208#0" expanded="false" />
+            <element signature="e#8212#8621#0" expanded="false" />
+            <element signature="e#8625#9041#0" expanded="false" />
+            <element signature="e#9045#9203#0" expanded="false" />
+            <element signature="e#9251#9422#0" expanded="false" />
+            <element signature="e#9426#9599#0" expanded="false" />
+            <element signature="e#9603#9768#0" expanded="false" />
+            <element signature="e#9772#10332#0" expanded="false" />
+            <element signature="e#10336#10570#0" expanded="false" />
+            <element signature="e#10756#11393#0" expanded="false" />
+            <element signature="e#11397#11624#0" expanded="false" />
+            <element signature="e#11628#11852#0" expanded="false" />
+            <element signature="e#11857#12072#0" expanded="false" />
           </folding>
         </state>
       </provider>
