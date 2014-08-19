@@ -13,16 +13,6 @@ class ProfilesController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
 
-  #def update_profile
-    #проверка входных данных
-    #@sign_in = UpdateProfile.new(profile_params);
-    # поиск аккаунта по емэйл
-  #  @newUser = Profile.find_by_user_token(@sign_in.accountid);
-  # проверка текущего пароля
-  # если указан второй пароль, значит идет смена пароля
-  #
-  #end
-
   def get_profile
     @profile = Object
     @profile =
@@ -304,22 +294,25 @@ class ProfilesController < ApplicationController
 
   #methods with required confirmation email
   def social_money_send
-    @like=Object.new
-    @like={:result=>0}
-    respond_to do |format|
-      format.json { render :json => @like.as_json, status: :ok }
-    end
-  end
 
-  def social_money_charge
-    @like=Object.new
-    @like={:result=>0}
-    respond_to do |format|
-      format.json { render :json => @like.as_json, status: :ok }
-    end
+    #на исходном кошельке проверяется наличие необходимой суммы
+
+    #если валюты кошельков различаются, то производится конвертация в валюту назначения
+    #на исходном кошельке замораживается необходимая сумма
+    #шлется запрос второму кошельку на акцепт суммы
+    #рассылка уведомлений
   end
 
   def recieve_pay
+
+    #находится запрос в кошельке текущего пользователя по ИД запроса
+    #с исходнго кошелька списывается замороженная сумма
+    #на кошелек назначения эта сумма зачисляется
+    #запрос помечается как принятый
+    #рассылка уведомлений
+  end
+
+  def social_money_charge
     @like=Object.new
     @like={:result=>0}
     respond_to do |format|
@@ -358,8 +351,6 @@ class ProfilesController < ApplicationController
   end
 
   :private
-
-
   def checkSessionValid(session)
     unless(session)
       return false;
