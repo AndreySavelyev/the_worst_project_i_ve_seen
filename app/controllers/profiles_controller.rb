@@ -13,6 +13,8 @@ class ProfilesController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
 
+  Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
+
   def get_profile
     @profile = Object
     @profile =
@@ -406,7 +408,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-
   def to_short_account
     @result = Object
     @result = {:result => 13,:message => "to short accountid"}
@@ -436,7 +437,7 @@ class ProfilesController < ApplicationController
   end
 
   def return_session(session)
-    @result = {:result => 0 ,:message => "ok", :expiration => session ? session.TimeToDie : ""}
+    @result = {:result => 0 ,:message => "ok", :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : ""}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :ok }
     end
@@ -455,7 +456,7 @@ class ProfilesController < ApplicationController
     session = Session.find_by_SessionId(session_token);
     unless(checkSessionValid(session))
       @user=nil
-      result = {:result => 11,:message =>"session not valid", :expiration => session ? session.TimeToDie : "" }
+      result = {:result => 11,:message =>"session not valid", :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : "" }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end
