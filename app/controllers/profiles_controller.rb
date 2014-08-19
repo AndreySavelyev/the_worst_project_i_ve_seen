@@ -13,15 +13,15 @@ class ProfilesController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
 
-  def update_profile
+  #def update_profile
     #проверка входных данных
-    @sign_in = UpdateProfile.new(profile_params);
+    #@sign_in = UpdateProfile.new(profile_params);
     # поиск аккаунта по емэйл
-    @newUser = Profile.find_by_email(@sign_in.email);
+  #  @newUser = Profile.find_by_user_token(@sign_in.accountid);
   # проверка текущего пароля
   # если указан второй пароль, значит идет смена пароля
   #
-  end
+  #end
 
   def get_profile
     @profile = Object
@@ -90,19 +90,19 @@ class ProfilesController < ApplicationController
   end
 
   def signin
-    if(@sign_in.email) #decline authorisation via email+fb_token
+    #if(@sign_in.accountid) #decline authorisation via email+fb_token
       # поиск аккаунта по емэйл
-      @newUser = Profile.find_by_email(@sign_in.email);
-    else
-      @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
-    end
+      newUser = Profile.find_by_user_token(@sign_in.accountid);
+   # else
+   #   @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
+   # end
 
-    if(@newUser)
+    if(newUser)
       #checking user password
-      @user_password = Digest::SHA2.hexdigest(@newUser.salt + @sign_in.password);
+      user_password = Digest::SHA2.hexdigest(newUser.salt + @sign_in.password);
     end
 
-    unless @newUser && (@user_password == @newUser.password)
+    unless newUser && (user_password == newUser.password)
         @result = Object
         @result = {:result => 5 ,:message => "user not found or incorrect password"}
         respond_to do |format|
@@ -111,8 +111,9 @@ class ProfilesController < ApplicationController
         return;
     end
 
-    @session=create_session(@newUser);
-    sendmail(@sign_in, "sign-in");
+    @session=create_session(newUser);
+    sendmail(newUser, "sign-in");
+    return_session(@session)
   end
 
   def signOff
@@ -134,32 +135,21 @@ class ProfilesController < ApplicationController
     @log.info('@sign_up')
     @log.info( @sign_up)
 
-    if(@sign_up.phone && Profile.find_by_phone(@sign_up.phone) )
-      decline_already_registered
-      return;
-    end
-    if(@sign_up.fb_token && Profile.find_by_fb_token(@sign_up.fb_token) )
-      decline_already_registered
-      return;
-    end
-    if(@sign_up.email && Profile.find_by_email(@sign_up.email))
-      decline_already_registered
-      return;
-    end
+    @log.info( @sign_up.accountid)
 
     @newUser = Profile.new;
-    @newUser.email = @sign_up.email;
-    @log.info( @sign_up.fb_token)
-    @newUser.fb_token = @sign_up.fb_token;
+    @newUser.user_token = @sign_up.accountid;
+    if( @sign_up.accountid.include? '@')
+      @newUser.email=@sign_up.accountid;
+    end
+
     @newUser.salt = SecureRandom.hex;
     @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
-    @newUser.phone = @sign_up.phone;
-    @newUser.user_token = SecureRandom.hex;
     @newUser.reg_token= SecureRandom.hex;
     @newUser.confirm_type=0;#not confirmed
 
-    if(@sign_up.email =="vk100@onlinepay.com")
-      @newUser.reg_token= 'confirm-token';
+    if(@sign_up.accountid == "vk100@onlinepay.com")
+      @newUser.reg_token = 'confirm-token';
     end
     # добавляем запись
 
@@ -175,20 +165,23 @@ class ProfilesController < ApplicationController
     link="https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
     @log.debug(link);
     #User was successfully created.
-    send_confirm_mail(@sign_up, link);
-    create_session(@newUser);
+    if (@newUser.email)
+          send_confirm_mail(@newUser, link);
+    end
+
+    return_session(create_session(@newUser));
   end
 
   def confirm
     @result = Object
     reg_token = request.params['token'];
 
-    unless reg_token
-      @result = {:result => 9 ,:message => "confirm token not valid"}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :unauthorized }
-      end
-      return;
+      unless reg_token
+        @result = {:result => 9 ,:message => "confirm token not valid"}
+        respond_to do |format|
+          format.json { render :json => @result.as_json, status: :unauthorized }
+        end
+        return;
     end
 
     @user = Profile.find_by_reg_token(reg_token);
@@ -360,6 +353,14 @@ class ProfilesController < ApplicationController
   end
 
   :private
+
+  def return_session(session)
+    @result = {:result => 0 ,:message => "ok", :expiration => session.TimeToDie}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :ok }
+    end
+  end
+
   def checkSessionValid(session)
     unless(session)
       return false;
@@ -410,6 +411,23 @@ class ProfilesController < ApplicationController
   def decline_already_registered
     @result = Object
     @result = {:result => 2,:message => "already registered"}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :error }
+    end
+  end
+
+
+  def to_short_account
+    @result = Object
+    @result = {:result => 13,:message => "to short accountid"}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :error }
+    end
+  end
+
+  def to_short_password
+    @result = Object
+    @result = {:result => 12,:message => "to short password"}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :error }
     end
@@ -483,12 +501,12 @@ class ProfilesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
     def signin_params
-      @sign_in = SignIn.new(params.require(:signin).permit(:email,:password,:fb_token, :phone))
+      @sign_in = SignIn.new(params.require(:signin).permit(:accountid,:password))
     end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def signup_params
-    @sign_up = SignUp.new( params.require(:signup).permit(:email,:password1,:password2,:phone, :fb_token))
+    @sign_up = SignUp.new( params.require(:signup).permit(:accountid,:password1,:password2))
 
     if(@sign_up.password1!=@sign_up.password2)
       @result = Object
@@ -504,24 +522,54 @@ class ProfilesController < ApplicationController
    #  @sign_up=nil;
    #  return;
    #end
-    unless(@sign_up.email || @sign_up.fb_token)
-      unless(@sign_up.fb_token)
-        decline_required_param('fb_token');
+  # unless(@sign_up.email || @sign_up.fb_token)
+  #   unless(@sign_up.fb_token)
+  #     decline_required_param('fb_token');
+  #     @sign_up=nil;
+  #     return;
+  #{ }"#   end
+      unless(@sign_up.accountid)
+        decline_required_param('accountid');
         @sign_up=nil;
         return;
       end
-      unless(@sign_up.email)
-        decline_required_param('email');
-        @sign_up=nil;
-        return;
-      end
+   # end
+
+    unless(@sign_up.accountid )
+      decline_already_registered
+      return;
+    end
+
+    if(@sign_up.accountid.length <8)
+      to_short_account
+      return;
+    end
+    if(@sign_up.password1.length <8)
+      to_short_password
+      return;
+    end
+    if( Profile.find_by_user_token(@sign_up.accountid))
+      decline_already_registered
+      return;
+    end
+    if(Profile.find_by_phone(@sign_up.accountid) )
+      to_short_account
+      return;
+    end
+    if(Profile.find_by_fb_token(@sign_up.accountid) )
+      to_short_account
+      return;
+    end
+    if(Profile.find_by_email(@sign_up.accountid))
+      decline_already_registered
+      return;
     end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def profile_params
-    params.require(:updatep_rofile).permit(:email, :password, :fb_token, :phone)
-  end
+ # def profile_params
+ #   params.require(:updatep_rofile).permit(:email, :password, :fb_token, :phone)
+ # end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
