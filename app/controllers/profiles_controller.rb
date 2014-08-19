@@ -179,7 +179,7 @@ class ProfilesController < ApplicationController
 
   def confirm
     @result = Object
-    reg_token = request.params['token'];
+    reg_token = request.params['confirm'];
 
       unless reg_token
         @result = {:result => 9 ,:message => "confirm token not valid"}
@@ -453,7 +453,9 @@ class ProfilesController < ApplicationController
 
   def set_user_from_session_and_check_registration
     set_user_from_session
-    check_user_token_valid(@user);
+    if(@user)
+      check_user_token_valid(@user);
+    end
   end
 
   def set_user_from_session
@@ -461,6 +463,7 @@ class ProfilesController < ApplicationController
     #collecting some data for user
     session = Session.find_by_SessionId(session_token);
     unless(checkSessionValid(session))
+      @user=nil
       result = {:result => 11,:message =>"session not valid", :expiration => session ? session.TimeToDie : "" }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
@@ -477,10 +480,9 @@ class ProfilesController < ApplicationController
   end
 
   def check_user_token_valid(user)
-    if(!user ||  (user.confirm_type==0))
-      result = Object
+    if(user &&  (user.confirm_type==0))
       error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
-      result = {:result => 6,:message =>error_text }
+      result = {:result => 6,:message => error_text }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end

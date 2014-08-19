@@ -30,8 +30,8 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5044405" vertical-offset="5802" max-vertical-offset="8449">
-              <caret line="456" column="5" selection-start-line="456" selection-start-column="5" selection-end-line="456" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.39076376" vertical-offset="1191" max-vertical-offset="8483">
+              <caret line="181" column="39" selection-start-line="181" selection-start-column="39" selection-end-line="181" selection-end-column="39" />
               <folding>
                 <element signature="e#1164#2143#0" expanded="false" />
                 <element signature="e#2147#3553#0" expanded="false" />
@@ -457,7 +457,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="30" />
+      <option name="time" value="31" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -804,8 +804,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5044405" vertical-offset="5802" max-vertical-offset="8449">
-          <caret line="456" column="5" selection-start-line="456" selection-start-column="5" selection-end-line="456" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.39076376" vertical-offset="1191" max-vertical-offset="8483">
+          <caret line="181" column="39" selection-start-line="181" selection-start-column="39" selection-end-line="181" selection-end-column="39" />
           <folding>
             <element signature="e#1164#2143#0" expanded="false" />
             <element signature="e#2147#3553#0" expanded="false" />
