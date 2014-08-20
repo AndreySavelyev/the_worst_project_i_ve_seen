@@ -81,8 +81,8 @@ class ProfilesController < ApplicationController
       @user.web_site=profile[:web_site]
     end
     # Registration number – рег номер.
-    if profile[:cp_reg_number]
-      @user.company_reg_number=profile[:cp_reg_number]
+    if profile[:reg_number]
+      @user.company_reg_number=profile[:reg_number]
     end
     # Contact person – контакт компании (Имя и фамилия).
     if profile[:cp_name]
@@ -636,7 +636,7 @@ class ProfilesController < ApplicationController
       :address,
       :company_name,
       :web_site,
-      :cp_reg_number,
+      :reg_number,
       :cp_name,
       :cp_position,
       :cp_birth,
