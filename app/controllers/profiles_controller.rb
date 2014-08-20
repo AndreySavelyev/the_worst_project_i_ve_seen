@@ -6,6 +6,7 @@ class ProfilesController < ApplicationController
   before_action :set_user_from_session, except: [:signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка app-token только для  :signin,:signUp
   before_action :set_app_profile, only: [ :signin,:signup]
+  #before_action :save_profile_params, only: [:save_profile]
 
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
@@ -31,7 +32,12 @@ class ProfilesController < ApplicationController
                     :address=>@user.address,
                     :company_name=>@user.company_name,
                     :web_site=>@user.web_site,
-                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0)
+                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0),
+                    :reg_number=>@user.company_reg_number,
+                    :cp_name=>@user.contact_person_name,
+                    :cp_position=>@user.contact_person_position,
+                    :cp_birth=>@user.contact_person_date_of_birth,
+                    :cp_phone=>@user.contact_person_phone
                 }
         }
 
@@ -41,50 +47,60 @@ class ProfilesController < ApplicationController
   end
 
   def save_profile
+   profile =save_profile_params
 
-    @profile =
-        {
-            email: request.params[:profile][:email],
-            firstName: request.params[:profile][:firstName],
-            lastName: request.params[:profile][:lastName],
-            phone: request.params[:profile][:phone],
-            fid: request.params[:profile][:fid],
-            birthday: request.params[:profile][:birthday],
-            address: request.params[:profile][:address],
-            company_name: request.params[:profile][:company_name],
-            web_site: request.params[:profile][:web_site]
-        }
     #User was successfully created.
     unless (@user.email)
       @user.reg_token= SecureRandom.hex;
-      @user.email =request.params[:profile][:email];
+      @user.email =profile[:email];
       link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
      send_confirm_mail(@user, link);
     end
-    if request.params[:profile][:firstName]
-      @user.name=request.params[:profile][:firstName]
+    if profile[:firstName]
+      @user.name=profile[:firstName]
     end
-    if request.params[:profile][:lastName]
-      @user.surname=request.params[:profile][:lastName]
+    if profile[:lastName]
+      @user.surname=profile[:lastName]
     end
-    if request.params[:profile][:phone]
-      @user.phone=request.params[:profile][:phone]
+    if profile[:phone]
+      @user.phone=profile[:phone]
     end
-    if  request.params[:profile][:fid]
-      @user.fb_token= request.params[:profile][:fid]
+    if  profile[:fid]
+      @user.fb_token= profile[:fid]
     end
-    if request.params[:profile][:birthday]
-      @user.birthday=request.params[:profile][:birthday]
+    if profile[:birthday]
+      @user.birthday=profile[:birthday]
     end
-    if request.params[:profile][:address]
-      @user.address=request.params[:profile][:address]
+    if profile[:address]
+      @user.address=profile[:address]
     end
-    if request.params[:profile][:company_name]
-      @user.company_name=request.params[:profile][:company_name]
+    if profile[:company_name]
+      @user.company_name=profile[:company_name]
     end
-    if request.params[:profile][:web_site]
-      @user.web_site=request.params[:profile][:web_site]
+    if profile[:web_site]
+      @user.web_site=profile[:web_site]
     end
+    # Registration number – рег номер.
+    if profile[:cp_reg_number]
+      @user.company_reg_number=profile[:cp_reg_number]
+    end
+    # Contact person – контакт компании (Имя и фамилия).
+    if profile[:cp_name]
+      @user.contact_person_name=profile[:cp_name]
+    end
+    # Contact person’s position - Позиция контактного лица.
+    if profile[:cp_position]
+      @user.contact_person_position=profile[:cp_position]
+    end
+    # Contact person’s date of birth.
+    if profile[:cp_birth]
+      @user.contact_person_date_of_birth=profile[:cp_birth]
+    end
+    # Contact person’s phone (including country code).
+    if profile[:cp_phone]
+      @user.contact_person_phone=profile[:cp_phone]
+    end
+
     @user.save!
     get_profile
   end
@@ -171,7 +187,6 @@ class ProfilesController < ApplicationController
         end
       end
     end
-
 
     unless @newUser.fb_token #для  FB account пароль не требуется
       if(@sign_up.password1.length <8)
@@ -603,10 +618,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
- # def profile_params
- #   params.require(:updatep_rofile).permit(:email, :password, :fb_token, :phone)
- # end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
@@ -616,6 +627,20 @@ class ProfilesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def save_profile_params
     params.require(:profile)
-    .permit(:firstName, :lastName, :phone, :fid, :birthday, :address, :company_name, :web_site)
-  end
+    .permit(:email,
+      :firstName,
+      :firstName,
+      :lastName,
+      :phone,
+      :fid,
+      :address,
+      :company_name,
+      :web_site,
+      :cp_reg_number,
+      :cp_name,
+      :cp_position,
+      :cp_birth,
+      :cp_phone)
+    end
+
 end
