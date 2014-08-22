@@ -4,7 +4,7 @@ module ProfilesHelper
 
     #@apps = user.BizAccountService;
     @apps = Array.new
-    user.BizAccountService.collect do |srvc|
+    BizAccountService.all.collect do |srvc|
       @apps << {
           :id => user.user_token,
           :pic => srvc.pic,
