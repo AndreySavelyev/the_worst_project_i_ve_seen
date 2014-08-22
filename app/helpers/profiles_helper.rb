@@ -12,7 +12,7 @@ module ProfilesHelper
       } end
 
     @socialCol = Array.new
-    user.feeds.collect do |feed|
+    Feed.all.collect do |feed|
       @socialCol << {
           :id => feed.id,
           :date => feed.feedDate,
