@@ -3,4 +3,5 @@ class Profile < ActiveRecord::Base
   has_many :feeds, dependent: :destroy
   has_one :wallet
   has_one :session
+  has_many :BizAccountService, dependent: :destroy
 end

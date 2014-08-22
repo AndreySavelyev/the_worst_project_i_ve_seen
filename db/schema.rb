@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820120355) do
+ActiveRecord::Schema.define(version: 20140822125218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20140820120355) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "biz_account_services", force: true do |t|
+    t.string   "pic",        null: false
+    t.string   "api_data"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "biz_account_services", ["profile_id"], name: "index_biz_account_services_on_profile_id", using: :btree
 
   create_table "change_rates", force: true do |t|
     t.integer  "CurrencyTo"
