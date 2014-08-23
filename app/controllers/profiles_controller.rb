@@ -181,7 +181,7 @@ class ProfilesController < ApplicationController
           @result = Object
           @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
           respond_to do |format|
-            format.json { render :json => @result.as_json, status: :error }
+            format.json { render :json => @result.as_json, status: :conflict }
           end
           return;
         end
@@ -260,7 +260,7 @@ class ProfilesController < ApplicationController
     end
 
     unless user.update(confirm_type:1)
-      @result = {:result => 10 ,:message => "registration not confirmed. internal server error"}
+      @result = {:result => 14 ,:message => "registration not confirmed. internal server error"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :internal_server_error }
       end
@@ -467,7 +467,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 2,:message => "already registered"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -475,7 +475,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 13,:message => "to short accountid"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -483,7 +483,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 12,:message => "to short password"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -536,8 +536,7 @@ class ProfilesController < ApplicationController
 
   def check_user_token_valid(user)
     if(user &&  (user.confirm_type==0))
-      error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
-      result = {:result => 6,:message => error_text }
+      result = ((user && user.confirm_type==0)? {:result => 6,:message => 'token not valid'} : {:result => 15,:message => 'confirmation required' });
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end
@@ -612,11 +611,11 @@ class ProfilesController < ApplicationController
       return;
     end
     if(Profile.find_by_phone(@sign_up.accountid) )
-      to_short_account
+      decline_already_registered
       return;
     end
     if(Profile.find_by_fb_token(@sign_up.accountid) )
-      to_short_account
+      decline_already_registered
       return;
     end
     if(Profile.find_by_email(@sign_up.accountid))
