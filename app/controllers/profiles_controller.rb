@@ -324,21 +324,28 @@ class ProfilesController < ApplicationController
   end
 
   def feed
-    @feeds = Array.new
-    @feeds << {
-        :type=>"charge", #available types[charge, charge new, request, request new]
-        :global=> 0,
-        :likes=> 34,
-        :date=>"2014-12-01",
-        :pic=> "url",
-        :id=> "fgghh56788ffhjj"
-    }
-    @feed=Object.new
-    @feed={:feed=>@feeds}
+    feeds = Array.new
+    queryPrivacy=params.require(:global)
+    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).each { |feed|
+      feeds << {
+          :id => feed.from_profile_id,
+          :message => feed.message,
+          :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
+          :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
+          :global => feed.privacy,
+          :date => feed.created_at,
+          :likes => feed.likes,
+          :paymentId => feed.id,
+          :for => feed.description,
+          :pic => feed.from_profile.pic_url,
+          :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
+      } }
 
-    respond_to do |format|
-      format.json { render :json => @feed.as_json, status: :ok }
-    end
+      feed_container={:feed=>feeds}
+
+      respond_to do |format|
+        format.json { render :json => feed_container.as_json, status: :ok }
+      end
   end
 
   def like

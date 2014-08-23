@@ -54,4 +54,29 @@ module ProfilesHelper
     return @tabs;
   end
 
+  def self.get_privacy_string(privacy_integer_type)
+    if(privacy_integer_type === 0)
+      return 'global'
+    end
+    if(privacy_integer_type === 1)
+      return 'friends'
+    end
+    if(privacy_integer_type === 2)
+      return 'private'
+    end
+    return 'unknown privacy type'
+  end
+
+  def self.get_feed_type_string(feed_integer_type)
+    if(feed_integer_type === 0)
+      return 'charge new'
+    end
+    if(feed_integer_type === 1)
+      return 'charge'
+    end
+    if(feed_integer_type === 2)
+      return 'request'
+    end
+    return 'request new'
+  end
 end
