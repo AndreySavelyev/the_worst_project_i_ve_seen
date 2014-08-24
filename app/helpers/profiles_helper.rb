@@ -68,14 +68,11 @@ module ProfilesHelper
   end
 
   def self.get_feed_type_string(feed_integer_type)
-    if(feed_integer_type === 0)
-      return 'charge new'
-    end
     if(feed_integer_type === 1)
-      return 'charge'
+      return 'charged'
     end
     if(feed_integer_type === 2)
-      return 'request'
+      return 'paid'
     end
     return 'request new'
   end

@@ -1,5 +1,7 @@
+require 'wallet_module.rb'
 class ProfilesController < ApplicationController
 
+include WalletModule
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
   before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
@@ -286,24 +288,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def brief
-    @hotOffers = Object
-    @hotOffers =
-        {
-            :brief=>{
-                :likes => '231',
-                :currency => 'usd',
-                :balance => '30.380',
-                :name => 'john smith',
-                :mood => 4,
-                :userpic => 'url'
-            }
-        }
-    respond_to do |format|
-      format.json { render :json => @hotOffers.as_json, status: :ok }
-    end
-  end
-
   def catalog
     #@path = PathModel.new(catalog_params)
 
@@ -342,9 +326,7 @@ class ProfilesController < ApplicationController
           :pic => feed.from_profile.pic_url,
           :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
       } }
-
       feed_container={:feed=>feeds}
-
       respond_to do |format|
         format.json { render :json => feed_container.as_json, status: :ok }
       end
@@ -625,7 +607,6 @@ class ProfilesController < ApplicationController
       return;
     end
   end
-
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
