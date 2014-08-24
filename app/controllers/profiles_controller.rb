@@ -328,12 +328,14 @@ class ProfilesController < ApplicationController
     queryPrivacy=params.require(:global)
     Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).each { |feed|
       feeds << {
-          :id => feed.from_profile_id,
+          :id => feed.id,
           :message => feed.message,
           :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
+          :from_id => feed.from_profile.user_token,
           :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
+          :to_id => feed.to_profile.user_token,
           :global => feed.privacy,
-          :date => feed.created_at,
+          :date => feed.created_at.to_s(:session_date_time),
           :likes => feed.likes,
           :paymentId => feed.id,
           :for => feed.description,
