@@ -15,11 +15,11 @@ module ProfilesHelper
     Feed.all.collect do |feed|
       @socialCol << {
           :id => feed.id,
-          :date => feed.feedDate,
+          :date => feed.feed_date,
           :likes=> 10,
           :message=> feed.message,
-          :userpic=> feed.profile.pic_url,
-          :type=> feed.feedType
+          :userpic=> feed.from_profile.pic_url,
+          :type=> feed.fType
       } end
 
     @hotOffers = Array.new
