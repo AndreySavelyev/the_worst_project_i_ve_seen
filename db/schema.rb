@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820120355) do
+ActiveRecord::Schema.define(version: 20140823154233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20140820120355) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "biz_account_services", force: true do |t|
+    t.string   "pic",        null: false
+    t.string   "api_data"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "biz_account_services", ["profile_id"], name: "index_biz_account_services_on_profile_id", using: :btree
 
   create_table "change_rates", force: true do |t|
     t.integer  "CurrencyTo"
@@ -36,13 +46,22 @@ ActiveRecord::Schema.define(version: 20140820120355) do
   create_table "feeds", force: true do |t|
     t.date     "feedDate"
     t.string   "message"
-    t.string   "feedType"
-    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "privacy"
+    t.integer  "likes"
+    t.string   "description"
+    t.integer  "from_profile_id"
+    t.integer  "to_profile_id"
+    t.integer  "fType"
+  end
+
+  create_table "global_settings", force: true do |t|
+    t.string   "settings_key",   null: false
+    t.string   "settings_value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "feeds", ["profile_id"], name: "index_feeds_on_profile_id", using: :btree
 
   create_table "hot_offers", force: true do |t|
     t.string   "title"

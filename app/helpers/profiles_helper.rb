@@ -2,16 +2,17 @@ module ProfilesHelper
   :public
   def self.get_tabs_format (user, app)
 
+    #@apps = user.BizAccountService;
     @apps = Array.new
-    app.providers.collect do |provider|
+    BizAccountService.all.collect do |srvc|
       @apps << {
-          :id => provider.id,
-          :pic=> provider.pic,
-          :apidata=> provider.apiData
+          :id => user.user_token,
+          :pic => srvc.pic,
+          :data=> srvc.api_data
       } end
 
     @socialCol = Array.new
-    user.feeds.collect do |feed|
+    Feed.all.collect do |feed|
       @socialCol << {
           :id => feed.id,
           :date => feed.feedDate,
@@ -22,7 +23,7 @@ module ProfilesHelper
       } end
 
     @hotOffers = Array.new
-    user.hot_offers.collect do |hotOffer|
+    HotOffer.all.order('created_at DESC').collect   do |hotOffer|
       @hotOffers << {
           :id => hotOffer.id,
           :title => hotOffer.title,
@@ -53,4 +54,29 @@ module ProfilesHelper
     return @tabs;
   end
 
+  def self.get_privacy_string(privacy_integer_type)
+    if(privacy_integer_type === 0)
+      return 'global'
+    end
+    if(privacy_integer_type === 1)
+      return 'friends'
+    end
+    if(privacy_integer_type === 2)
+      return 'private'
+    end
+    return 'unknown privacy type'
+  end
+
+  def self.get_feed_type_string(feed_integer_type)
+    if(feed_integer_type === 0)
+      return 'charge new'
+    end
+    if(feed_integer_type === 1)
+      return 'charge'
+    end
+    if(feed_integer_type === 2)
+      return 'request'
+    end
+    return 'request new'
+  end
 end

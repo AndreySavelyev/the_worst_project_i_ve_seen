@@ -181,7 +181,7 @@ class ProfilesController < ApplicationController
           @result = Object
           @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
           respond_to do |format|
-            format.json { render :json => @result.as_json, status: :error }
+            format.json { render :json => @result.as_json, status: :conflict }
           end
           return;
         end
@@ -260,7 +260,7 @@ class ProfilesController < ApplicationController
     end
 
     unless user.update(confirm_type:1)
-      @result = {:result => 10 ,:message => "registration not confirmed. internal server error"}
+      @result = {:result => 14 ,:message => "registration not confirmed. internal server error"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :internal_server_error }
       end
@@ -324,21 +324,30 @@ class ProfilesController < ApplicationController
   end
 
   def feed
-    @feeds = Array.new
-    @feeds << {
-        :type=>"charge", #available types[charge, charge new, request, request new]
-        :global=> 0,
-        :likes=> 34,
-        :date=>"2014-12-01",
-        :pic=> "url",
-        :id=> "fgghh56788ffhjj"
-    }
-    @feed=Object.new
-    @feed={:feed=>@feeds}
+    feeds = Array.new
+    queryPrivacy=params.require(:global)
+    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).each { |feed|
+      feeds << {
+          :id => feed.id,
+          :message => feed.message,
+          :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
+          :from_id => feed.from_profile.user_token,
+          :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
+          :to_id => feed.to_profile.user_token,
+          :global => feed.privacy,
+          :date => feed.created_at.to_s(:session_date_time),
+          :likes => feed.likes,
+          :paymentId => feed.id,
+          :for => feed.description,
+          :pic => feed.from_profile.pic_url,
+          :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
+      } }
 
-    respond_to do |format|
-      format.json { render :json => @feed.as_json, status: :ok }
-    end
+      feed_container={:feed=>feeds}
+
+      respond_to do |format|
+        format.json { render :json => feed_container.as_json, status: :ok }
+      end
   end
 
   def like
@@ -460,7 +469,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 2,:message => "already registered"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -468,7 +477,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 13,:message => "to short accountid"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -476,7 +485,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 12,:message => "to short password"}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
   end
 
@@ -529,8 +538,7 @@ class ProfilesController < ApplicationController
 
   def check_user_token_valid(user)
     if(user &&  (user.confirm_type==0))
-      error_text=((user && user.confirm_type==0)?"confirmation required":"token not valid");
-      result = {:result => 6,:message => error_text }
+      result = ((user && user.confirm_type==0)? {:result => 6,:message => 'token not valid'} : {:result => 15,:message => 'confirmation required' });
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end
@@ -605,11 +613,11 @@ class ProfilesController < ApplicationController
       return;
     end
     if(Profile.find_by_phone(@sign_up.accountid) )
-      to_short_account
+      decline_already_registered
       return;
     end
     if(Profile.find_by_fb_token(@sign_up.accountid) )
-      to_short_account
+      decline_already_registered
       return;
     end
     if(Profile.find_by_email(@sign_up.accountid))
