@@ -6,6 +6,7 @@ class ProfilesController < ApplicationController
   before_action :set_user_from_session, except: [:signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка app-token только для  :signin,:signUp
   before_action :set_app_profile, only: [ :signin,:signup]
+  #before_action :save_profile_params, only: [:save_profile]
 
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
@@ -31,7 +32,12 @@ class ProfilesController < ApplicationController
                     :address=>@user.address,
                     :company_name=>@user.company_name,
                     :web_site=>@user.web_site,
-                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0)
+                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0),
+                    :reg_number=>@user.company_reg_number,
+                    :cp_name=>@user.contact_person_name,
+                    :cp_position=>@user.contact_person_position,
+                    :cp_birth=>@user.contact_person_date_of_birth,
+                    :cp_phone=>@user.contact_person_phone
                 }
         }
 
@@ -41,42 +47,60 @@ class ProfilesController < ApplicationController
   end
 
   def save_profile
-    @profile =
-        {
-            firstName: request.params[:profile][:firstName],
-            lastName: request.params[:profile][:lastName],
-            phone: request.params[:profile][:phone],
-            fid: request.params[:profile][:fid],
-            birthday: request.params[:profile][:birthday],
-            address: request.params[:profile][:address],
-            company_name: request.params[:profile][:company_name],
-            web_site: request.params[:profile][:web_site]
-        }
+   profile =save_profile_params
 
-    if request.params[:profile][:firstName]
-      @user.name=request.params[:profile][:firstName]
+    #User was successfully created.
+    unless (@user.email)
+      @user.reg_token= SecureRandom.hex;
+      @user.email =profile[:email];
+      link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
+     send_confirm_mail(@user, link);
     end
-    if request.params[:profile][:lastName]
-      @user.surname=request.params[:profile][:lastName]
+    if profile[:firstName]
+      @user.name=profile[:firstName]
     end
-    if request.params[:profile][:phone]
-      @user.phone=request.params[:profile][:phone]
+    if profile[:lastName]
+      @user.surname=profile[:lastName]
     end
-    if  request.params[:profile][:fid]
-      @user.fb_token= request.params[:profile][:fid]
+    if profile[:phone]
+      @user.phone=profile[:phone]
     end
-    if request.params[:profile][:birthday]
-      @user.birthday=request.params[:profile][:birthday]
+    if  profile[:fid]
+      @user.fb_token= profile[:fid]
     end
-    if request.params[:profile][:address]
-      @user.address=request.params[:profile][:address]
+    if profile[:birthday]
+      @user.birthday=profile[:birthday]
     end
-    if request.params[:profile][:company_name]
-      @user.company_name=request.params[:profile][:company_name]
+    if profile[:address]
+      @user.address=profile[:address]
     end
-    if request.params[:profile][:web_site]
-      @user.web_site=request.params[:profile][:web_site]
+    if profile[:company_name]
+      @user.company_name=profile[:company_name]
     end
+    if profile[:web_site]
+      @user.web_site=profile[:web_site]
+    end
+    # Registration number – рег номер.
+    if profile[:reg_number]
+      @user.company_reg_number=profile[:reg_number]
+    end
+    # Contact person – контакт компании (Имя и фамилия).
+    if profile[:cp_name]
+      @user.contact_person_name=profile[:cp_name]
+    end
+    # Contact person’s position - Позиция контактного лица.
+    if profile[:cp_position]
+      @user.contact_person_position=profile[:cp_position]
+    end
+    # Contact person’s date of birth.
+    if profile[:cp_birth]
+      @user.contact_person_date_of_birth=profile[:cp_birth]
+    end
+    # Contact person’s phone (including country code).
+    if profile[:cp_phone]
+      @user.contact_person_phone=profile[:cp_phone]
+    end
+
     @user.save!
     get_profile
   end
@@ -89,7 +113,7 @@ class ProfilesController < ApplicationController
    #   @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
    # end
 
-    if(newUser)
+    if(newUser && !AccountValidators.get_fbid_match(@sign_in.accountid))
       #checking user password
       user_password = Digest::SHA2.hexdigest(newUser.salt + @sign_in.password);
     end
@@ -129,26 +153,57 @@ class ProfilesController < ApplicationController
   def signup
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-    @log.info('@sign_up')
-    @log.info( @sign_up)
-
-    @log.info( @sign_up.accountid)
+   # @log.info('@sign_up')
+   # @log.info( @sign_up)
+   # @log.info( @sign_up.accountid)
 
     @newUser = Profile.new;
     @newUser.user_token = @sign_up.accountid;
-    if( @sign_up.accountid.include? '@')
-      @newUser.email=@sign_up.accountid;
+
+#todo вынести все это безобразие в отдельный модуль
+    facebookId =AccountValidators::get_fbid_match(@sign_up.accountid)
+
+    if(facebookId)
+      @newUser.fb_token=facebookId[0]
+      @log.info("facebookId:#{facebookId}")
+    else
+      emailId = AccountValidators::get_email_match(@sign_up.accountid)
+      if(emailId)
+        @newUser.email=emailId[0];
+        @log.info("emailId:#{emailId}")
+      else
+        phone =  AccountValidators::get_phone_match(@sign_up.accountid)
+        if(phone)
+          @newUser.phone=@sign_up.accountid
+          @log.info("phone:#{phone}")
+        else
+          @log.info("not registered. accountId have incorrect format")
+          @result = Object
+          @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
+          respond_to do |format|
+            format.json { render :json => @result.as_json, status: :error }
+          end
+          return;
+        end
+      end
     end
 
-    @newUser.salt = SecureRandom.hex;
-    @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
-    @newUser.reg_token= SecureRandom.hex;
-    @newUser.confirm_type=0;#not confirmed
+    unless @newUser.fb_token #для  FB account пароль не требуется
+      if(@sign_up.password1.length <8)
+        to_short_password
+        return;
+      end
+      @newUser.salt = SecureRandom.hex;
+      @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
+    end
 
-    if(@sign_up.accountid == "vk100@onlinepay.com")
+    if(AccountValidators::is_test_account(@sign_up.accountid))
       @newUser.reg_token = 'confirm-token';
+    else
+      @newUser.reg_token= SecureRandom.hex;
     end
-    # добавляем запись
+    @newUser.confirm_type=0;#not confirmed
+# добавляем запись
 
     if(!@newUser.save)
       @result = Object
@@ -366,7 +421,8 @@ class ProfilesController < ApplicationController
 
   def create_session(user)
 
-    if(user.email == "vk100@onlinepay.com")
+   # if(user.email == "vk100@onlinepay.com")
+    if(AccountValidators::is_test_account(user.email))
       sessionId = 'test-token';
     else
       sessionId=SecureRandom.hex;
@@ -431,9 +487,9 @@ class ProfilesController < ApplicationController
   end
 
   def send_confirm_mail(sign_up, link)
-    if sign_up.valid?
+    #if sign_up.valid?
       Emailer.email_confirm(sign_up.email, link).deliver;
-    end
+    #end
   end
 
   def return_session(session)
@@ -543,10 +599,7 @@ class ProfilesController < ApplicationController
       to_short_account
       return;
     end
-    if(@sign_up.password1.length <8)
-      to_short_password
-      return;
-    end
+
     if( Profile.find_by_user_token(@sign_up.accountid))
       decline_already_registered
       return;
@@ -565,10 +618,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
- # def profile_params
- #   params.require(:updatep_rofile).permit(:email, :password, :fb_token, :phone)
- # end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
@@ -578,6 +627,20 @@ class ProfilesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def save_profile_params
     params.require(:profile)
-    .permit(:firstName, :lastName, :phone, :fid, :birthday, :address, :company_name, :web_site)
-  end
+    .permit(:email,
+      :firstName,
+      :firstName,
+      :lastName,
+      :phone,
+      :fid,
+      :address,
+      :company_name,
+      :web_site,
+      :reg_number,
+      :cp_name,
+      :cp_position,
+      :cp_birth,
+      :cp_phone)
+    end
+
 end
