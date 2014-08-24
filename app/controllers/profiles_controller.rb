@@ -216,7 +216,7 @@ include WalletModule
       return;
     end
 
-    link="https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
+    link="http://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
     @log.debug(link);
     #User was successfully created.
     if (@newUser.email)
@@ -310,7 +310,7 @@ include WalletModule
   def feed
     feeds = Array.new
     queryPrivacy=params.require(:global)
-    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).each { |feed|
+    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).first(10).each { |feed|
       feeds << {
           :id => feed.id,
           :message => feed.message,
