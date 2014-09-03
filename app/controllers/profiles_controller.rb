@@ -325,7 +325,9 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
       :paymentId => feed.id,
       :for => feed.description,
       :pic => feed.from_profile.pic_url,
-      :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
+      :type => ProfilesHelper.get_feed_type_string(feed.fType), #available types[charge, charge new, request, request new]
+      :amount => feed.amount,
+      :currency => feed.currency
   } }
     feed_container=
         {:stats=>
@@ -357,7 +359,9 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
           :paymentId => feed.id,
           :for => feed.description,
           :pic => feed.from_profile.pic_url,
-          :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
+          :type => ProfilesHelper.get_feed_type_string(feed.fType), #available types[charge, charge new, request, request new]
+          :amount => feed.amount,
+          :currency => feed.currency
       } }
       feed_container={:feed=>feeds}
       respond_to do |format|

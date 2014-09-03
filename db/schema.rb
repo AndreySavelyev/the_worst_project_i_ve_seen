@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140824082537) do
+ActiveRecord::Schema.define(version: 20140903074124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 20140824082537) do
     t.integer  "to_profile_id"
     t.integer  "fType"
     t.date     "feed_date"
+    t.integer  "amount"
+    t.string   "currency",        limit: 3
   end
 
   create_table "global_settings", force: true do |t|
