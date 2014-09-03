@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140823154233) do
+ActiveRecord::Schema.define(version: 20140824082537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20140823154233) do
   end
 
   create_table "feeds", force: true do |t|
-    t.date     "feedDate"
     t.string   "message"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -54,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140823154233) do
     t.integer  "from_profile_id"
     t.integer  "to_profile_id"
     t.integer  "fType"
+    t.date     "feed_date"
   end
 
   create_table "global_settings", force: true do |t|

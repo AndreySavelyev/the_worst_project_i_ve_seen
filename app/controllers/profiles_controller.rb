@@ -1,5 +1,7 @@
+require 'wallet_module.rb'
 class ProfilesController < ApplicationController
 
+include WalletModule
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
   before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
@@ -214,7 +216,7 @@ class ProfilesController < ApplicationController
       return;
     end
 
-    link="https://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
+    link="http://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
     @log.debug(link);
     #User was successfully created.
     if (@newUser.email)
@@ -286,24 +288,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def brief
-    @hotOffers = Object
-    @hotOffers =
-        {
-            :brief=>{
-                :likes => '231',
-                :currency => 'usd',
-                :balance => '30.380',
-                :name => 'john smith',
-                :mood => 4,
-                :userpic => 'url'
-            }
-        }
-    respond_to do |format|
-      format.json { render :json => @hotOffers.as_json, status: :ok }
-    end
-  end
-
   def catalog
     #@path = PathModel.new(catalog_params)
 
@@ -323,10 +307,43 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def stats_profile
+position=profile_stats_params
+feeds = Array.new
+
+Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position).each { |feed|
+  feeds << {
+      :id => feed.id,
+      :message => feed.message,
+      :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
+      :from_id => feed.from_profile.user_token,
+      :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
+      :to_id => feed.to_profile.user_token,
+      :global => feed.privacy,
+      :date => feed.created_at.to_s(:session_date_time),
+      :likes => feed.likes,
+      :paymentId => feed.id,
+      :for => feed.description,
+      :pic => feed.from_profile.pic_url,
+      :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
+  } }
+    feed_container=
+        {:stats=>
+         {
+            :friends=>0,
+            :likes=>0, #number of likes for all user's payments,
+            :history=>feeds
+        }
+      }
+    respond_to do |format|
+      format.json { render :json => feed_container.as_json, status: :ok }
+    end
+  end
+
   def feed
     feeds = Array.new
     queryPrivacy=params.require(:global)
-    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).each { |feed|
+    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).first(10).each { |feed|
       feeds << {
           :id => feed.id,
           :message => feed.message,
@@ -342,13 +359,12 @@ class ProfilesController < ApplicationController
           :pic => feed.from_profile.pic_url,
           :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
       } }
-
       feed_container={:feed=>feeds}
-
       respond_to do |format|
         format.json { render :json => feed_container.as_json, status: :ok }
       end
   end
+
 
   def like
     @like=Object.new
@@ -626,7 +642,9 @@ class ProfilesController < ApplicationController
     end
   end
 
-
+  def profile_stats_params
+    params.require(:position)
+  end
   # Never trust parameters from the scary internet, only allow the white list through.
   def catalog_params
     params.require(:PathModel).permit(:path)
@@ -636,6 +654,7 @@ class ProfilesController < ApplicationController
   def save_profile_params
     params.require(:profile)
     .permit(:email,
+      :birthday,
       :firstName,
       :firstName,
       :lastName,
