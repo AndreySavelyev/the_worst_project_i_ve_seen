@@ -75,12 +75,30 @@ module ProfilesHelper
   end
 
   def self.get_feed_type_string(feed_integer_type)
+    #kovalevckiy via skype: pay, charge, pay new, charge new, request, ad
+
+    if(feed_integer_type === 0)
+      return 'request'
+    end
+
     if(feed_integer_type === 1)
-      return 'charged'
+      return 'charge'
     end
+
     if(feed_integer_type === 2)
-      return 'paid'
+      return 'pay'
     end
-    return 'request new'
+
+    if(feed_integer_type === 3)
+      return 'charge new'
+    end
+
+    if(feed_integer_type === 4)
+      return 'pay new'
+    end
+
+    if(feed_integer_type === 20)
+      return 'ad'
+    end
   end
 end
