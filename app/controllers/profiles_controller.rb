@@ -55,16 +55,18 @@ def social_friends_count #количество друзей
 end
 def social_friends_accept #принять дружбу
   friend_id=params.require(:accountid) #account, чей запрос принять
-  @getResult={:accepted=> FriendsHelper.friendship_request_status(@user, friend_id,1), :friend=>friend_id} #todo -change message format
+  getResult= FriendsHelper.friendship_request_status(@user, friend_id,1)?0:1
+  operation_result = {:result => getResult }
   respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
 def social_friends_decline #отклонить дружбу
   friend_id=params.require(:accountid) #account, чей запрос принять
-  @getResult={:accepted=> FriendsHelper.friendship_request_status(@user, friend_id,2), :friend=>friend_id} #todo -change message format
+  getResult= FriendsHelper.friendship_request_status(@user, friend_id,2)?0:1
+  operation_result = {:result => getResult }
   respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
 def social_friends_list #получить список друзей

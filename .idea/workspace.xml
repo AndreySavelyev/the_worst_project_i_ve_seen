@@ -32,27 +32,25 @@
           <file leaf-file-name="profiles_controller.rb" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.79641694" vertical-offset="106" max-vertical-offset="7106">
-                  <caret line="35" column="42" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
+                <state vertical-scroll-proportion="0.78827363" vertical-offset="621" max-vertical-offset="7344">
+                  <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
                   <folding>
                     <element signature="e#1708#2098#0" expanded="false" />
-                    <element signature="e#2334#2682#0" expanded="false" />
-                    <element signature="e#2683#3034#0" expanded="false" />
-                    <element signature="e#3035#3337#0" expanded="false" />
-                    <element signature="e#3338#3849#0" expanded="false" />
-                    <element signature="e#3851#5187#0" expanded="false" />
-                    <element signature="e#5191#6811#0" expanded="false" />
-                    <element signature="e#7867#8225#0" expanded="false" />
-                    <element signature="e#8229#11139#0" expanded="false" />
-                    <element signature="e#11143#12646#0" expanded="false" />
-                    <element signature="e#14414#14732#0" expanded="false" />
-                    <element signature="e#14736#14994#0" expanded="false" />
-                    <element signature="e#14998#15171#0" expanded="false" />
-                    <element signature="e#16730#17423#0" expanded="false" />
-                    <element signature="e#17427#17654#0" expanded="false" />
-                    <element signature="e#17658#17885#0" expanded="false" />
-                    <element signature="e#17889#18107#0" expanded="false" />
-                    <element signature="e#18111#18329#0" expanded="false" />
+                    <element signature="e#3019#3321#0" expanded="false" />
+                    <element signature="e#3322#3833#0" expanded="false" />
+                    <element signature="e#3835#5171#0" expanded="false" />
+                    <element signature="e#5175#6795#0" expanded="false" />
+                    <element signature="e#7851#8209#0" expanded="false" />
+                    <element signature="e#8213#11123#0" expanded="false" />
+                    <element signature="e#11127#12630#0" expanded="false" />
+                    <element signature="e#14398#14716#0" expanded="false" />
+                    <element signature="e#14720#14978#0" expanded="false" />
+                    <element signature="e#14982#15155#0" expanded="false" />
+                    <element signature="e#16714#17407#0" expanded="false" />
+                    <element signature="e#17411#17638#0" expanded="false" />
+                    <element signature="e#17642#17869#0" expanded="false" />
+                    <element signature="e#17873#18091#0" expanded="false" />
+                    <element signature="e#18095#18313#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -104,11 +102,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="friends_helper.rb" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="friends_helper.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-14.571428" vertical-offset="0" max-vertical-offset="2499">
-                  <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+                <state vertical-scroll-proportion="0.92047375" vertical-offset="0" max-vertical-offset="2499">
+                  <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
                   <folding>
                     <element signature="e#1303#1487#0" expanded="false" />
                     <element signature="e#2026#2167#0" expanded="false" />
@@ -118,16 +116,6 @@
                     <element signature="e#2939#3220#0" expanded="false" />
                     <element signature="e#3738#3918#0" expanded="false" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Changes.txt" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Changes.txt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.11409396" vertical-offset="0" max-vertical-offset="1088">
-                  <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -231,8 +219,8 @@
         <option value="$PROJECT_DIR$/app/mailers/emailer.rb" />
         <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/app/helpers/friends_helper.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/profiles_controller.rb" />
         <option value="$PROJECT_DIR$/Changes.txt" />
+        <option value="$PROJECT_DIR$/app/controllers/profiles_controller.rb" />
       </list>
     </option>
   </component>
@@ -578,7 +566,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="53" />
+      <option name="time" value="54" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -948,33 +936,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79641694" vertical-offset="106" max-vertical-offset="7106">
-          <caret line="35" column="42" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
-          <folding>
-            <element signature="e#1708#2098#0" expanded="false" />
-            <element signature="e#2334#2682#0" expanded="false" />
-            <element signature="e#2683#3034#0" expanded="false" />
-            <element signature="e#3035#3337#0" expanded="false" />
-            <element signature="e#3338#3849#0" expanded="false" />
-            <element signature="e#3851#5187#0" expanded="false" />
-            <element signature="e#5191#6811#0" expanded="false" />
-            <element signature="e#7867#8225#0" expanded="false" />
-            <element signature="e#8229#11139#0" expanded="false" />
-            <element signature="e#11143#12646#0" expanded="false" />
-            <element signature="e#14414#14732#0" expanded="false" />
-            <element signature="e#14736#14994#0" expanded="false" />
-            <element signature="e#14998#15171#0" expanded="false" />
-            <element signature="e#16730#17423#0" expanded="false" />
-            <element signature="e#17427#17654#0" expanded="false" />
-            <element signature="e#17658#17885#0" expanded="false" />
-            <element signature="e#17889#18107#0" expanded="false" />
-            <element signature="e#18111#18329#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/routes.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
@@ -983,10 +944,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Changes.txt">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.105919" vertical-offset="0" max-vertical-offset="1088">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78827363" vertical-offset="621" max-vertical-offset="7344">
+          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+          <folding>
+            <element signature="e#1708#2098#0" expanded="false" />
+            <element signature="e#3019#3321#0" expanded="false" />
+            <element signature="e#3322#3833#0" expanded="false" />
+            <element signature="e#3835#5171#0" expanded="false" />
+            <element signature="e#5175#6795#0" expanded="false" />
+            <element signature="e#7851#8209#0" expanded="false" />
+            <element signature="e#8213#11123#0" expanded="false" />
+            <element signature="e#11127#12630#0" expanded="false" />
+            <element signature="e#14398#14716#0" expanded="false" />
+            <element signature="e#14720#14978#0" expanded="false" />
+            <element signature="e#14982#15155#0" expanded="false" />
+            <element signature="e#16714#17407#0" expanded="false" />
+            <element signature="e#17411#17638#0" expanded="false" />
+            <element signature="e#17642#17869#0" expanded="false" />
+            <element signature="e#17873#18091#0" expanded="false" />
+            <element signature="e#18095#18313#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.571428" vertical-offset="0" max-vertical-offset="2499">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.92047375" vertical-offset="0" max-vertical-offset="2499">
+          <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
           <folding>
             <element signature="e#1303#1487#0" expanded="false" />
             <element signature="e#2026#2167#0" expanded="false" />
@@ -996,17 +993,6 @@
             <element signature="e#2939#3220#0" expanded="false" />
             <element signature="e#3738#3918#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Changes.txt">
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11409396" vertical-offset="0" max-vertical-offset="1088">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
