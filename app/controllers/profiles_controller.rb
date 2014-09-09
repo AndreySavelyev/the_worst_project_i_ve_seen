@@ -1,7 +1,10 @@
 require 'wallet_module.rb'
+require 'friends_helper.rb'
 class ProfilesController < ApplicationController
 
 include WalletModule
+include FriendsHelper
+
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
   before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
@@ -18,12 +21,88 @@ include WalletModule
 
   Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
 
-  def get_profile
+def social_friends_invite # пригласить друга
+  invite_params=params.require(:invite).permit(:email)
+  FriendsHelper.invite_new_friend(@user,invite_params[:email])
+
+  operation_result = {:result => 0 }
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+def social_feed_viewed #пометить новость прочитанным
+  feed_id=params.require(:feedid)
+  getResult= FriendsHelper.mark_feed_as_viewed(@user, feed_id)?0:1
+  operation_result = {:result => getResult }
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+def social_friends_request #добавить в друзья
+  friend_id=params.require(:accountid)
+  #todo отправка емейла
+  friend = Profile.find_by_user_token(friend_id)
+  @getResult={:created=> FriendsHelper.create_friendship_request(@user, friend), :friend=>friend_id} #todo -change message format
+  respond_to do |format|
+    format.json { render :json => @getResult.as_json, status: :ok }
+  end
+end
+def social_friends_count #количество друзей
+  @getResult={:count=> FriendsHelper.friends_count(@user)} #todo -change message format
+  respond_to do |format|
+    format.json { render :json => @getResult.as_json, status: :ok }
+  end
+end
+def social_friends_accept #принять дружбу
+  friend_id=params.require(:accountid) #account, чей запрос принять
+  getResult= FriendsHelper.friendship_request_status(@user, friend_id,1)?0:1
+  operation_result = {:result => getResult }
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+def social_friends_decline #отклонить дружбу
+  friend_id=params.require(:accountid) #account, чей запрос принять
+  getResult= FriendsHelper.friendship_request_status(@user, friend_id,2)?0:1
+  operation_result = {:result => getResult }
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+def social_friends_list #получить список друзей
+  #friend_id=params.require(:accountid) #
+  friend_list= FriendsHelper.get_friends(@user)
+  getResult={:list=> friend_list} #todo -change message format
+  respond_to do |format|
+    format.json { render :json => getResult.as_json, status: :ok }
+  end
+end
+def social_friends_search
+  friend_email=params.require(:search).permit(:email)
+  founded=Profile.where(:email => friend_email[:email]).first
+  friend_list=Array.new
+  if founded
+    friend_list<<
+        {
+            :accountid=>founded.user_token,
+            :pic =>  founded.pic_url,
+            :name=> founded.name,
+            :surname=> founded.surname
+      }
+  end
+  getResult={:list=> friend_list}
+  respond_to do |format|
+    format.json { render :json => getResult.as_json, status: :ok }
+  end
+end
+
+def get_profile
     @profile = Object
     @profile =
         {
             :profile=>
                 {
+                    :accountid=>@user.user_token,
                     :email=>@user.email,
                     :type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':@user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
                     :firstName=>@user.name,
@@ -120,14 +199,14 @@ include WalletModule
       user_password = Digest::SHA2.hexdigest(newUser.salt + @sign_in.password);
     end
 
-    unless newUser && (user_password == newUser.password)
+      unless newUser && (user_password == newUser.password) ||  newUser && newUser.temp_account #временному аккаунту нельзя давать логиниться
         @result = Object
         @result = {:result => 5 ,:message => "user not found or incorrect password"}
         respond_to do |format|
           format.json { render :json => @result.as_json, status: :unauthorized }
         end
         return;
-    end
+      end
 
     @session=create_session(newUser);
     sendmail(newUser, "sign-in");
@@ -155,12 +234,31 @@ include WalletModule
   def signup
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-   # @log.info('@sign_up')
-   # @log.info( @sign_up)
-   # @log.info( @sign_up.accountid)
+   # опять поиск по емэйлу
 
-    @newUser = Profile.new;
-    @newUser.user_token = @sign_up.accountid;
+    founded_profile = Profile.find_by_user_token(@sign_up.accountid)
+    unless founded_profile
+      founded_profile = Profile.find_by_email(@sign_up.accountid)
+    end
+
+    if founded_profile &&  founded_profile.temp_account
+      @newUser = founded_profile
+      @newUser.temp_account=FALSE
+    else
+      if founded_profile # обнаружен существующий аккаунт
+        @log.info("not registered. accountId have incorrect format")
+        @result = Object
+        @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
+        respond_to do |format|
+          format.json { render :json => @result.as_json, status: :conflict }
+        end
+        return;
+      end
+      # временный профайл не найден
+      @newUser = Profile.new
+      @newUser.user_token = @sign_up.accountid;
+    end
+
 
 #todo вынести все это безобразие в отдельный модуль
     facebookId =AccountValidators::get_fbid_match(@sign_up.accountid)
@@ -174,11 +272,11 @@ include WalletModule
         @newUser.email=emailId[0];
         @log.info("emailId:#{emailId}")
       else
-        phone =  AccountValidators::get_phone_match(@sign_up.accountid)
-        if(phone)
-          @newUser.phone=@sign_up.accountid
-          @log.info("phone:#{phone}")
-        else
+       # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
+       # if(phone)
+       #   @newUser.phone=@sign_up.accountid
+       #   @log.info("phone:#{phone}")
+       # else
           @log.info("not registered. accountId have incorrect format")
           @result = Object
           @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
@@ -186,7 +284,7 @@ include WalletModule
             format.json { render :json => @result.as_json, status: :conflict }
           end
           return;
-        end
+       # end
       end
     end
 
@@ -309,24 +407,8 @@ include WalletModule
 
   def stats_profile
 position=profile_stats_params
-feeds = Array.new
 
-Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position).each { |feed|
-  feeds << {
-      :id => feed.id,
-      :message => feed.message,
-      :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
-      :from_id => feed.from_profile.user_token,
-      :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
-      :to_id => feed.to_profile.user_token,
-      :global => feed.privacy,
-      :date => feed.created_at.to_s(:session_date_time),
-      :likes => feed.likes,
-      :paymentId => feed.id,
-      :for => feed.description,
-      :pic => feed.from_profile.pic_url,
-      :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
-  } }
+feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
     feed_container=
         {:stats=>
          {
@@ -341,30 +423,13 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
   end
 
   def feed
-    feeds = Array.new
     queryPrivacy=params.require(:global)
-    Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).first(10).each { |feed|
-      feeds << {
-          :id => feed.id,
-          :message => feed.message,
-          :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
-          :from_id => feed.from_profile.user_token,
-          :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
-          :to_id => feed.to_profile.user_token,
-          :global => feed.privacy,
-          :date => feed.created_at.to_s(:session_date_time),
-          :likes => feed.likes,
-          :paymentId => feed.id,
-          :for => feed.description,
-          :pic => feed.from_profile.pic_url,
-          :type => ProfilesHelper.get_feed_type_string(feed.fType) #available types[charge, charge new, request, request new]
-      } }
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).order(:viewed).reverse_order.first(10))
       feed_container={:feed=>feeds}
       respond_to do |format|
         format.json { render :json => feed_container.as_json, status: :ok }
       end
   end
-
 
   def like
     @like=Object.new
@@ -403,40 +468,63 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
   end
 
   def social_money_get
-    @gets = Array.new
-    @gets <<  {
-        :id =>"salkjh234jhkjfh9432y",
-        :fromID => "salkjh234jhkjfh9432y",
-        :name => "John Smith",
-        :pic =>  "url",
-        :type =>  "charge", #charge request or money send request
-        :amount => 100.00,
-        :currency => "eur",
-        :message => "Please send me some money for a new car."
-    }
-    @getResult=Object.new
-    @getResult={:moneyRequest=>@gets}
+
+  testFriend = Profile
+  .where(user_token: "vk100@onlinepay.com")
+  .includes(:lovers, :patients).first #загружать связи из фрэндов
+
+  #  @gets = Array.new
+  #  @gets <<  {
+  #      :id =>"salkjh234jhkjfh9432y",
+  #      :fromID => "salkjh234jhkjfh9432y",
+  #      :name => "John Smith",
+  #      :pic =>  "url",
+  #      :type =>  "charge", #charge request or money send request
+  #      :amount => 100.00,
+  #      :currency => "eur",
+  #      :message => "Please send me some money for a new car."
+  #  }
+  #  @getResult=Object.new
+  #  @getResult={:moneyRequest=>@gets}
+
+
+ # feeed=Message.create( :status => 1)
+ # feeed.save()
+
+  newFriend = Profile.find_by_email('vk1002+2@onlinepay.com')
+  FriendsHelper.create_friendship_request(@user, newFriend)
+
+
+  #FriendsHelper.create_friendship(@user, newFriend)
+  @getResult = Array.new
+  testFriend.lovers.each { |feed|
+      @getResult << {
+        :id => FriendsHelper.get_friendship_requests(newFriend)
+      }
+  }
 
     respond_to do |format|
       format.json { render :json => @getResult.as_json, status: :ok }
     end
   end
 
-  def get_new_requests
-    @gets = Object
-    @gets =  {:new=>5 }
-    @getResult=Object.new
-    @getResult={:requests=>@gets}
-    respond_to do |format|
-      format.json { render :json => @getResult.as_json, status: :ok }
-    end
+#method /profile/new
+def get_new_requests
+  @gets = Object
+  @gets =  {:new=>FriendsHelper.get_new_feeds_count(@user) }
+  @getResult=Object.new
+  @getResult={:requests=>@gets}
+  respond_to do |format|
+    format.json { render :json => @getResult.as_json, status: :ok }
   end
+end
 
-  :private
-  def checkSessionValid(session)
-    unless(session)
-      return false;
-    end
+:private
+
+def checkSessionValid(session)
+  unless(session)
+    return false;
+  end
 
     if(session.TimeToDie<Time.now)
       return false;
@@ -624,7 +712,8 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
       return;
     end
 
-    if( Profile.find_by_user_token(@sign_up.accountid))
+    founded_profile = Profile.find_by_user_token(@sign_up.accountid)
+    if founded_profile && !founded_profile.temp_account #пропускаем временные профайлы
       decline_already_registered
       return;
     end
@@ -636,7 +725,8 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
       decline_already_registered
       return;
     end
-    if(Profile.find_by_email(@sign_up.accountid))
+    founded_profile = Profile.find_by_email(@sign_up.accountid)
+    if  founded_profile && !founded_profile.temp_account #пропускаем временные профайлы
       decline_already_registered
       return;
     end
@@ -668,6 +758,11 @@ Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position)
       :cp_position,
       :cp_birth,
       :cp_phone)
-    end
+  end
+
+
+def social_friends_invite_params
+  @social_friends_invite = params.require(:invite).permit(:friend_email)
+end
 
 end

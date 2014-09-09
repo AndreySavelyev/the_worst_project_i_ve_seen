@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140824082537) do
+ActiveRecord::Schema.define(version: 20140905053222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,18 @@ ActiveRecord::Schema.define(version: 20140824082537) do
     t.integer  "to_profile_id"
     t.integer  "fType"
     t.date     "feed_date"
+    t.integer  "amount"
+    t.string   "currency",        limit: 3
+    t.integer  "status",                     default: 0
+    t.integer  "viewed",                     default: 0
+    t.string   "type",            limit: 40, default: "Feed"
+  end
+
+  create_table "friends", id: false, force: true do |t|
+    t.integer  "profile_id"
+    t.integer  "friend_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "global_settings", force: true do |t|
@@ -110,6 +122,8 @@ ActiveRecord::Schema.define(version: 20140824082537) do
     t.string   "contact_person_position"
     t.date     "contact_person_date_of_birth"
     t.string   "contact_person_phone"
+    t.integer  "friends_count",                default: 0
+    t.boolean  "temp_account",                 default: false
   end
 
   create_table "providers", force: true do |t|
