@@ -10,5 +10,6 @@ class CreateFriends < ActiveRecord::Migration
 #todo ADD INDEXES
     add_column :profiles, :friends_count, :integer , default: 0
     add_column :profiles, :temp_account, :boolean , default: FALSE
+    #update feeds  set type='Feed' where type=0 #todo включить в миграцию
   end
 end

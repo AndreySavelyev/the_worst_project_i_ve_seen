@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20140905053222) do
     t.string   "currency",        limit: 3
     t.integer  "status",                     default: 0
     t.integer  "viewed",                     default: 0
-    t.string   "type",            limit: 40, default: "0"
+    t.string   "type",            limit: 40, default: "Feed"
   end
 
   create_table "friends", id: false, force: true do |t|
