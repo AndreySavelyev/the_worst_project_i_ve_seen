@@ -1,0 +1,2 @@
+class FriendshipRequest < Feed
+end

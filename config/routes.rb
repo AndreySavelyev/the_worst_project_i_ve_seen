@@ -10,6 +10,19 @@ Rails.application.routes.draw do
   post '/catalog', to: 'profiles#catalog', format: 'json'
   post '/social/feed', to: 'profiles#feed', format: 'json'
   post '/social/like', to: 'profiles#like', format: 'json'
+
+
+  post '/social/feed/viewed', to: 'profiles#social_feed_viewed', format: 'json'
+  post '/social/friends/invite', to: 'profiles#social_friends_invite', format: 'json'
+  post '/social/friends/request', to: 'profiles#social_friends_request', format: 'json'
+  post '/social/friends/accept', to: 'profiles#social_friends_accept', format: 'json'
+  post '/social/friends/decline', to: 'profiles#social_friends_decline', format: 'json'
+  get '/social/friends/list', to: 'profiles#social_friends_list', format: 'json'
+  get '/social/friends/count', to: 'profiles#social_friends_count', format: 'json'
+  #post '/social/friends/cancel', to: 'profiles#friendship_request_cancel', format: 'json'
+  #post '/social/', to: 'profiles#', format: 'json'
+  #post '/social/', to: 'profiles#', format: 'json'
+
   post '/social/money/send', to: 'profiles#social_money_send', format: 'json'
   post '/social/money/charge', to: 'profiles#social_money_charge', format: 'json'
   post '/social/money/receive', to: 'profiles#recieve_pay', format: 'json'

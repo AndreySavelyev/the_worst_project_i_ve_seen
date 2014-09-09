@@ -5,4 +5,11 @@ class Profile < ActiveRecord::Base
   has_one :wallet
   has_one :session
   has_many :BizAccountService, dependent: :destroy
+
+  #связи друзей
+  has_many :friends, :class_name => 'Friend'
+  has_many :patients, through: :friends
+  has_many :masters_profiles, :class_name => 'Friend'
+  has_many :lovers, through: :masters_profiles
+
 end
