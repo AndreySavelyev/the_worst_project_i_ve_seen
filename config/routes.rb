@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   post '/social/friends/decline', to: 'profiles#social_friends_decline', format: 'json'
   get '/social/friends/list', to: 'profiles#social_friends_list', format: 'json'
   get '/social/friends/count', to: 'profiles#social_friends_count', format: 'json'
+  post '/social/friends/search', to: 'profiles#social_friends_search', format: 'json'
   #post '/social/friends/cancel', to: 'profiles#friendship_request_cancel', format: 'json'
   #post '/social/', to: 'profiles#', format: 'json'
   #post '/social/', to: 'profiles#', format: 'json'

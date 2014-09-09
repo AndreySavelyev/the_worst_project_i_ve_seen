@@ -126,7 +126,6 @@ module FriendsHelper
               :accountid=>user.user_token,
               :name=> user.name,
               :surname=> user.surname
-
           }
     }
 

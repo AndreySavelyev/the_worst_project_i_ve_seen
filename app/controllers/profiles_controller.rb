@@ -31,14 +31,14 @@ def social_friends_invite # пригласить друга
   end
 end
 def social_feed_viewed #пометить новость прочитанным
-  feed_id=params[:feedid]
+  feed_id=params.require(:feedid)
   @getResult={:marked=> FriendsHelper.mark_feed_as_viewed(@user, feed_id), :feedid=>feed_id} #todo -change message format
   respond_to do |format|
     format.json { render :json => @getResult.as_json, status: :ok }
   end
 end
 def social_friends_request #добавить в друзья
-  friend_id=params[:accountid]
+  friend_id=params.require(:accountid)
   #todo отправка емейла
   friend = Profile.find_by_user_token(friend_id)
   @getResult={:created=> FriendsHelper.create_friendship_request(@user, friend), :friend=>friend_id} #todo -change message format
@@ -53,25 +53,40 @@ def social_friends_count #количество друзей
   end
 end
 def social_friends_accept #принять дружбу
-  friend_id=params[:accountid] #account, чей запрос принять
+  friend_id=params.require(:accountid) #account, чей запрос принять
   @getResult={:accepted=> FriendsHelper.friendship_request_status(@user, friend_id,1), :friend=>friend_id} #todo -change message format
   respond_to do |format|
     format.json { render :json => @getResult.as_json, status: :ok }
   end
 end
 def social_friends_decline #отклонить дружбу
-  friend_id=params[:accountid] #account, чей запрос принять
+  friend_id=params.require(:accountid) #account, чей запрос принять
   @getResult={:accepted=> FriendsHelper.friendship_request_status(@user, friend_id,2), :friend=>friend_id} #todo -change message format
   respond_to do |format|
     format.json { render :json => @getResult.as_json, status: :ok }
   end
 end
 def social_friends_list #получить список друзей
-  friend_id=params[:accountid] #
+  #friend_id=params.require(:accountid) #
   friend_list= FriendsHelper.get_friends(@user)
-  @getResult={:list=> friend_list, :friend=>friend_list.count} #todo -change message format
+  getResult={:list=> friend_list, :friend=>friend_list.count} #todo -change message format
   respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    format.json { render :json => getResult.as_json, status: :ok }
+  end
+end
+def social_friends_search
+  friend_email=params.require(:search).permit(:email)
+  founded=Profile.where(:email => friend_email[:email]).first
+  friend_list=Object
+  if founded
+    friend_list=   {   :accountid=>founded.user_token,
+          :name=> founded.name,
+          :surname=> founded.surname
+      }
+  end
+  getResult={:list=> friend_list}
+  respond_to do |format|
+    format.json { render :json => getResult.as_json, status: :ok }
   end
 end
 
