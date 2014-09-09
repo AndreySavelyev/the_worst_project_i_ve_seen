@@ -64,13 +64,21 @@ ___________’$$$$o$o$o$o$o$o$o$o$$$$<BR>▀▀▀▀▀▀▀▀▀▀▀▀▀
 			 <BR><A href="http://api.onlinepay.com/api.html#brief">/brief</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#catalog">/catalog</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/feed">/social/feed</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/feed/viewed">/social/feed/viewed</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/invite/fb">/social/invite/fb</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/invite/email">/social/invite/email (in progress)</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/like">/social/like</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/money/send">/social/money/send</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/money/charge">/social/money/charge</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/money/recieve">/social/money/recieve</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/money/get">/social/money/get</A>                 
 			 <BR><A href="http://api.onlinepay.com/api.html#social/money/get">/social/money/get</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/invite">/social/friends/invite</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/count">/social/friends/count</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/accept">/social/friends/accept</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/decline">/social/friends/decline</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/list">/social/friends/list</A>
+			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/search">/social/friends/search</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/mood/get">/social/mood/get (in progress)</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#social/mood/set">/social/mood/set (in progress)</A>
 			 <BR><A href="http://api.onlinepay.com/api.html#profile/get">/profile/get</A>			 
@@ -352,7 +360,32 @@ class="l2">"feed" : [</SPAN>				 <BR><SPAN class="l3">{</SPAN>
 					 <BR><SPAN class="l4">"viewed": "[0|1]"</SPAN>
     
     <BR><SPAN class="l3">}</SPAN>				 <BR><SPAN class="l2">]</SPAN>
-				 <BR><SPAN class="l1">}</SPAN>				 <BR></CODE>		 </P><!-- end /social/feed -->
+				 <BR><SPAN class="l1">}</SPAN>				 <BR></CODE>		 
+
+</P><!-- end /social/feed -->
+    
+<!-- /social/feed/viewed -->		 
+<H4><STRONG><A id="A2">/social/feed/viewed</A></STRONG></H4>Request method: POST		 
+<P>			Description: Mark feed as viewed</P>
+<H5>Headers:</H5>
+    <SMALL>session-token:test-token;</SMALL>
+		 
+<H5>Data:</H5>
+<P>
+    <CODE class="prettyprint lang-n">
+        <SPAN class="l1">{</SPAN>
+        <BR><SPAN class="l2">"feedid":"30"</SPAN>
+        <BR><SPAN class="l1">}</SPAN>
+    </CODE>
+</P>
+<H5>Returns:</H5>
+<P>
+    <CODE class="prettyprint lang-n">
+        <SPAN class="l1">{</SPAN>
+        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
+        <BR><SPAN class="l1">}</SPAN>
+    </CODE>
+</P>    <!-- end /social/feed/viewed -->
 		 <!-- /social/invite/fb-->		 
 <H4><STRONG><A id="social/invite/fb">/social/invite/fb</A></STRONG></H4>Request 
 method: POST		 
@@ -484,30 +517,7 @@ class="l2">}]</SPAN>				 <BR><SPAN class="l1">}</SPAN>			 </CODE>		 </P><!-- end
     </CODE>
 </P>    <!-- end /social/friends/invite -->
 
-
-<!-- /social/feed/viewed -->		 
-<H4><STRONG><A id="A2">/social/friends/invite</A></STRONG></H4>Request method: POST		 
-<P>			Description: Mark feed as viewed</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"feedid":"30"</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>    <!-- end /social/feed/viewed -->
-    
+        
 <!-- /social/friends/count -->		 
 <H4><STRONG><A id="A3">/social/friends/count</A></STRONG></H4>Request method: GET		 
 <P>			Description: Return friends count for current user</P>
