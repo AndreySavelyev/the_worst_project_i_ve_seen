@@ -29,37 +29,31 @@
     <splitter split-orientation="horizontal" split-proportion="0.5301853">
       <split-first>
         <leaf>
-          <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="profiles_controller.rb" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.5725646" vertical-offset="460" max-vertical-offset="5236">
-                  <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+                <state vertical-scroll-proportion="0.77182233" vertical-offset="193" max-vertical-offset="6885">
+                  <caret line="72" column="24" selection-start-line="72" selection-start-column="24" selection-end-line="72" selection-end-column="24" />
                   <folding>
                     <element signature="e#1090#1455#0" expanded="false" />
                     <element signature="e#1456#1767#0" expanded="false" />
-                    <element signature="e#1768#2158#0" expanded="false" />
                     <element signature="e#2159#2393#0" expanded="false" />
                     <element signature="e#2394#2742#0" expanded="false" />
                     <element signature="e#2743#3094#0" expanded="false" />
-                    <element signature="e#3877#5213#0" expanded="false" />
-                    <element signature="e#5217#6837#0" expanded="false" />
-                    <element signature="e#6841#7802#0" expanded="false" />
-                    <element signature="e#7893#8251#0" expanded="false" />
-                    <element signature="e#8255#11165#0" expanded="false" />
-                    <element signature="e#11169#12672#0" expanded="false" />
-                    <element signature="e#12959#13368#0" expanded="false" />
-                    <element signature="e#13372#13849#0" expanded="false" />
-                    <element signature="e#14234#14392#0" expanded="false" />
-                    <element signature="e#14440#14758#0" expanded="false" />
-                    <element signature="e#14762#15020#0" expanded="false" />
-                    <element signature="e#15024#15197#0" expanded="false" />
-                    <element signature="e#15201#16301#0" expanded="false" />
-                    <element signature="e#16593#16752#0" expanded="false" />
-                    <element signature="e#16756#17449#0" expanded="false" />
-                    <element signature="e#17453#17680#0" expanded="false" />
-                    <element signature="e#17684#17911#0" expanded="false" />
-                    <element signature="e#17915#18133#0" expanded="false" />
-                    <element signature="e#18137#18355#0" expanded="false" />
+                    <element signature="e#3907#5243#0" expanded="false" />
+                    <element signature="e#5247#6867#0" expanded="false" />
+                    <element signature="e#6871#7832#0" expanded="false" />
+                    <element signature="e#7923#8281#0" expanded="false" />
+                    <element signature="e#8285#11195#0" expanded="false" />
+                    <element signature="e#11199#12702#0" expanded="false" />
+                    <element signature="e#14470#14788#0" expanded="false" />
+                    <element signature="e#14792#15050#0" expanded="false" />
+                    <element signature="e#15054#15227#0" expanded="false" />
+                    <element signature="e#16786#17479#0" expanded="false" />
+                    <element signature="e#17483#17710#0" expanded="false" />
+                    <element signature="e#17714#17941#0" expanded="false" />
+                    <element signature="e#17945#18163#0" expanded="false" />
+                    <element signature="e#18167#18385#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -111,21 +105,20 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="friends_helper.rb" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="friends_helper.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7713718" vertical-offset="224" max-vertical-offset="1598">
-                  <caret line="117" column="17" selection-start-line="117" selection-start-column="17" selection-end-line="117" selection-end-column="17" />
+                <state vertical-scroll-proportion="0.70290965" vertical-offset="765" max-vertical-offset="1938">
+                  <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
                   <folding>
                     <element signature="e#106#1299#0" expanded="false" />
                     <element signature="e#1303#1487#0" expanded="false" />
-                    <element signature="e#1491#2022#0" expanded="false" />
                     <element signature="e#2026#2167#0" expanded="false" />
                     <element signature="e#2171#2326#0" expanded="false" />
                     <element signature="e#2353#2498#0" expanded="false" />
                     <element signature="e#2939#3220#0" expanded="false" />
                     <element signature="e#2939#3220#0" expanded="false" />
-                    <element signature="e#3702#3882#0" expanded="false" />
+                    <element signature="e#3738#3918#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -322,21 +315,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="db" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -351,82 +330,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="emailer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mailers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -609,10 +512,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1048" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27066773" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27066773" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32441473" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33444816" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -621,7 +524,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43564355" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25397456" sideWeight="0.5008104" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37349397" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20920044" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1057,54 +960,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.77182233" vertical-offset="193" max-vertical-offset="6885">
+          <caret line="72" column="24" selection-start-line="72" selection-start-column="24" selection-end-line="72" selection-end-column="24" />
+          <folding>
+            <element signature="e#1090#1455#0" expanded="false" />
+            <element signature="e#1456#1767#0" expanded="false" />
+            <element signature="e#2159#2393#0" expanded="false" />
+            <element signature="e#2394#2742#0" expanded="false" />
+            <element signature="e#2743#3094#0" expanded="false" />
+            <element signature="e#3907#5243#0" expanded="false" />
+            <element signature="e#5247#6867#0" expanded="false" />
+            <element signature="e#6871#7832#0" expanded="false" />
+            <element signature="e#7923#8281#0" expanded="false" />
+            <element signature="e#8285#11195#0" expanded="false" />
+            <element signature="e#11199#12702#0" expanded="false" />
+            <element signature="e#14470#14788#0" expanded="false" />
+            <element signature="e#14792#15050#0" expanded="false" />
+            <element signature="e#15054#15227#0" expanded="false" />
+            <element signature="e#16786#17479#0" expanded="false" />
+            <element signature="e#17483#17710#0" expanded="false" />
+            <element signature="e#17714#17941#0" expanded="false" />
+            <element signature="e#17945#18163#0" expanded="false" />
+            <element signature="e#18167#18385#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7713718" vertical-offset="224" max-vertical-offset="1598">
-          <caret line="117" column="17" selection-start-line="117" selection-start-column="17" selection-end-line="117" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.70290965" vertical-offset="765" max-vertical-offset="1938">
+          <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
           <folding>
             <element signature="e#106#1299#0" expanded="false" />
             <element signature="e#1303#1487#0" expanded="false" />
-            <element signature="e#1491#2022#0" expanded="false" />
             <element signature="e#2026#2167#0" expanded="false" />
             <element signature="e#2171#2326#0" expanded="false" />
             <element signature="e#2353#2498#0" expanded="false" />
             <element signature="e#2939#3220#0" expanded="false" />
             <element signature="e#2939#3220#0" expanded="false" />
-            <element signature="e#3702#3882#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5725646" vertical-offset="460" max-vertical-offset="5236">
-          <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
-          <folding>
-            <element signature="e#1090#1455#0" expanded="false" />
-            <element signature="e#1456#1767#0" expanded="false" />
-            <element signature="e#1768#2158#0" expanded="false" />
-            <element signature="e#2159#2393#0" expanded="false" />
-            <element signature="e#2394#2742#0" expanded="false" />
-            <element signature="e#2743#3094#0" expanded="false" />
-            <element signature="e#3877#5213#0" expanded="false" />
-            <element signature="e#5217#6837#0" expanded="false" />
-            <element signature="e#6841#7802#0" expanded="false" />
-            <element signature="e#7893#8251#0" expanded="false" />
-            <element signature="e#8255#11165#0" expanded="false" />
-            <element signature="e#11169#12672#0" expanded="false" />
-            <element signature="e#12959#13368#0" expanded="false" />
-            <element signature="e#13372#13849#0" expanded="false" />
-            <element signature="e#14234#14392#0" expanded="false" />
-            <element signature="e#14440#14758#0" expanded="false" />
-            <element signature="e#14762#15020#0" expanded="false" />
-            <element signature="e#15024#15197#0" expanded="false" />
-            <element signature="e#15201#16301#0" expanded="false" />
-            <element signature="e#16593#16752#0" expanded="false" />
-            <element signature="e#16756#17449#0" expanded="false" />
-            <element signature="e#17453#17680#0" expanded="false" />
-            <element signature="e#17684#17911#0" expanded="false" />
-            <element signature="e#17915#18133#0" expanded="false" />
-            <element signature="e#18137#18355#0" expanded="false" />
+            <element signature="e#3738#3918#0" expanded="false" />
           </folding>
         </state>
       </provider>

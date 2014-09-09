@@ -118,12 +118,12 @@ module FriendsHelper
   def self.get_friends(user)
     #прежде чем выдавать список друзей, нужно их получить
 
-
     friend_api_format = Array.new
     user.lovers.each    { |user|
       friend_api_format <<
           {
               :accountid=>user.user_token,
+              :pic =>  user.pic_url,
               :name=> user.name,
               :surname=> user.surname
           }

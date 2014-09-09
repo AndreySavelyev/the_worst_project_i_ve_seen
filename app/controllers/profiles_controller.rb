@@ -69,7 +69,7 @@ end
 def social_friends_list #получить список друзей
   #friend_id=params.require(:accountid) #
   friend_list= FriendsHelper.get_friends(@user)
-  getResult={:list=> friend_list, :friend=>friend_list.count} #todo -change message format
+  getResult={:list=> friend_list} #todo -change message format
   respond_to do |format|
     format.json { render :json => getResult.as_json, status: :ok }
   end
@@ -79,9 +79,12 @@ def social_friends_search
   founded=Profile.where(:email => friend_email[:email]).first
   friend_list=Object
   if founded
-    friend_list=   {   :accountid=>founded.user_token,
-          :name=> founded.name,
-          :surname=> founded.surname
+    friend_list=
+        {
+            :accountid=>founded.user_token,
+            :pic =>  founded.pic_url,
+            :name=> founded.name,
+            :surname=> founded.surname
       }
   end
   getResult={:list=> friend_list}
