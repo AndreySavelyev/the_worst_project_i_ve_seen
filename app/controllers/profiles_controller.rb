@@ -22,19 +22,20 @@ include FriendsHelper
   Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
 
 def social_friends_invite # пригласить друга
-  invite_params=params.require(:invite).permit(:email) #social_friends_invite_params
+  invite_params=params.require(:invite).permit(:email)
   FriendsHelper.invite_new_friend(@user,invite_params[:email])
-  @getResult=Object.new
-  @getResult={:invite=>invite_params[:email]}
+
+  operation_result = {:result => 0 }
   respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
 def social_feed_viewed #пометить новость прочитанным
   feed_id=params.require(:feedid)
-  @getResult={:marked=> FriendsHelper.mark_feed_as_viewed(@user, feed_id), :feedid=>feed_id} #todo -change message format
+  getResult= FriendsHelper.mark_feed_as_viewed(@user, feed_id)?0:1
+  operation_result = {:result => getResult }
   respond_to do |format|
-    format.json { render :json => @getResult.as_json, status: :ok }
+    format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
 def social_friends_request #добавить в друзья
@@ -77,9 +78,9 @@ end
 def social_friends_search
   friend_email=params.require(:search).permit(:email)
   founded=Profile.where(:email => friend_email[:email]).first
-  friend_list=Object
+  friend_list=Array.new
   if founded
-    friend_list=
+    friend_list<<
         {
             :accountid=>founded.user_token,
             :pic =>  founded.pic_url,
