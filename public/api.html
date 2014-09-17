@@ -1,885 +1,1413 @@
-﻿<!DOCTYPE HTML>
-<!-- saved from url=(0033)http://api.onlinepay.com/api.html -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><HTML 
-lang="en" xmlns="http://www.w3.org/1999/xhtml"><HEAD><META content="IE=11.0000" 
-http-equiv="X-UA-Compatible">
-		 
-<META http-equiv="Content-Type" content="text/html; charset=utf-8">
-		 <TITLE>Onlinepay.com- API for Mobile application</TITLE>		 
-<META name="author" content="v.kovalevsky">		 
-<SCRIPT src=""></SCRIPT>
-		 <!-- Date: 2014-06-06 -->	 
-<STYLE>
-		h4 {
-			color: red
-		}
+﻿﻿<!DOCTYPE HTML> <!-- saved from url=(0033)http://api.onlinepay.com/api.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML
+lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<HEAD>
+		<META content="IE=11.0000"
+		http-equiv="X-UA-Compatible">
 
-		.l1 {
-			padding-left: 1em;
-		}
+		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<TITLE>Onlinepay.com- API for Mobile application</TITLE>
+		<META name="author" content="v.kovalevsky">
+		<SCRIPT src=""></SCRIPT>
+		<!-- Date: 2014-06-06 -->
+		<STYLE>
+			h4 {
+				color: red
+			}
 
-		.l2 {
-			padding-left: 3em;
-		}
-		.l3 {
-			padding-left: 5em;
-		}
-		.l4 {
-			padding-left: 7em;
-		}
-		.l5 {
-			padding-left: 9em;
-		}
-	</STYLE>
+			.l1 {
+				padding-left: 1em;
+			}
 
-<META name="GENERATOR" content="MSHTML 11.00.9600.17239"></HEAD>		 
-<BODY style="padding-left: 10em;">
-<H1>Onlinepay.com - API for Mobile 
-application.</H1><SPAN><BR>▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀<BR>____________ 
-$$$$$$$$$$$$$$$$$$$<BR>___________$$$$$$$$$$$$$$$$$$$$$$$<BR>
-________$$$$___$$$$$$$$$$$$$$$$$$$$$<BR>
-______$$$$______$$$$$$$$$$$$$$$$$$$$$$<BR>
-____$$$$$________$$$$$$$$$$$$$$$$$$$$$$$<BR>
-___$$$$$__________$$$$$$$$$$$$$$$$$$$$$$$<BR>
-__$$$$$___________$$$$$$$$$$$$$$$$$$$$$$$<BR>
-_$$$$$$____________$$$$$$$$$$$$$$$$$$$$$$$$<BR>
-_$$$$$$___________$$$$$$$$$___________$$$$$$<BR>
-_$$$$$$$_________$$$_$$$_$$$_________$$$$$$$<BR>
-_$$$$$$$$______$$$$___$___$$$$______$$$$$$$$<BR>
-_$$$$$$$$$$$$$$$$$___$$$___$$$$$$$$$$$$$$$$$<BR>
-_$$$_$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$__o$$$<BR>
-__’$$o__$$__$$’$$$$$$$$$$$$$$’$$__$$_____o$$<BR>
-____$$o$____$$__’$$’$$’$$’__$$______$___o$$<BR>
-_____$$$o$__$____$$___$$___$$_____$$__o$<BR>______’$$$$O$____$$____$$___$$ 
-____o$$$<BR>_________’$$o$$___$$___$$___$$___o$$$<BR>
-___________’$$$$o$o$o$o$o$o$o$o$$$$<BR>▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀<BR></SPAN>
-		 
-<H2>Index.</H2>
-			 <P> <A href="http://api.onlinepay.com/api.html#signin">/signin</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#signup">/signup</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#signoff">/signoff</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#confirm">/confirm</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#session">/session</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#tabs">/tabs</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#brief">/brief</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#catalog">/catalog</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/feed">/social/feed</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/feed/viewed">/social/feed/viewed</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/invite/fb">/social/invite/fb</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/invite/email">/social/invite/email (in progress)</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/like">/social/like</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/money/send">/social/money/send</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/money/charge">/social/money/charge</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/money/recieve">/social/money/recieve</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/money/get">/social/money/get</A>                 
-			 <BR><A href="http://api.onlinepay.com/api.html#social/money/get">/social/money/get</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/invite">/social/friends/invite</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/count">/social/friends/count</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/accept">/social/friends/accept</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/decline">/social/friends/decline</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/list">/social/friends/list</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/friends/search">/social/friends/search</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/mood/get">/social/mood/get (in progress)</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#social/mood/set">/social/mood/set (in progress)</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#profile/get">/profile/get</A>			 
-			 <BR><A href="http://api.onlinepay.com/api.html#profile/stats">/profile/stats</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#profile/save">/profile/save</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#profile/balance">/profile/balance</A>
-			 <BR><A href="http://api.onlinepay.com/api.html#profile/new">/profile/new</A>
-			 <!--
+			.l2 {
+				padding-left: 3em;
+			}
+			.l3 {
+				padding-left: 5em;
+			}
+			.l4 {
+				padding-left: 7em;
+			}
+			.l5 {
+				padding-left: 9em;
+			}
+		</STYLE>
+
+		<META name="GENERATOR" content="MSHTML 11.00.9600.17239">
+	</HEAD>
+	<BODY style="padding-left: 10em;">
+		<H1>Onlinepay.com - API for Mobile
+		application.</H1><SPAN>
+			<BR>
+			▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+			<BR>
+			____________
+			$$$$$$$$$$$$$$$$$$$
+			<BR>
+			___________$$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			________$$$$___$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			______$$$$______$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			____$$$$$________$$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			___$$$$$__________$$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			__$$$$$___________$$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			_$$$$$$____________$$$$$$$$$$$$$$$$$$$$$$$$
+			<BR>
+			_$$$$$$___________$$$$$$$$$___________$$$$$$
+			<BR>
+			_$$$$$$$_________$$$_$$$_$$$_________$$$$$$$
+			<BR>
+			_$$$$$$$$______$$$$___$___$$$$______$$$$$$$$
+			<BR>
+			_$$$$$$$$$$$$$$$$$___$$$___$$$$$$$$$$$$$$$$$
+			<BR>
+			_$$$_$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$__o$$$
+			<BR>
+			__’$$o__$$__$$’$$$$$$$$$$$$$$’$$__$$_____o$$
+			<BR>
+			____$$o$____$$__’$$’$$’$$’__$$______$___o$$
+			<BR>
+			_____$$$o$__$____$$___$$___$$_____$$__o$
+			<BR>
+			______’$$$$O$____$$____$$___$$
+			____o$$$
+			<BR>
+			_________’$$o$$___$$___$$___$$___o$$$
+			<BR>
+			___________’$$$$o$o$o$o$o$o$o$o$$$$
+			<BR>
+			▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+			<BR>
+		</SPAN>
+
+		<H2>Index.</H2>
+		<P>
+			<A href="#signin">/signin</A>
+			<BR>
+			<A href="#signup">/signup</A>
+			<BR>
+			<A href="#signoff">/signoff</A>
+			<BR>
+			<A href="#confirm">/confirm</A>
+			<BR>
+			<A href="#session">/session</A>
+			<BR>
+			<A href="#tabs">/tabs</A>
+			<BR>
+			<A href="#brief">/brief</A>
+			<BR>
+			<A href="#catalog">/catalog</A>
+			<BR>
+			<A href="#social/feed">/social/feed</A>
+			<BR>
+			<A href="#social/feed/viewed">/social/feed/viewed</A>
+			<BR>
+			<A href="#social/invite/fb">/social/invite/fb</A>
+			<BR>
+			<A href="#social/invite/email">/social/invite/email (in progress)</A>
+			<BR>
+			<A href="#social/like">/social/like</A>
+			<BR>
+			<A href="#social/money/send">/social/money/send</A>
+			<BR>
+			<A href="#social/money/charge">/social/money/charge</A>
+			<BR>
+			<A href="#social/money/recieve">/social/money/recieve</A>
+			<BR>
+			<A href="#social/money/get">/social/money/get</A>
+			<BR>
+			<A href="#social/money/get">/social/money/get</A>
+			<BR>
+			<A href="#social/friends/invite">/social/friends/invite</A>
+			<BR>
+			<A href="#social/friends/count">/social/friends/count</A>
+			<BR>
+			<A href="#social/friends/accept">/social/friends/accept</A>
+			<BR>
+			<A href="#social/friends/decline">/social/friends/decline</A>
+			<BR>
+			<A href="#social/friends/list">/social/friends/list</A>
+			<BR>
+			<A href="#social/friends/search">/social/friends/search</A>
+			<BR>
+			<A href="#social/mood/get">/social/mood/get (in progress)</A>
+			<BR>
+			<A href="#social/mood/set">/social/mood/set (in progress)</A>
+			<BR>
+			<A href="#profile/get">/profile/get</A>
+			<BR>
+			<A href="#profile/stats">/profile/stats</A>
+			<BR>
+			<A href="#profile/save">/profile/save</A>
+			<BR>
+			<A href="#profile/balance">/profile/balance</A>
+			<BR>
+			<A href="http://api.onlinepay.com/api.html#profile/new">/profile/new</A>
+			<!--
 			<br	/>
 			<a href="#wallet/in">/wallet/in</a>
 			<br	/>
 			<a href="#wallet/out">/wallet/out</a>
 			-->
-		 </P>
-<H2>Data format description.</H2>
-<P>
-<UL>
-  <LI><STRONG>Data format</STRONG> is a stricly <A href="http://ru.wikipedia.org/wiki/JSON">JSON</A> 
-  format for mobile developers.				 </LI>
-  <LI>					Each <STRONG>Data message</STRONG> should contain an <A href="http://api.onlinepay.com/api.html#">Application 
-  token</A>.				 </LI></UL>
-<P></P>
-<H2>Sign in and Sign up.</H2>
-<P>			There are two levels of authentication. The first level - is Application 
-token auth, The second is - User token auth.			 
-<UL>
-  <LI>					Application token - is a token that was given you by API vendor. And 
-  identifies your application as a valid one for using this API.				 </LI>
-  <LI>					Session token - is a token that identifies the wallet's owner and 
-  that the <A href="http://api.onlinepay.com/api.html#">/signin</A> method 
-  returns.				 </LI></UL>
-<P></P>
-<H3>Methods:</H3>
+		</P>
+		<H2>Data format description.</H2>
+		<P>
+			<UL>
+				<LI>
+					<STRONG>Data format</STRONG> is a stricly <A href="http://ru.wikipedia.org/wiki/JSON">JSON</A>
+					format for mobile developers.
+				</LI>
+				<LI>
+					Each <STRONG>Data message</STRONG> should contain an <A href="http://api.onlinepay.com/api.html#">Application
+					token</A>.
+				</LI>
+			</UL>
+		<P></P>
+		<H2>Sign in and Sign up.</H2>
+		<P>
+			There are two levels of authentication. The first level - is Application
+			token auth, The second is - User token auth.
+			<UL>
+				<LI>
+					Application token - is a token that was given you by API vendor. And
+					identifies your application as a valid one for using this API.
+				</LI>
+				<LI>
+					Session token - is a token that identifies the wallet's owner and
+					that the <A href="http://api.onlinepay.com/api.html#">/signin</A> method
+					returns.
+				</LI>
+			</UL>
+		<P></P>
+		<H3>Methods:</H3>
 
-<!-- signin -->		 
-<H4><STRONG><A id="signin">/signin</A></STRONG></H4>Request method: POST		 
-<P>			Description: <SMALL>This method is for signing in an existing user 
-account. Optionaly the user can sign in with his facebook credentials using <A 
-href="https://developers.facebook.com/docs/facebook-login/v2.0">Facebook 
-API</A></SMALL>. Use this method for saving user token for further request 
-authorization.		 </P>
-<H5>Header:</H5><SMALL>app-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P><SMALL><CODE class="prettyprint">					{					 <BR><SPAN 
-class="l1">"signin":</SPAN>					 <BR><SPAN class="l1">{</SPAN>					 <BR><SPAN 
-class="l2">"accountid":"vk@onlinepay.com" [email | phone | fid],</SPAN>
-					 <BR>
-					 <SPAN class="l2">"password":"sakjh43589jf"</SPAN>					 <BR><SPAN 
-class="l1">}</SPAN>					 <BR>					}				 </CODE></SMALL>		 </P>
-<H5>Returns:</H5>
-<P>
-	<SMALL>
-		<CODE class="prettyprint">
-		{					 <BR>
-		<SPAN class="l1">"session":</SPAN>
+		<!-- signin -->
+		<H4><STRONG><A id="signin">/signin</A></STRONG></H4>Request method: POST
+		<P>
+			Description: <SMALL>This method is for signing in an existing user
+				account. Optionaly the user can sign in with his facebook credentials using <A
+				href="https://developers.facebook.com/docs/facebook-login/v2.0">Facebook
+				API</A></SMALL>. Use this method for saving user token for further request
+			authorization.
+		</P>
+		<H5>Header:</H5><SMALL>app-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN
+					class="l1">"signin":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"accountid":"vk@onlinepay.com" [email | phone | fid],</SPAN>
+					<BR>
+					<SPAN class="l2">"password":"sakjh43589jf"</SPAN>
+					<BR>
+					<SPAN
+					class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE></SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN class="l1">"session":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"result":[0|1|N],</SPAN>
+					<BR>
+					<SPAN class="l2">"message":"ok",</SPAN>
+					<BR>
+					<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE> </SMALL>
+		</P><!-- end signin -->
+
+		<!-- signup -->
+
+		<H4><STRONG><A id="signup">/signup</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Method for signining up a new user.
+		</P>
+		<H5>Header:</H5><SMALL>app-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN
+					class="l1">"signup":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"accountid":"vk@onlinepay.com",</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"password1":"onlinepay"</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"password2":"onlinepay"</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE></SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN class="l1">"session":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"result":[0|1|N],</SPAN>
+					<BR>
+					<SPAN class="l2">"message":"ok",</SPAN>
+					<BR>
+					<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE> </SMALL>
+		</P><!-- end signup -->
+
+		<!-- signoff -->
+		<H4><STRONG><A id="signoff">/signoff</A></STRONG></H4>Request method: POST
+		<P>
+			Description: <SMALL>This method is for closing opened session.</SMALL>
+		</P>
+		<H5>Header:</H5><SMALL>session-token:some-session-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			NO DATA:
+		</P>
 		<BR>
-		<SPAN class="l1">{</SPAN>
-		<BR>
-		<SPAN class="l2">"result":[0|1|N],</SPAN>
-		<BR>
-		<SPAN class="l2">"message":"ok",</SPAN>
-		<BR>
-		<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
-		<BR>
-		<SPAN class="l1">}</SPAN>
-		<BR>
-		}				 
-		</CODE>
-	</SMALL>		 
-</P><!-- end signin -->
+		<P></P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"result":[0|1|N],</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"message":"ok",</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+				</CODE></SMALL>
+		</P><!-- end signin -->
 
-		 <!-- signup -->
-		 
-<H4><STRONG><A id="signup">/signup</A></STRONG></H4>Request method: POST		 
-<P>			Description: Method for signining up a new user.		 </P>
-<H5>Header:</H5><SMALL>app-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P><SMALL><CODE class="prettyprint">					{					 <BR><SPAN 
-class="l1">"signup":</SPAN>					 <BR><SPAN class="l1">{</SPAN>					 <BR><SPAN 
-class="l2">"accountid":"vk@onlinepay.com",</SPAN>					 <BR><SPAN 
-class="l2">"password1":"onlinepay"</SPAN>					 <BR><SPAN 
-class="l2">"password2":"onlinepay"</SPAN>					 <BR><SPAN class="l1">}</SPAN>
-					 <BR>					}				 </CODE></SMALL>		 </P>
-<H5>Returns:</H5>
-<P>	<SMALL>
-		<CODE class="prettyprint">
-		{					 <BR>
-		<SPAN class="l1">"session":</SPAN>
-		<BR>
-		<SPAN class="l1">{</SPAN>
-		<BR>
-		<SPAN class="l2">"result":[0|1|N],</SPAN>
-		<BR>
-		<SPAN class="l2">"message":"ok",</SPAN>
-		<BR>
-		<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
-		<BR>
-		<SPAN class="l1">}</SPAN>
-		<BR>
-		}				 
-		</CODE>
-	</SMALL></P><!-- end signup -->
+		<!-- session -->
+		<H4><STRONG> <A id="session">/session</A> </STRONG></H4>Request method: GET
+		<P>
+			Description: Method for checking a current session for valid.
+		</P>
+		<H5>Header:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			NO DATA:
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN class="l1">"session":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"result":[0|1|N],</SPAN>
+					<BR>
+					<SPAN class="l2">"message":"ok",</SPAN>
+					<BR>
+					<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE> </SMALL>
+		</P><!-- end session -->
 
-<!-- signoff -->		 
-<H4><STRONG><A id="signoff">/signoff</A></STRONG></H4>Request method: POST		 
-<P>			Description: <SMALL>This method is for closing opened session.</SMALL></P>
-<H5>Header:</H5><SMALL>session-token:some-session-token;</SMALL>		 
-<H5>Data:</H5><P>		    NO DATA:		 </P><BR>
-<P></P>
-<H5>Returns:</H5><P><SMALL><CODE class="prettyprint"><SPAN class="l1">{</SPAN>					 <BR><SPAN 
-class="l2">"result":[0|1|N],</SPAN>					 <BR><SPAN 
-class="l2">"message":"ok",</SPAN>					 <BR><SPAN class="l1">}</SPAN>
-</CODE></SMALL>
-</P><!-- end signin -->		 
-		 
-					<!-- session -->		 
-<H4>
-	<STRONG>
-		<A id="session">/session</A>
-	</STRONG>
-</H4>Request method: GET		 
-<P>			Description: Method for checking a current session for valid.		 </P>
-<H5>Header:</H5>
-	<SMALL>session-token:test-token;</SMALL>
-<H5>Data:</H5>
-<P>		    NO DATA:		 </P>
-<H5>Returns:</H5>
-<P>
-	<SMALL>
-		<CODE class="prettyprint">
-		{					 <BR>
-		<SPAN class="l1">"session":</SPAN>
-		<BR>
-		<SPAN class="l1">{</SPAN>
-		<BR>
-		<SPAN class="l2">"result":[0|1|N],</SPAN>
-		<BR>
-		<SPAN class="l2">"message":"ok",</SPAN>
-		<BR>
-		<SPAN class="l2">"expiration":"2014-04-04 23:44"</SPAN>
-		<BR>
-		<SPAN class="l1">}</SPAN>
-		<BR>
-		}				 
-		</CODE>
-	</SMALL>
-</P><!-- end session -->
-		 
-<!-- confirm -->		 
-<H4><STRONG><A id="confirm">/confirm</A></STRONG></H4>Request method: GET		 
-<P>			Description: Method for validating user account.		 </P>
-		 
-<H5>Data:</H5>
-<P><SMALL><CODE class="prettyprint"><SPAN 
-class="l1">?confirm=32987dsfjhk348729jkhfkjsdhf</SPAN></CODE> </SMALL>		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint">					{					 <BR><SPAN 
-class="l1">"confirm":</SPAN>					 <BR><SPAN class="l1">{</SPAN>					 <BR><SPAN 
-class="l2">"result":[0|1|N],</SPAN>					 <BR><SPAN 
-class="l2">"message":"ok",</SPAN>					 <BR><SPAN class="l1">}</SPAN>					 <BR>
-					}				 </CODE></SMALL>		 </P>
-					<!-- end confirm -->
-					
-<H2> Tabs and Main screen.</H2>
-<H3>Methods:</H3><!-- tabs -->		 
-<H4><STRONG><A id="tabs">/tabs</A></STRONG></H4>Request method: GET		 
-<P>			Description: Gets a tab list for the main application screen.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"tabs" : {</SPAN>					 <BR><SPAN 
-class="l3">"shopping" : {</SPAN>					 <BR><SPAN class="l4">"promolink" : 
-"url",</SPAN>					 <BR><SPAN class="l4">"hotoffer" : [</SPAN>					 <BR><SPAN 
-class="l4">{</SPAN>					 <BR><SPAN class="l5">"id" : 
-"432987ewjhkfhsdewyiuy238976",</SPAN>					 <BR><SPAN class="l5">"title" : "my 
-suppersonic offer",</SPAN>					 <BR><SPAN class="l5">"currency" : usd,</SPAN>
-					 <BR><SPAN class="l5">"price" : 100,</SPAN>					 <BR><SPAN 
-class="l5">"username" : "janett",</SPAN>					 <BR><SPAN class="l5">"userpic" : 
-"url",</SPAN>					 <BR><SPAN class="l5">"pic" : "url"</SPAN>					 <BR><SPAN 
-class="l5">}]</SPAN>					 <BR><SPAN class="l4">},</SPAN>					 <BR><SPAN class="l3">"services" 
-: {</SPAN>					 <BR><SPAN class="l4">"promolink" : "url",</SPAN>					 <BR><SPAN 
-class="l4">"provider" : [</SPAN>					 <BR><SPAN class="l4">{</SPAN>
-					 <BR><SPAN class="l5">"id" : "432987ewjhkfhsdewyiuy238976",</SPAN>
-					 <BR><SPAN class="l5">"pic" : "url",</SPAN>					 <BR><SPAN 
-class="l5">"apidata" : "some xml"</SPAN>					 <BR><SPAN class="l4">}]</SPAN>
-					 <BR><SPAN class="l3">},</SPAN>					 <BR><SPAN class="l3">"social" : 
-{</SPAN>					 <BR><SPAN class="l4">"promolink" : "url",</SPAN>					 <BR><SPAN 
-class="l4">"feeditem" : [</SPAN>					 <BR><SPAN class="l4">{</SPAN>
-    				 <BR><SPAN class="l5">"id": 2,</SPAN>
-					 <BR><SPAN class="l5">"message": "fdsgfsdg",</SPAN>
-					 <BR><SPAN class="l5">"from": "Max Loskutnikov",</SPAN>
-					 <BR><SPAN class="l5">"from_id": "vk100@onlinepay.com",</SPAN>
-					 <BR><SPAN class="l5">"to": "Voronkov Mikhail",</SPAN>
-					 <BR><SPAN class="l5">"to_id": "792958412606",</SPAN>
-					 <BR><SPAN class="l5">"global": 0,</SPAN>
-					 <BR><SPAN class="l5">"date": "2014-01-11  0:00",</SPAN>
-					 <BR><SPAN class="l5">"likes": 567,</SPAN>
-					 <BR><SPAN class="l5">"paymentId": 2,</SPAN>
-					 <BR><SPAN class="l5">"for": "take yoour money",</SPAN>
-					 <BR><SPAN class="l5">"pic": "pic71",</SPAN>
-					 <BR><SPAN class="l5">"type" : "charge", #available types [charge, pay, request, charge new, pay new, ad]</SPAN>
-					 <BR><SPAN class="l5">"amount": "20",</SPAN>
-					 <BR><SPAN class="l5">"currency": "USD"</SPAN>
-					 <BR><SPAN class="l5">"viewed": "[0|1]"</SPAN>
-					 <BR><SPAN class="l4">}]</SPAN>
-    				 <BR><SPAN class="l3">}</SPAN>
-					 <BR><SPAN class="l2">}</SPAN>					 <BR><SPAN class="l2">}</SPAN>
-					 <BR><SPAN class="l1">}</SPAN>				 </CODE> </SMALL>		 </P><!-- end tabs -->
-		 <!-- brief -->		 
-<H4><STRONG><A id="brief">/brief</A></STRONG></H4>Request method: GET		 
-<P>			Description: Gets brief info about a user's profile. It includes a user's 
-pic, info about his balance, user's name and e.t.c.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"brief" : {</SPAN>					 <BR><SPAN class="l3">"likes" 
-: "231",</SPAN>					 <BR><SPAN class="l3">"currency" : "usd",</SPAN>
-					 <BR><SPAN class="l3">"balance" : "30.380",</SPAN>					 <BR><SPAN class="l3">"name" 
-: "john smith",</SPAN>					 <BR><SPAN class="l3">"mood" : 4,</SPAN>
-					 <BR><SPAN class="l3">"userpic" : "url"</SPAN>					 <BR><SPAN 
-class="l2">}</SPAN>					 <BR><SPAN class="l1">}</SPAN>					 <BR></CODE> </SMALL>
-		 </P><!-- brief  -->		 
-<H2>Catalogs.</H2>
-<H3>Methods:</H3><!-- /catalog -->		 
-<H4><A id="catalog"><STRONG>/catalog</STRONG></A></H4>Request method: GET		 
-<P>			Description: Gets catalog's items for navigation menu. Input params are 
-based on xpath requests.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"path" : "/" #the path is a simple xpath expression 
-('/',/shopping/)</SPAN>					 <BR><SPAN class="l1">}</SPAN>					 <BR></CODE> 
-</SMALL>		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"catalog" : [{</SPAN>					 <BR><SPAN class="l3">"id" 
-: "84574vgdxgugdxgy",</SPAN>					 <BR><SPAN class="l3">"pic" : "url",</SPAN>
-					 <BR><SPAN class="l3">"path" : "/shopping/tvsets",</SPAN>					 <BR><SPAN 
-class="l3">"name" : "tv sets"</SPAN>					 <BR><SPAN class="l2">}]</SPAN>
-					 <BR><SPAN class="l1">}</SPAN>				 </CODE> </SMALL>		 </P><!-- end /catalog -->
-		 
-<H2> Social payments.</H2>
-<H3>Methods:</H3><!-- /social/feed -->		 
-<H4><STRONG><A id="social/feed">/social/feed</A></STRONG></H4>Request method: POST		 
-<P>			Description: Gets user's feed - a list of his shared payments.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"global" : 0 #to return a global feed or the user's 
-feed of his actions (0 - global, 1 - friends, 2 - private)</SPAN>					 <BR><SPAN 
-class="l1">}</SPAN>					 <BR></CODE> </SMALL>		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"feed" : [</SPAN>				 <BR><SPAN class="l3">{</SPAN>
+		<!-- confirm -->
+		<H4><STRONG><A id="confirm">/confirm</A></STRONG></H4>Request method: GET
+		<P>
+			Description: Method for validating user account.
+		</P>
 
-					 <BR><SPAN class="l4">"id": 2,</SPAN>
-					 <BR><SPAN class="l4">"message": "fdsgfsdg",</SPAN>
-					 <BR><SPAN class="l4">"from": "Max Loskutnikov",</SPAN>
-					 <BR><SPAN class="l4">"from_id": "vk100@onlinepay.com",</SPAN>
-					 <BR><SPAN class="l4">"to": "Voronkov Mikhail",</SPAN>
-					 <BR><SPAN class="l4">"to_id": "792958412606",</SPAN>
-					 <BR><SPAN class="l4">"global": 0,</SPAN>
-					 <BR><SPAN class="l4">"date": "2014-01-11  0:00",</SPAN>
-					 <BR><SPAN class="l4">"likes": 567,</SPAN>
-					 <BR><SPAN class="l4">"paymentId": 2,</SPAN>
-					 <BR><SPAN class="l4">"for": "take yoour money",</SPAN>
-					 <BR><SPAN class="l4">"pic": "pic71",</SPAN>
-					 <BR><SPAN class="l4">"type" : "charge", #available types [charge, pay, request, charge new, pay new, ad]</SPAN>
-					 <BR><SPAN class="l4">"amount": "10",</SPAN>
-					 <BR><SPAN class="l4">"currency": "RUR"</SPAN>
-					 <BR><SPAN class="l4">"viewed": "[0|1]"</SPAN>
-    
-    <BR><SPAN class="l3">}</SPAN>				 <BR><SPAN class="l2">]</SPAN>
-				 <BR><SPAN class="l1">}</SPAN>				 <BR></CODE>		 
+		<H5>Data:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint"><SPAN
+					class="l1">?confirm=32987dsfjhk348729jkhfkjsdhf</SPAN></CODE> </SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint">
+					{
+					<BR>
+					<SPAN
+					class="l1">"confirm":</SPAN>
+					<BR>
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"result":[0|1|N],</SPAN>
+					<BR>
+					<SPAN
+					class="l2">"message":"ok",</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+					}
+				</CODE></SMALL>
+		</P>
+		<!-- end confirm -->
 
-</P><!-- end /social/feed -->
-    
-<!-- /social/feed/viewed -->		 
-<H4><STRONG><A id="A2">/social/feed/viewed</A></STRONG></H4>Request method: POST		 
-<P>			Description: Mark feed as viewed</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"feedid":"30"</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>    <!-- end /social/feed/viewed -->
-		 <!-- /social/invite/fb-->		 
-<H4><STRONG><A id="social/invite/fb">/social/invite/fb</A></STRONG></H4>Request 
-method: POST		 
-<P>			Description: This function could be implemented using <A href="https://developers.facebook.com/docs/games/requests/v2.0">Facebook 
-API</A>		 </P>
-<H5>Data:</H5>
-<P>			NO DATA:		 </P>
-<H5>Returns:</H5>
-<P>			NO DATA:		 </P><!-- end /social/invite/fb -->		 <!-- /social/invite/email-->
-		 
-<H4><STRONG><A 
-id="social/invite/email">/social/invite/email</A></STRONG></H4>Request method: 
-POST		 
-<P>			Description: This function could be implemented using <A href="https://developers.facebook.com/docs/games/requests/v2.0">Facebook 
-API</A>		 </P>
-<H5>Data:</H5>
-<P>			NO DATA:		 </P>
-<H5>Returns:</H5>
-<P>			NO DATA:		 </P><!-- end /social/invite/fb -->		 <!-- /social/like-->		 
-<H4><STRONG><A id="social/like">/social/like</A></STRONG></H4>Request method: 
-POST		 
-<P>			Description: Sets a like markup for a public user's payment action.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"feedid" : "sadjkh2345hkjhdfkjash"</SPAN>				 <BR><SPAN 
-class="l1">}</SPAN>			 </CODE>		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"result" : [0|1|N]</SPAN>				 <BR><SPAN class="l1">}</SPAN>
-			 </CODE>		 </P><!-- end /social/like -->		 <!-- /social/money/send -->		 
-<H4><STRONG><A 
-id="social/money/send">/social/money/send</A></STRONG></H4>Request method: POST
-		 
-<P>			Description: Sends a money to a friend.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"sendMoney" : {</SPAN>				 <BR><SPAN class="l3">accountIDs : [{"id" : 
-"salkjh234jhkjfh9432y"}]</SPAN>				 <BR><SPAN class="l3">"amount" : 
-"100.00"</SPAN>				 <BR><SPAN class="l3">"currency" : "eur"</SPAN>				 <BR><SPAN 
-class="l3">"message" : "For you being a good man."</SPAN>				 <BR><SPAN class="l3">"global" 
-: 1</SPAN>				 <BR><SPAN class="l2">}</SPAN>				 <BR><SPAN class="l1">}</SPAN>
-			 </CODE>		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"result" : [0|1|N]</SPAN>				 <BR><SPAN class="l1">}</SPAN>
-			 </CODE>		 </P><!-- end /social/money/send -->		 <!-- /social/money/charge -->
-		 
-<H4><STRONG><A 
-id="social/money/charge">/social/money/charge</A></STRONG></H4>Request method: 
-POST		 
-<P>			Description: Sends a request for money to a friend.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"chargeMoney" : {</SPAN>				 <BR><SPAN class="l3">accountIDs : [{"id" 
-: "salkjh234jhkjfh9432y"}]</SPAN>				 <BR><SPAN class="l3">"amount" : 
-"100.00",</SPAN>				 <BR><SPAN class="l3">"currency" : "eur",</SPAN>
-				 <BR><SPAN class="l3">"message" : "Please send me some money for a new 
-car.",</SPAN>				 <BR><SPAN class="l3">"global" : 1,</SPAN>				 <BR><SPAN class="l2">}</SPAN>
-				 <BR><SPAN class="l1">}</SPAN>			 </CODE>		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"result" : [0|1|N]</SPAN>				 <BR><SPAN class="l1">}</SPAN>
-			 </CODE>		 </P><!-- end /social/money/charge -->		 <!-- /social/money/recieve -->
-		 
-<H4><STRONG><A id="social/money/recieve">/social/money/recieve | 
-pay</A></STRONG></H4>Request method: POST		 
-<P>			Description: If someone sends you money you should recieve it.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"sendchargeMoneyID" : "asddfkjh342987jfdh"</SPAN>				 <BR><SPAN 
-class="l1">}</SPAN>			 </CODE>		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"result" : [0|1|N]</SPAN>				 <BR><SPAN class="l1">}</SPAN>
-			 </CODE>		 </P><!-- end /social/money/recieve -->		 <!-- /social/money/get -->
-		 
-<H4><STRONG><A id="social/money/get">/social/money/get</A></STRONG></H4>Request 
-method: GET		 
-<P>			Description: Gets unanswered money requests.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>				 <BR><SPAN 
-class="l2">"moneyRequest" : [{</SPAN>				 <BR><SPAN class="l3">"id" : 
-"salkjh234jhkjfh9432y",</SPAN>				 <BR><SPAN class="l3">"fromID" : 
-"salkjh234jhkjfh9432y",</SPAN>				 <BR><SPAN class="l3">"name" : "John 
-Smith",</SPAN>				 <BR><SPAN class="l3">"pic" : "url",</SPAN>				 <BR><SPAN 
-class="l3">"type" : "charge" #charge request or money send request,</SPAN>
-				 <BR><SPAN class="l3">"amount" : "100.00",</SPAN>				 <BR><SPAN 
-class="l3">"currency" : "eur",</SPAN>				 <BR><SPAN class="l3">"message" : 
-"Please send me some money for a new car."</SPAN>				 <BR><SPAN 
-class="l2">}]</SPAN>				 <BR><SPAN class="l1">}</SPAN>			 </CODE>		 </P><!-- end /social/money/get -->
-		 
+		<H2> Tabs and Main screen.</H2>
+		<H3>Methods:</H3><!-- tabs -->
+		<H4><STRONG><A id="tabs">/tabs</A></STRONG></H4>Request method: GET
+		<P>
+			Description: Gets a tab list for the main application screen.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"tabs" : {</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"shopping" : {</SPAN>
+					<BR>
+					<SPAN class="l4">"promolink" :
+						"url",</SPAN>
+					<BR>
+					<SPAN class="l4">"hotoffer" : [</SPAN>
+					<BR>
+					<SPAN
+					class="l4">{</SPAN>
+					<BR>
+					<SPAN class="l5">"id" :
+						"432987ewjhkfhsdewyiuy238976",</SPAN>
+					<BR>
+					<SPAN class="l5">"title" : "my
+						suppersonic offer",</SPAN>
+					<BR>
+					<SPAN class="l5">"currency" : usd,</SPAN>
+					<BR>
+					<SPAN class="l5">"price" : 100,</SPAN>
+					<BR>
+					<SPAN
+					class="l5">"username" : "janett",</SPAN>
+					<BR>
+					<SPAN class="l5">"userpic" :
+						"url",</SPAN>
+					<BR>
+					<SPAN class="l5">"pic" : "url"</SPAN>
+					<BR>
+					<SPAN
+					class="l5">}]</SPAN>
+					<BR>
+					<SPAN class="l4">},</SPAN>
+					<BR>
+					<SPAN class="l3">"services"
+						: {</SPAN>
+					<BR>
+					<SPAN class="l4">"promolink" : "url",</SPAN>
+					<BR>
+					<SPAN
+					class="l4">"provider" : [</SPAN>
+					<BR>
+					<SPAN class="l4">{</SPAN>
+					<BR>
+					<SPAN class="l5">"id" : "432987ewjhkfhsdewyiuy238976",</SPAN>
+					<BR>
+					<SPAN class="l5">"pic" : "url",</SPAN>
+					<BR>
+					<SPAN
+					class="l5">"apidata" : "some xml"</SPAN>
+					<BR>
+					<SPAN class="l4">}]</SPAN>
+					<BR>
+					<SPAN class="l3">},</SPAN>
+					<BR>
+					<SPAN class="l3">"social" :
+						{</SPAN>
+					<BR>
+					<SPAN class="l4">"promolink" : "url",</SPAN>
+					<BR>
+					<SPAN
+					class="l4">"feeditem" : [</SPAN>
+					<BR>
+					<SPAN class="l4">{</SPAN>
+					<BR>
+					<SPAN class="l5">"id": 2,</SPAN>
+					<BR>
+					<SPAN class="l5">"message": "fdsgfsdg",</SPAN>
+					<BR>
+					<SPAN class="l5">"from": "Max Loskutnikov",</SPAN>
+					<BR>
+					<SPAN class="l5">"from_id": "vk100@onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l5">"to": "Voronkov Mikhail",</SPAN>
+					<BR>
+					<SPAN class="l5">"to_id": "792958412606",</SPAN>
+					<BR>
+					<SPAN class="l5">"global": 0,</SPAN>
+					<BR>
+					<SPAN class="l5">"date": "2014-01-11  0:00",</SPAN>
+					<BR>
+					<SPAN class="l5">"likes": 567,</SPAN>
+					<BR>
+					<SPAN class="l5">"paymentId": 2,</SPAN>
+					<BR>
+					<SPAN class="l5">"for": "take yoour money",</SPAN>
+					<BR>
+					<SPAN class="l5">"pic": "pic71",</SPAN>
+					<BR>
+					<SPAN class="l5">"type" : "charge", #available types [charge, pay, request, charge new, pay new, ad]</SPAN>
+					<BR>
+					<SPAN class="l5">"amount": "20",</SPAN>
+					<BR>
+					<SPAN class="l5">"currency": "USD"</SPAN>
+					<BR>
+					<SPAN class="l5">"viewed": "[0|1]"</SPAN>
+					<BR>
+					<SPAN class="l4">}]</SPAN>
+					<BR>
+					<SPAN class="l3">}</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN> </CODE> </SMALL>
+		</P><!-- end tabs -->
+		<!-- brief -->
+		<H4><STRONG><A id="brief">/brief</A></STRONG></H4>Request method: GET
+		<P>
+			Description: Gets brief info about a user's profile. It includes a user's
+			pic, info about his balance, user's name and e.t.c.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
-<!-- /social/friends/invite -->		 
-<H4><STRONG><A id="A1">/social/friends/invite</A></STRONG></H4>Request method: POST		 
-<P>			Description: Sends e-mail to the user with invite to join to Onlinepay sysytem. If youser account exist in the system send him frendship request. Create temporary account for user if there are not registered in the system.</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"invite":</SPAN>
-        <BR><SPAN class="l3">{</SPAN>
-        <BR><SPAN class="l4">"email":"friend@mail.to"</SPAN>
-        <BR><SPAN class="l3">}</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>	
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>    <!-- end /social/friends/invite -->
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"brief" : {</SPAN>
+					<BR>
+					<SPAN class="l3">"likes"
+						: "231",</SPAN>
+					<BR>
+					<SPAN class="l3">"currency" : "usd",</SPAN>
+					<BR>
+					<SPAN class="l3">"balance" : "30.380",</SPAN>
+					<BR>
+					<SPAN class="l3">"name"
+						: "john smith",</SPAN>
+					<BR>
+					<SPAN class="l3">"mood" : 4,</SPAN>
+					<BR>
+					<SPAN class="l3">"userpic" : "url"</SPAN>
+					<BR>
+					<SPAN
+					class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+				</CODE> </SMALL>
+		</P><!-- brief  -->
+		<H2>Catalogs.</H2>
+		<H3>Methods:</H3><!-- /catalog -->
+		<H4><A id="catalog"><STRONG>/catalog</STRONG></A></H4>Request method: GET
+		<P>
+			Description: Gets catalog's items for navigation menu. Input params are
+			based on xpath requests.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
-        
-<!-- /social/friends/count -->		 
-<H4><STRONG><A id="A3">/social/friends/count</A></STRONG></H4>Request method: GET		 
-<P>			Description: Return friends count for current user</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"count":10</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>    <!-- end /social/friends/count-->
+		<H5>Data:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"path" : "/" #the path is a simple xpath expression
+						('/',/shopping/)</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+					<BR>
+				</CODE> </SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"catalog" : [{</SPAN>
+					<BR>
+					<SPAN class="l3">"id"
+						: "84574vgdxgugdxgy",</SPAN>
+					<BR>
+					<SPAN class="l3">"pic" : "url",</SPAN>
+					<BR>
+					<SPAN class="l3">"path" : "/shopping/tvsets",</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"name" : "tv sets"</SPAN>
+					<BR>
+					<SPAN class="l2">}]</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN> </CODE> </SMALL>
+		</P><!-- end /catalog -->
 
+		<H2> Social payments.</H2>
+		<H3>Methods:</H3><!-- /social/feed -->
+		<H4><STRONG><A id="social/feed">/social/feed</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Gets user's feed - a list of his shared payments.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
-<!-- /social/friends/accept -->		 
-<H4><STRONG><A id="A4">/social/friends/accept</A></STRONG></H4>Request method: POST		 
-<P>			Description: Accept request for frendship</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"accountid":"friend@mail.to"</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>	
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>   <!-- end /social/friends/accept-->
-    
-<!-- /social/friends/decline -->		 
-<H4><STRONG><A id="A5">/social/friends/decline</A></STRONG></H4>Request method: POST		 
-<P>			Description: Decline request for frendship</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"accountid":"friend@mail.to"</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>	
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"result" : [0|1|N]</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>
-</P>    <!-- end /social/friends/decline-->
+		<H5>Data:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"global" : 0 #to return a global feed or the user's
+						feed of his actions (0 - global, 1 - friends, 2 - private)</SPAN>
+					<BR>
+					<SPAN
+					class="l1">}</SPAN>
+					<BR>
+				</CODE> </SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"feed" : [</SPAN>
+				<BR>
+				<SPAN class="l3">{</SPAN>
 
-       
-<!-- /social/friends/list -->		 
-<H4><STRONG><A id="A6">/social/friends/list</A></STRONG></H4>Request method: GET		 
-<P>			Description: Get frends list</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P>
-NO DATA
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{"list": [{</SPAN>
-   <BR><SPAN class="l2">"accountid": "friend@mail.to",</SPAN>
-   <BR><SPAN class="l2">"pic": "url",</SPAN>
-   <BR><SPAN class="l2">"name": "Maxim",</SPAN>
-   <BR><SPAN class="l2">"surname": "Loskutnikov"</SPAN>
-        <SPAN class="l1">}]}</SPAN>
-    </CODE>
-</P>    <!-- end /social/friends/list-->
+				<BR>
+				<SPAN class="l4">"id": 2,</SPAN>
+				<BR>
+				<SPAN class="l4">"message": "fdsgfsdg",</SPAN>
+				<BR>
+				<SPAN class="l4">"from": "Max Loskutnikov",</SPAN>
+				<BR>
+				<SPAN class="l4">"from_id": "vk100@onlinepay.com",</SPAN>
+				<BR>
+				<SPAN class="l4">"to": "Voronkov Mikhail",</SPAN>
+				<BR>
+				<SPAN class="l4">"to_id": "792958412606",</SPAN>
+				<BR>
+				<SPAN class="l4">"global": 0,</SPAN>
+				<BR>
+				<SPAN class="l4">"date": "2014-01-11  0:00",</SPAN>
+				<BR>
+				<SPAN class="l4">"likes": 567,</SPAN>
+				<BR>
+				<SPAN class="l4">"paymentId": 2,</SPAN>
+				<BR>
+				<SPAN class="l4">"for": "take yoour money",</SPAN>
+				<BR>
+				<SPAN class="l4">"pic": "pic71",</SPAN>
+				<BR>
+				<SPAN class="l4">"type" : "charge", #available types [charge, pay, request, charge new, pay new, ad]</SPAN>
+				<BR>
+				<SPAN class="l4">"amount": "10",</SPAN>
+				<BR>
+				<SPAN class="l4">"currency": "RUR"</SPAN>
+				<BR>
+				<SPAN class="l4">"viewed": "[0|1]"</SPAN>
 
+				<BR>
+				<SPAN class="l3">}</SPAN>
+				<BR>
+				<SPAN class="l2">]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+				<BR>
+			</CODE>
 
-    
-       
-<!-- /social/friends/search -->		 
-<H4><STRONG><A id="A7">/social/friends/search</A></STRONG></H4>Request method: POST		 
-<P>			Description: Get frends list</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-        <BR><SPAN class="l2">"search":</SPAN>
-        <BR><SPAN class="l3">{</SPAN>
-        <BR><SPAN class="l4">"email":"friend@mail.to"</SPAN>
-        <BR><SPAN class="l3">}</SPAN>
-        <BR><SPAN class="l1">}</SPAN>
-    </CODE>	
-</P>
-<H5>Returns:</H5>
-<P>
-    <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{"list": [{</SPAN>
-   <BR><SPAN class="l2">"accountid": "friend@mail.to",</SPAN>
-   <BR><SPAN class="l2">"pic": "url",</SPAN>
-   <BR><SPAN class="l2">"name": "Maxim",</SPAN>
-   <BR><SPAN class="l2">"surname": "Loskutnikov"</SPAN>
-       <SPAN class="l1">}]}</SPAN>
-    </CODE>
-</P>    <!-- end /social/friends/search-->
+		</P><!-- end /social/feed -->
 
-<H2>Profile operations.</H2><!-- /profile/new -->		 
-<H4><STRONG><A id="profile/new">/profile/new</A></STRONG></H4>Request method: 
-GET		 
-<P>			Description: Gets new events for pending request collection.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"requests":{</SPAN>					 <BR><SPAN 
-class="l3">"new":5</SPAN>					 <BR><SPAN class="l2">}</SPAN>					 <BR><SPAN 
-class="l1">}</SPAN>				 </CODE> </SMALL>		 </P><!-- end new -->		 <!-- /profile/get -->
-		 
-<H4><STRONG><A id="profile/get">/profile/get</A></STRONG></H4>Request method: 
-GET		 
-<P>			Description: Gets a user's profile.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P>
-<SMALL>
-<CODE class="prettyprint lang-n">
-<SPAN class="l1">{</SPAN>
-					 <BR>
-					 <SPAN class="l2">"profile":{</SPAN>
-					 <BR>
-					 <SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
-					 <BR>
-					 <SPAN class="l3">"confirmed":false [true, false]</SPAN>
-					 <BR>
-					 <SPAN class="l3">"firstName":"vladimir",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"lastName":"kovalevskiy",</SPAN>					 
-					 <BR>
-					 <SPAN class="l3">"phone":"+35798000000",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"birthday":"1979-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"company name":"onlinepayllc",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_position":"Big Boss",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"confirmed":true</SPAN>
-					 <BR>
-					 <SPAN class="l2">}</SPAN>
-					 <BR>
-					 <SPAN class="l1">}</SPAN>
-				 </CODE> 
-				 </SMALL>		 
- </P>
-<!-- end /profile/get -->				 
-				 <!-- /profile/balance -->
-		 
-<H4><STRONG><A id="profile/balance">/profile/balance</A></STRONG></H4>Request 
-method: GET		 
-<P>			Description: Gets a user's balance, bank account and linked cards 
-information.		 </P>
-<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>			NO DATA		 </P>
-<H5>Returns:</H5>
-<P><SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
-					 <BR><SPAN class="l2">"balance":{</SPAN>					 <BR><SPAN 
-class="l3">"amount":"150.00",</SPAN>					 <BR><SPAN 
-class="l3">"currency":"eur",</SPAN>					 <BR><SPAN 
-class="l3">"cards":[{"mask":"XXXX1234", "link":"8628777shh32907sjh90dhj", 
-"default":"true", "cashin":"true", "cashout":"false"}],</SPAN>					 <BR><SPAN 
-class="l3">"accounts":[{IBAN:"438342879879234786432", 
-confirmed:"false"}],</SPAN>					 <BR><SPAN class="l3">"limit":"2500"</SPAN>
-					 <BR><SPAN class="l2">}</SPAN>					 <BR><SPAN class="l1">}</SPAN>
-				 </CODE> </SMALL>		 </P><!-- end /profile/balance -->
-    
+		<!-- /social/feed/viewed -->
+		<H4><STRONG><A id="A2">/social/feed/viewed</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Mark feed as viewed
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
 
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"feedid":"30"</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/feed/viewed -->
+		<!-- /social/invite/fb-->
+		<H4><STRONG><A id="social/invite/fb">/social/invite/fb</A></STRONG></H4>Request
+		method: POST
+		<P>
+			Description: This function could be implemented using <A href="https://developers.facebook.com/docs/games/requests/v2.0">Facebook
+			API</A>
+		</P>
+		<H5>Data:</H5>
+		<P>
+			NO DATA:
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			NO DATA:
+		</P><!-- end /social/invite/fb -->
+		<!-- /social/invite/email-->
 
+		<H4><STRONG><A
+		id="social/invite/email">/social/invite/email</A></STRONG></H4>Request method:
+		POST
+		<P>
+			Description: This function could be implemented using <A href="https://developers.facebook.com/docs/games/requests/v2.0">Facebook
+			API</A>
+		</P>
+		<H5>Data:</H5>
+		<P>
+			NO DATA:
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			NO DATA:
+		</P><!-- end /social/invite/fb -->
+		<!-- /social/like-->
+		<H4><STRONG><A id="social/like">/social/like</A></STRONG></H4>Request method:
+		POST
+		<P>
+			Description: Sets a like markup for a public user's payment action.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
-<!-- /profile/stats -->
-		 
-<H4><STRONG><A id="profile/stats">/profile/stats</A></STRONG></H4>Request 
-method: GET		 
-<P>			Description: Gets user's statistic such as number of likes, payments history and number of friends.</P>
-<H5>Headers:</H5>
-    <SMALL>session-token:test-token;</SMALL>
-		 
-<H5>Data:</H5>
-<P>
-    <CODE class="prettyprint lang-n">?position=10</CODE>	
-</P>
-<H5>Returns:</H5>
-<P>
-    <SMALL>
-        <CODE class="prettyprint lang-n">
-        <SPAN class="l1">{</SPAN>
-            <BR><SPAN class="l2">"stats":{</SPAN>
-            					 <BR><SPAN class="l3">"friends":"50",</SPAN>
-            					 <BR><SPAN class="l3">"likes":"4450" #number of likes for all user's payments,</SPAN>
-            					 <BR><SPAN class="l3">"history":[{
-                                     					 <BR><SPAN class="l4">"id": 2,</SPAN>
-                                     					 <BR><SPAN class="l4">"message": "fdsgfsdg",</SPAN>
-                                     					 <BR><SPAN class="l4">"from": "Max Loskutnikov",</SPAN>
-                                     					 <BR><SPAN class="l4">"from_id": "vk100@onlinepay.com",</SPAN>
-                                     					 <BR><SPAN class="l4">"to": "Voronkov Mikhail",</SPAN>
-                                     					 <BR><SPAN class="l4">"to_id": "792958412606",</SPAN>
-                                     					 <BR><SPAN class="l4">"global": 0,</SPAN>
-                                     					 <BR><SPAN class="l4">"date": "2014-01-11  0:00",</SPAN>
-                                                         <BR><SPAN class="l4">"likes": 567,</SPAN>
-                                     					 <BR><SPAN class="l4">"paymentId": 2,</SPAN>
-                                     					 <BR><SPAN class="l4">"for": "take yoour money",</SPAN>
-                                     					 <BR><SPAN class="l4">"pic": "pic71",</SPAN>
-                                     					 <BR><SPAN class="l4">"type" : "charge", #available types[charge, pay]</SPAN>
-                                     					 <BR><SPAN class="l4">"amount": "10",</SPAN>
-                                     					 <BR><SPAN class="l4">"currency": "RUR"</SPAN>
-                                <BR><SPAN class="l3">}]</SPAN>
-             <BR><SPAN class="l2">}</SPAN>
-          <BR><SPAN class="l1">}</SPAN>
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"feedid" : "sadjkh2345hkjhdfkjash"</SPAN>
+				<BR>
+				<SPAN
+				class="l1">}</SPAN> </CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P><!-- end /social/like -->
+		<!-- /social/money/send -->
+		<H4><STRONG><A
+		id="social/money/send">/social/money/send</A></STRONG></H4>Request method: POST
 
-        </SPAN>
-        </CODE> 
-</SMALL>
-</P><!-- end /profile/stats -->
+		<P>
+			Description: Sends a money to a friend.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"sendMoney" : {</SPAN>
+				<BR>
+				<SPAN class="l3">accountIDs : [{"id" :
+					"salkjh234jhkjfh9432y"}]</SPAN>
+				<BR>
+				<SPAN class="l3">"amount" :
+					"100.00"</SPAN>
+				<BR>
+				<SPAN class="l3">"currency" : "eur"</SPAN>
+				<BR>
+				<SPAN
+				class="l3">"message" : "For you being a good man."</SPAN>
+				<BR>
+				<SPAN class="l3">"global"
+					: 1</SPAN>
+				<BR>
+				<SPAN class="l2">}</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P><!-- end /social/money/send -->
+		<!-- /social/money/charge -->
 
-<!-- /profile/save -->		 
-<H4>
-<STRONG>
-<A id="profile/save">/profile/save</A>
-</STRONG>
-</H4>Request method: GET		 
-<P>			Description: Method change the user profile data</P>
-<H5>Headers:</H5>
-<SMALL>session-token:test-token;</SMALL>
+		<H4><STRONG><A
+		id="social/money/charge">/social/money/charge</A></STRONG></H4>Request method:
+		POST
+		<P>
+			Description: Sends a request for money to a friend.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
-<H5>Data:</H5>
-<P>
-<SMALL>
-<CODE class="prettyprint lang-n">
-<SPAN class="l1">{</SPAN>
-					 <BR>
-					 <SPAN class="l2">"profile":{</SPAN>
-					 <BR>
-					 <SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
-					 <BR>
-					 <SPAN class="l3">"confirmed":false [true, false]</SPAN>
-					 <BR>
-					 <SPAN class="l3">"firstName":"vladimir",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"lastName":"kovalevskiy",</SPAN>					 
-					 <BR>
-					 <SPAN class="l3">"phone":"+35798000000",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"birthday":"1979-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"company name":"onlinepayllc",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_position":"Big Boss",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
-					 <BR>
-					 <SPAN class="l2">}</SPAN>
-					 <BR>
-					 <SPAN class="l1">}</SPAN>
-				 </CODE> 
-				 </SMALL>		 
- </P>
-<H5>Returns:</H5>
-<P>
-<SMALL>
-<CODE class="prettyprint lang-n">
-<SPAN class="l1">{</SPAN>
-					 <BR>
-					 <SPAN class="l2">"profile":{</SPAN>
-					 <BR>
-					 <SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
-					 <BR>
-					 <SPAN class="l3">"confirmed":false [true, false]</SPAN>
-					 <BR>
-					 <SPAN class="l3">"firstName":"vladimir",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"lastName":"kovalevskiy",</SPAN>					 
-					 <BR>
-					 <SPAN class="l3">"phone":"+35798000000",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"birthday":"1979-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"company name":"onlinepayllc",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_position":"Big Boss",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
-					 <BR>
-					 <SPAN class="l3">"confirmed":true</SPAN>
-					 <BR>
-					 <SPAN class="l2">}</SPAN>
-					 <BR>
-					 <SPAN class="l1">}</SPAN>
-				 </CODE> 
-				 </SMALL>		 
- </P><!-- end profile/save -->
-		 						 
-<H2> Shopping.</H2>
-<H2> Services.</H2>
-<H2> Shop integration API.</H2>
-<H2> Service integration API.</H2></BODY></HTML>
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"chargeMoney" : {</SPAN>
+				<BR>
+				<SPAN class="l3">accountIDs : [{"id"
+					: "salkjh234jhkjfh9432y"}]</SPAN>
+				<BR>
+				<SPAN class="l3">"amount" :
+					"100.00",</SPAN>
+				<BR>
+				<SPAN class="l3">"currency" : "eur",</SPAN>
+				<BR>
+				<SPAN class="l3">"message" : "Please send me some money for a new
+					car.",</SPAN>
+				<BR>
+				<SPAN class="l3">"global" : 1,</SPAN>
+				<BR>
+				<SPAN class="l2">}</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN> </CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P><!-- end /social/money/charge -->
+		<!-- /social/money/recieve -->
+
+		<H4><STRONG><A id="social/money/recieve">/social/money/recieve |
+		pay</A></STRONG></H4>Request method: POST
+		<P>
+			Description: If someone sends you money you should recieve it.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"sendchargeMoneyID" : "asddfkjh342987jfdh"</SPAN>
+				<BR>
+				<SPAN
+				class="l1">}</SPAN> </CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P><!-- end /social/money/recieve -->
+		<!-- /social/money/get -->
+
+		<H4><STRONG><A id="social/money/get">/social/money/get</A></STRONG></H4>Request
+		method: GET
+		<P>
+			Description: Gets unanswered money requests.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+				class="l2">"moneyRequest" : [{</SPAN>
+				<BR>
+				<SPAN class="l3">"id" :
+					"salkjh234jhkjfh9432y",</SPAN>
+				<BR>
+				<SPAN class="l3">"fromID" :
+					"salkjh234jhkjfh9432y",</SPAN>
+				<BR>
+				<SPAN class="l3">"name" : "John
+					Smith",</SPAN>
+				<BR>
+				<SPAN class="l3">"pic" : "url",</SPAN>
+				<BR>
+				<SPAN
+				class="l3">"type" : "charge" #charge request or money send request,</SPAN>
+				<BR>
+				<SPAN class="l3">"amount" : "100.00",</SPAN>
+				<BR>
+				<SPAN
+				class="l3">"currency" : "eur",</SPAN>
+				<BR>
+				<SPAN class="l3">"message" :
+					"Please send me some money for a new car."</SPAN>
+				<BR>
+				<SPAN
+				class="l2">}]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN> </CODE>
+		</P><!-- end /social/money/get -->
+
+		<!-- /social/friends/invite -->
+		<H4><STRONG><A id="social/friends/invite">/social/friends/invite</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Sends e-mail to the user with invite to join to Onlinepay sysytem. If youser account exist in the system send him frendship request. Create temporary account for user if there are not registered in the system.
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"invite":</SPAN>
+				<BR>
+				<SPAN class="l3">{</SPAN>
+				<BR>
+				<SPAN class="l4">"email":"friend@mail.to"</SPAN>
+				<BR>
+				<SPAN class="l3">}</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/invite -->
+
+		<!-- /social/friends/count -->
+		<H4><STRONG><A id="social/friends/count">/social/friends/count</A></STRONG></H4>Request method: GET
+		<P>
+			Description: Return friends count for current user
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"count":10</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/count-->
+
+		<!-- /social/friends/accept -->
+		<H4><STRONG><A id="social/friends/accept">/social/friends/accept</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Accept request for frendship
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"accountid":"friend@mail.to"</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/accept-->
+
+		<!-- /social/friends/decline -->
+		<H4><STRONG><A id="social/friends/decline">/social/friends/decline</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Decline request for frendship
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"accountid":"friend@mail.to"</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/decline-->
+
+		<!-- /social/friends/list -->
+		<H4><STRONG><A id="social/friends/list">/social/friends/list</A></STRONG></H4>Request method: GET
+		<P>
+			Description: Get frends list
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{"list": [{</SPAN>
+				<BR>
+				<SPAN class="l2">"accountid": "friend@mail.to",</SPAN>
+				<BR>
+				<SPAN class="l2">"pic": "url",</SPAN>
+				<BR>
+				<SPAN class="l2">"name": "Maxim",</SPAN>
+				<BR>
+				<SPAN class="l2">"surname": "Loskutnikov"</SPAN>
+				<SPAN class="l1">}]}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/list-->
+
+		<!-- /social/friends/search -->
+		<H4><STRONG><A id="social/friends/search">/social/friends/search</A></STRONG></H4>Request method: POST
+		<P>
+			Description: Get frends list
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"search":</SPAN>
+				<BR>
+				<SPAN class="l3">{</SPAN>
+				<BR>
+				<SPAN class="l4">"email":"friend@mail.to"</SPAN>
+				<BR>
+				<SPAN class="l3">}</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				<SPAN class="l1">{"list": [{</SPAN>
+				<BR>
+				<SPAN class="l2">"accountid": "friend@mail.to",</SPAN>
+				<BR>
+				<SPAN class="l2">"pic": "url",</SPAN>
+				<BR>
+				<SPAN class="l2">"name": "Maxim",</SPAN>
+				<BR>
+				<SPAN class="l2">"surname": "Loskutnikov"</SPAN>
+				<SPAN class="l1">}]}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/friends/search-->
+
+		<H2>Profile operations.</H2><!-- /profile/new -->
+		<H4><STRONG><A id="profile/new">/profile/new</A></STRONG></H4>Request method:
+		GET
+		<P>
+			Description: Gets new events for pending request collection.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"requests":{</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"new":5</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN
+					class="l1">}</SPAN> </CODE> </SMALL>
+		</P><!-- end new -->
+		<!-- /profile/get -->
+
+		<H4><STRONG><A id="profile/get">/profile/get</A></STRONG></H4>Request method:
+		GET
+		<P>
+			Description: Gets a user's profile.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint lang-n">
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"profile":{</SPAN>
+					<BR>
+					<SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
+					<BR>
+					<SPAN class="l3">"confirmed":false [true, false]</SPAN>
+					<BR>
+					<SPAN class="l3">"firstName":"vladimir",</SPAN>
+					<BR>
+					<SPAN class="l3">"lastName":"kovalevskiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"phone":"+35798000000",</SPAN>
+					<BR>
+					<SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
+					<BR>
+					<SPAN class="l3">"birthday":"1979-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
+					<BR>
+					<SPAN class="l3">"company name":"onlinepayllc",</SPAN>
+					<BR>
+					<SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_position":"Big Boss",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
+					<BR>
+					<SPAN class="l3">"confirmed":true</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+				</CODE> </SMALL>
+		</P>
+		<!-- end /profile/get -->
+		<!-- /profile/balance -->
+
+		<H4><STRONG><A id="profile/balance">/profile/balance</A></STRONG></H4>Request
+		method: GET
+		<P>
+			Description: Gets a user's balance, bank account and linked cards
+			information.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			NO DATA
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL><CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"balance":{</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"amount":"150.00",</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"currency":"eur",</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"cards":[{"mask":"XXXX1234", "link":"8628777shh32907sjh90dhj",
+						"default":"true", "cashin":"true", "cashout":"false"}],</SPAN>
+					<BR>
+					<SPAN
+					class="l3">"accounts":[{IBAN:"438342879879234786432",
+						confirmed:"false"}],</SPAN>
+					<BR>
+					<SPAN class="l3">"limit":"2500"</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+				</CODE> </SMALL>
+		</P><!-- end /profile/balance -->
+
+		<!-- /profile/stats -->
+
+		<H4><STRONG><A id="profile/stats">/profile/stats</A></STRONG></H4>Request
+		method: GET
+		<P>
+			Description: Gets user's statistic such as number of likes, payments history and number of friends.
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n">
+				?position=10</CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint lang-n">
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"stats":{</SPAN>
+					<BR>
+					<SPAN class="l3">"friends":"50",</SPAN>
+					<BR>
+					<SPAN class="l3">"likes":"4450" #number of likes for all user's payments,</SPAN>
+					<BR>
+					<SPAN class="l3">"history":[{
+						<BR>
+						<SPAN class="l4">"id": 2,</SPAN>
+						<BR>
+						<SPAN class="l4">"message": "fdsgfsdg",</SPAN>
+						<BR>
+						<SPAN class="l4">"from": "Max Loskutnikov",</SPAN>
+						<BR>
+						<SPAN class="l4">"from_id": "vk100@onlinepay.com",</SPAN>
+						<BR>
+						<SPAN class="l4">"to": "Voronkov Mikhail",</SPAN>
+						<BR>
+						<SPAN class="l4">"to_id": "792958412606",</SPAN>
+						<BR>
+						<SPAN class="l4">"global": 0,</SPAN>
+						<BR>
+						<SPAN class="l4">"date": "2014-01-11  0:00",</SPAN>
+						<BR>
+						<SPAN class="l4">"likes": 567,</SPAN>
+						<BR>
+						<SPAN class="l4">"paymentId": 2,</SPAN>
+						<BR>
+						<SPAN class="l4">"for": "take yoour money",</SPAN>
+						<BR>
+						<SPAN class="l4">"pic": "pic71",</SPAN>
+						<BR>
+						<SPAN class="l4">"type" : "charge", #available types[charge, pay]</SPAN>
+						<BR>
+						<SPAN class="l4">"amount": "10",</SPAN>
+						<BR>
+						<SPAN class="l4">"currency": "RUR"</SPAN>
+						<BR>
+						<SPAN class="l3">}]</SPAN>
+						<BR>
+						<SPAN class="l2">}</SPAN>
+						<BR>
+						<SPAN class="l1">}</SPAN> </SPAN>
+				</CODE> </SMALL>
+		</P><!-- end /profile/stats -->
+
+		<!-- /profile/save -->
+		<H4><STRONG> <A id="profile/save">/profile/save</A> </STRONG></H4>Request method: GET
+		<P>
+			Description: Method change the user profile data
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint lang-n">
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"profile":{</SPAN>
+					<BR>
+					<SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
+					<BR>
+					<SPAN class="l3">"confirmed":false [true, false]</SPAN>
+					<BR>
+					<SPAN class="l3">"firstName":"vladimir",</SPAN>
+					<BR>
+					<SPAN class="l3">"lastName":"kovalevskiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"phone":"+35798000000",</SPAN>
+					<BR>
+					<SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
+					<BR>
+					<SPAN class="l3">"birthday":"1979-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
+					<BR>
+					<SPAN class="l3">"company name":"onlinepayllc",</SPAN>
+					<BR>
+					<SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_position":"Big Boss",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+				</CODE> </SMALL>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<SMALL>
+				<CODE class="prettyprint lang-n">
+					<SPAN class="l1">{</SPAN>
+					<BR>
+					<SPAN class="l2">"profile":{</SPAN>
+					<BR>
+					<SPAN class="l3">"email":"vk@onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"type":green #available types[personal, green, biz, biz partner, pale],</SPAN>
+					<BR>
+					<SPAN class="l3">"confirmed":false [true, false]</SPAN>
+					<BR>
+					<SPAN class="l3">"firstName":"vladimir",</SPAN>
+					<BR>
+					<SPAN class="l3">"lastName":"kovalevskiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"phone":"+35798000000",</SPAN>
+					<BR>
+					<SPAN class="l3">"fid":"4376dfs786dsf73",</SPAN>
+					<BR>
+					<SPAN class="l3">"birthday":"1979-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"adress":"country, city, street 10-20",</SPAN>
+					<BR>
+					<SPAN class="l3">"company name":"onlinepayllc",</SPAN>
+					<BR>
+					<SPAN class="l3">"web site":"https://onlinepay.com",</SPAN>
+					<BR>
+					<SPAN class="l3">"reg_number":"0123456789SD",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_name":"Vasisualiy",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_position":"Big Boss",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_birth":"1969-05-30",</SPAN>
+					<BR>
+					<SPAN class="l3">"cp_phone":"+35798000001",</SPAN>
+					<BR>
+					<SPAN class="l3">"confirmed":true</SPAN>
+					<BR>
+					<SPAN class="l2">}</SPAN>
+					<BR>
+					<SPAN class="l1">}</SPAN>
+				</CODE> </SMALL>
+		</P><!-- end profile/save -->
+
+		<H2> Shopping.</H2>
+		<H2> Services.</H2>
+		<H2> Shop integration API.</H2>
+		<H2> Service integration API.</H2>
+	</BODY>
+</HTML>
