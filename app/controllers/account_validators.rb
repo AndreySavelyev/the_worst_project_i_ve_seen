@@ -9,7 +9,7 @@ class AccountValidators
   end
 
   def AccountValidators.get_fbid_match(accountid)
-    return /(?<fbid_>fbid_\d{16,20})/.match(accountid)
+    return /(?<fbid_>fbid_\d{10,20})/.match(accountid)
   end
 
   def AccountValidators.is_test_account(accountid)

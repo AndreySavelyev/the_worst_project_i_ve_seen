@@ -10,7 +10,7 @@ module FriendsHelper
     invite_email = AccountValidators::get_email_match(friend_account_id)
     if invite_email #распознан емэйл
 
-      if user.email ===friend_email
+      if user.email ===friend_account_id
         return false
       end
       unless invite_email

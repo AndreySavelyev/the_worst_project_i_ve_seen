@@ -71,7 +71,7 @@ end
 
 def social_friends_invite # пригласить друга
   invite_params=params.require(:invite).permit(:accountid)
-  FriendsHelper.invite_new_friend(@user,invite_params[:email])
+  FriendsHelper.invite_new_friend(@user,invite_params[:accountid])
 
   operation_result = {:result => 0 }
   respond_to do |format|
