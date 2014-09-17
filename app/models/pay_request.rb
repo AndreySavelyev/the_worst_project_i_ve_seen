@@ -1,0 +1,2 @@
+class PayRequest < Feed
+end
