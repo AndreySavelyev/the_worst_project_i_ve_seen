@@ -21,8 +21,56 @@ include FriendsHelper
 
   Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
 
+def add_currency_rate
+  from_currency = params.require(:rates).permit(:from_currency)
+  to_currency = params.require(:rates).permit(:to_currency)
+  rate = params.require(:rates).permit(:rate)
+  date = params.require(:rates).permit(:date)
+
+  #is_exist_newer_rate = ChangeRate.where("CurrencyTo = :to_currency AND CurrencyFrom = :from_curerncy AND Rate = :rate AND SetUpDate >= :date",
+  #                 {to_currency: to_currency, from_currency: from_currency, rate: rate, date: date }).any?
+  # а ведь по большому счету это не важно, сущесвтует ли более новый курс при добавлении более старого. использоваться будет курс новее
+
+  new_rate = ChangeRate.new
+  new_rate.CurrencyTo = IsoCurrency.find_by_Alpha3Code(to_currency).Alpha3Code
+  new_rate.CurrencyFrom = IsoCurrency.find_by_Alpha3Code(from_currency).Alpha3Code
+  new_rate.SetUpDate = date
+  new_rate.Rate = rate #целое число, что с ним делать
+  new_rate.save!
+
+  operation_result = {
+      :from => new_rate.CurrencyFrom,
+      :to => new_rate.CurrencyTo,
+      :rate => new_rate.Rate,
+      :date => new_rate.SetUpDate}
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+
+
+def get_currency_rates_json
+
+  ChangeRate.group(:CurrencyFrom).group(:CurrencyTo).
+
+  operation_result = {
+      :from => rate.CurrencyFrom,
+      :to => rate.CurrencyTo,
+      :rate => rate.Rate,
+      :date => rate.SetUpDate}
+  respond_to do |format|
+    format.json { render :json => operation_result.as_json, status: :ok }
+  end
+end
+
+def get_currency_rates(source_currency, destination_currency)
+  newest_rate = ChangeRate.where("CurrencyTo = :to_currency AND CurrencyFrom = :from_curerncy ",
+                   { to_currency: source_currency.Alpha3Code, from_currency:  destination_currency.Alpha3Code }).last
+  return newest_rate
+end
+
 def social_friends_invite # пригласить друга
-  invite_params=params.require(:invite).permit(:email)
+  invite_params=params.require(:invite).permit(:accountid)
   FriendsHelper.invite_new_friend(@user,invite_params[:email])
 
   operation_result = {:result => 0 }
@@ -79,16 +127,18 @@ def social_friends_list #получить список друзей
 end
 def social_friends_search
   friend_email=params.require(:search).permit(:email)
-  founded=Profile.where(:email => friend_email[:email]).first
+  founded=Profile.where("email like :email ",
+                   { email: friend_email[:email]+'%' }).all
   friend_list=Array.new
   if founded
-    friend_list<<
-        {
-            :accountid=>founded.user_token,
-            :pic =>  founded.pic_url,
-            :name=> founded.name,
-            :surname=> founded.surname
-      }
+    founded.each { |friend|
+      friend_list<<
+          {
+              :accountid => friend.user_token,
+              :pic =>  friend.pic_url,
+              :name => friend.name,
+              :surname => friend.surname
+          }}
   end
   getResult={:list=> friend_list}
   respond_to do |format|
@@ -130,12 +180,13 @@ def get_profile
   def save_profile
    profile =save_profile_params
 
-    #User was successfully created.
     unless (@user.email)
-      @user.reg_token= SecureRandom.hex;
-      @user.email =profile[:email];
-      link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
-     send_confirm_mail(@user, link);
+      unless(Profile.find_by_email(profile[:email]))
+        @user.reg_token= SecureRandom.hex;
+        @user.email =profile[:email];
+        link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
+        send_confirm_mail(@user, link);
+      end
     end
     if profile[:firstName]
       @user.name=profile[:firstName]
@@ -407,7 +458,7 @@ def get_profile
 
   def stats_profile
 position=profile_stats_params
-
+#todo добавить skip для position
 feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
     feed_container=
         {:stats=>
@@ -423,6 +474,7 @@ feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).inclu
   end
 
   def feed
+    #todo проверить списки (только для глобал одинаковые)
     queryPrivacy=params.require(:global)
     feeds = ProfilesHelper::get_feed_message_format(Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).order(:viewed).reverse_order.first(10))
       feed_container={:feed=>feeds}
@@ -442,9 +494,22 @@ feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).inclu
   #methods with required confirmation email
   def social_money_send
 
+    payment_recievers= params[:accountIDs] #непонятный момент, но ладно. так надо.
+
+
     #на исходном кошельке проверяется наличие необходимой суммы
 
+    #создание pay_request
+    send_request= PayRequest.new
+    send_request.amount = params[:amount]
+    send_request.currency = params[:currency]
+    send_request.message = params[:message]
+    send_request.privacy = params[:global]
+    send_request.to_profile = payment_recievers[0][:id] #TODO разъяснить момент с массивом получаетелей
+    send_request.from_profile = @user
+
     #если валюты кошельков различаются, то производится конвертация в валюту назначения
+
     #на исходном кошельке замораживается необходимая сумма
     #шлется запрос второму кошельку на акцепт суммы
     #рассылка уведомлений

@@ -1,41 +1,56 @@
 module FriendsHelper
 
-
-  #1- фигачить протокол прямо в эти методы
-  #2- сделать соапуай тесты
   :public
-  def self.invite_new_friend(user, friend_email)
-    if user.email ===friend_email
-      return false
-    end
+  def self.invite_new_friend(user, friend_account_id)
+    #определение типа параметра:
+    #1- email
+    #2- fb_id
+
     #валидация емэйл
-    invite_email = AccountValidators::get_email_match(friend_email)
-    unless invite_email
-      return false #емэйл имеет некорректный формат
-    end
-    #  поиск существующего аккаунта
-    temp_profile = friends_search(friend_email)
-    #  если аккаунт не найден, то создать новый/временный
-    unless temp_profile
-      temp_profile = Profile.new;
-      temp_profile.temp_account=TRUE
-      temp_profile.user_token = friend_email
-      temp_profile.email = friend_email
-      temp_profile.confirm_type=0
-      unless temp_profile.save
-        @result = Object
-        @result = {:result => 4,:message => "not registered"}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :error }
+    invite_email = AccountValidators::get_email_match(friend_account_id)
+    if invite_email #распознан емэйл
+
+      if user.email ===friend_email
+        return false
+      end
+      unless invite_email
+        return false #емэйл имеет некорректный формат
+      end
+      #  поиск существующего аккаунта
+      temp_profile = friends_search(friend_account_id)
+      #  если аккаунт не найден, то создать новый/временный
+      unless temp_profile
+        temp_profile = Profile.new;
+        temp_profile.temp_account=TRUE
+        temp_profile.user_token = friend_account_id
+        temp_profile.email = friend_account_id
+        temp_profile.confirm_type=0
+        unless temp_profile.save
+          @result = Object
+          @result = {:result => 4,:message => "not registered"}
+          respond_to do |format|
+            format.json { render :json => @result.as_json, status: :error }
+          end
+          return false;
         end
+      end
+      #  так, аккаунт еже сеть в любом случае. делаем ему предложение дружбы.
+      create_friendship_request(user, temp_profile)
+      #
+      unless temp_profile.temp_account #если временный аккаунт, то без посыла EMAIL
+        Emailer.email_friend_invite(friend_account_id,user )
+      end
+    else
+      # поиск существующего аккаунта по FB_ID
+      profile_result = Profile.where(:fb_token => friend_account_id).first
+      unless profile_result
         return false;
       end
-    end
-    #  так, аккаунт еже сеть в любом случае. делаем ему предложение дружбы.
-    create_friendship_request(user, temp_profile)
-    #
-    unless temp_profile.temp_account #если временный аккаунт, то без посыла EMAIL
-      Emailer.email_friend_invite(friend_email,user )
+      # делаем ему предложение дружбы.
+      create_friendship_request(user, profile_result)
+      unless profile_result.email #емэйл задан
+        Emailer.email_friend_invite(friend_account_id,user )
+      end
     end
   end
 
@@ -137,7 +152,7 @@ module FriendsHelper
   end
 
   def self.friends_search(email_search)
-    profile_result= Profile.where(:email => email_search).first
+    profile_result = Profile.where(:email => email_search).first
     if profile_result
       return profile_result
     end
@@ -145,7 +160,6 @@ module FriendsHelper
   end
 
 :private
-
   def self.find_request(user, friend_account_id, request_status)
     friend_id = Profile.find_by_user_token(friend_account_id)
 

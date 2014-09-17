@@ -24,6 +24,10 @@ Rails.application.routes.draw do
   #post '/social/', to: 'profiles#', format: 'json'
   #post '/social/', to: 'profiles#', format: 'json'
 
+
+  get '/social/money/rates', to: 'profiles#get_currency_rates_json', format: 'json'
+  post '/social/money/rates', to: 'profiles#add_currency_rate', format: 'json'
+
   post '/social/money/send', to: 'profiles#social_money_send', format: 'json'
   post '/social/money/charge', to: 'profiles#social_money_charge', format: 'json'
   post '/social/money/receive', to: 'profiles#recieve_pay', format: 'json'
