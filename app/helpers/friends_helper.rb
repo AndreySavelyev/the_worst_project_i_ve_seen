@@ -46,6 +46,10 @@ module FriendsHelper
       unless profile_result
         return false;
       end
+
+      if profile_result.fb_token === friend_account_id
+        return false
+      end
       # делаем ему предложение дружбы.
       create_friendship_request(user, profile_result)
       unless profile_result.email #емэйл задан
@@ -77,7 +81,7 @@ module FriendsHelper
     request= FriendshipRequest.new
     request.from_profile=user
     request.to_profile=friend
-    request.fType = 20
+    request.fType = 0
     request.feed_date = Time.now
     request.privacy = 2 #friends
     request.message = 'be my friend'

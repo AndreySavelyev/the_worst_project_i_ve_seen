@@ -48,11 +48,8 @@ def add_currency_rate
   end
 end
 
-
 def get_currency_rates_json
-
   ChangeRate.group(:CurrencyFrom).group(:CurrencyTo).
-
   operation_result = {
       :from => rate.CurrencyFrom,
       :to => rate.CurrencyTo,
@@ -78,6 +75,7 @@ def social_friends_invite # пригласить друга
     format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
+
 def social_feed_viewed #пометить новость прочитанным
   feed_id=params.require(:feedid)
   getResult= FriendsHelper.mark_feed_as_viewed(@user, feed_id)?0:1
@@ -86,6 +84,7 @@ def social_feed_viewed #пометить новость прочитанным
     format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
+
 def social_friends_request #добавить в друзья
   friend_id=params.require(:accountid)
   #todo отправка емейла
@@ -95,12 +94,14 @@ def social_friends_request #добавить в друзья
     format.json { render :json => @getResult.as_json, status: :ok }
   end
 end
+
 def social_friends_count #количество друзей
   @getResult={:count=> FriendsHelper.friends_count(@user)} #todo -change message format
   respond_to do |format|
     format.json { render :json => @getResult.as_json, status: :ok }
   end
 end
+
 def social_friends_accept #принять дружбу
   friend_id=params.require(:accountid) #account, чей запрос принять
   getResult= FriendsHelper.friendship_request_status(@user, friend_id,1)?0:1
@@ -109,6 +110,7 @@ def social_friends_accept #принять дружбу
     format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
+
 def social_friends_decline #отклонить дружбу
   friend_id=params.require(:accountid) #account, чей запрос принять
   getResult= FriendsHelper.friendship_request_status(@user, friend_id,2)?0:1
