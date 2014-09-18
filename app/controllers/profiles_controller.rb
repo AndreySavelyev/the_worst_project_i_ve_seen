@@ -68,9 +68,11 @@ end
 
 def social_friends_invite # пригласить друга
   invite_params=params.require(:invite).permit(:accountid)
-  FriendsHelper.invite_new_friend(@user,invite_params[:accountid])
-
-  operation_result = {:result => 0 }
+  unless invite_params && invite_params[:accountid]
+    operation_result = {:result => 1 }
+  else
+     operation_result = {:result => FriendsHelper.invite_new_friend(@user,invite_params[:accountid])?0:1 }
+  end
   respond_to do |format|
     format.json { render :json => operation_result.as_json, status: :ok }
   end

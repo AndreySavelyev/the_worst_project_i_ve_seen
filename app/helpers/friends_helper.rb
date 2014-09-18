@@ -6,20 +6,16 @@ module FriendsHelper
     #1- email
     #2- fb_id
 
-    #валидация емэйл
-    invite_email = AccountValidators::get_email_match(friend_account_id)
-    if invite_email #распознан емэйл
+    #поиск аккаунта по его accountid
+    temp_profile = Profile.where(:user_token => friend_account_id).first
 
-      if user.email ===friend_account_id
-        return false
-      end
-      unless invite_email
-        return false #емэйл имеет некорректный формат
-      end
-      #  поиск существующего аккаунта
-      temp_profile = friends_search(friend_account_id)
-      #  если аккаунт не найден, то создать новый/временный
+    #валидация емэйл
       unless temp_profile
+        invite_email = AccountValidators::get_email_match(friend_account_id)
+        unless invite_email
+          #был передан не емэйл, такое счастье не надо
+          return false
+        end
         temp_profile = Profile.new;
         temp_profile.temp_account=TRUE
         temp_profile.user_token = friend_account_id
@@ -40,22 +36,7 @@ module FriendsHelper
       unless temp_profile.temp_account #если временный аккаунт, то без посыла EMAIL
         Emailer.email_friend_invite(friend_account_id,user )
       end
-    else
-      # поиск существующего аккаунта по FB_ID
-      profile_result = Profile.where(:fb_token => friend_account_id).first
-      unless profile_result
-        return false;
-      end
-
-      if profile_result.fb_token === friend_account_id
-        return false
-      end
-      # делаем ему предложение дружбы.
-      create_friendship_request(user, profile_result)
-      unless profile_result.email #емэйл задан
-        Emailer.email_friend_invite(friend_account_id,user )
-      end
-    end
+    return true
   end
 
   def self.mark_feed_as_viewed(user, feed_id)
