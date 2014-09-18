@@ -478,7 +478,21 @@ feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).inclu
   def feed
     #todo проверить списки (только для глобал одинаковые)
     queryPrivacy=params.require(:global)
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where(['privacy = ?', queryPrivacy]).includes(:from_profile, :to_profile).order(:viewed).reverse_order.first(10))
+    if queryPrivacy == "0"
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy",
+                                                               {privacy: queryPrivacy})
+                                                    .includes(:from_profile, :to_profile)
+                                                    .order(:viewed).reverse_order
+                                                    .order(feed_date: :desc)#.reverse_order
+                                                    .first(10))
+    else
+      feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user) AND status=0",
+                                                                 {privacy: queryPrivacy, to_user: @user.id, from_user:  @user.id })
+                                                      .includes(:from_profile, :to_profile)
+                                                      .order(:viewed)#.reverse_order
+                                                      .order(feed_date: :desc)#.reverse_order
+                                                      .first(10))
+    end
       feed_container={:feed=>feeds}
       respond_to do |format|
         format.json { render :json => feed_container.as_json, status: :ok }

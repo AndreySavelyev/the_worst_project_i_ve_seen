@@ -59,7 +59,8 @@ module FriendsHelper
   end
 
   def self.mark_feed_as_viewed(user, feed_id)
-    feed=user.destinationFeeds.where(:id=>feed_id).first
+    feed= user.sourceFeeds.where(:id=>feed_id).first
+    #feed= user.destinationFeeds.where(:id=>feed_id).first
     unless feed
       return false
     end
@@ -126,8 +127,6 @@ module FriendsHelper
   end
 
   def self.friendship_request_cancel(user_who_made_request, friend_account_id)
-    #найти запрос от друга
-    #найти запрос от друга
     friendship_request = find_request(user, friend_account_id, 0)
     if(friendship_request)
       friendship_request.update(:status=>4)
