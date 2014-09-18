@@ -147,7 +147,9 @@ module FriendsHelper
   def self.find_request(user, friend_account_id, request_status)
     friend_id = Profile.find_by_user_token(friend_account_id)
 
-    return FriendshipRequest.where(:to_profile_id => user.id, :from_profile_id =>friend_id.id, :status => request_status ).first
+    return FriendshipRequest.where(:to_profile_id => user.id,
+                                   :from_profile_id =>friend_id.id,
+                                   :status => request_status ).first
   end
 
   def  self.is_friendship_exist(user_1,user_2)
