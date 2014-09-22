@@ -237,8 +237,8 @@ end
    end
 
    unless (@user.email || @user.confirm_type != 0) #в профиле не указан емэйл или он не подтвержден
-     if profile[:email]
-       emailId = AccountValidators::get_email_match(profile[:email])
+     if profile[:email] #в параметрах был передан мэйл
+       emailId = AccountValidators::get_email_match(profile[:email]) #проверка адреса
        if(emailId)
          #проверка, что указанный мэйл никем более не используется
          searchResult = Profile.where("user_token = :e_mail OR email = :e_mail",{e_mail: profile[:email]}).any?
@@ -317,7 +317,7 @@ end
 
     founded_profile= Profile.where("user_token = :accountid
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: @sign_up.accountid}).first
-    if founded_profile || founded_profile.temp_account
+    if founded_profile && founded_profile.temp_account
       @newUser = founded_profile
       @newUser.temp_account = FALSE
     else
