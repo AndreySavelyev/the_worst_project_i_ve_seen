@@ -67,14 +67,21 @@ def get_currency_rates(source_currency, destination_currency)
 end
 
 def social_friends_invite # пригласить друга
-  invite_params=params.require(:invite).permit(:accountid)
-  unless invite_params && invite_params[:accountid]
-    operation_result = {:result => 1 }
-  else
-     operation_result = {:result => FriendsHelper.invite_new_friend(@user,invite_params[:accountid])?0:1 }
-  end
+  invite_params=params.require(:invite)#.require(accountid: [])
+  result_array = Array.new
+  invite_params.each  { |invition|
+    result_array<<{
+      :p1=>invition[:accountid]
+    } }
+
+#  unless invite_params && invite_params[:accountid]
+#    operation_result = {:result => 1 }
+#  else
+#     operation_result = {:result => FriendsHelper.invite_new_friend(@user,invite_params[:accountid])?0:1 }
+#  end
   respond_to do |format|
-    format.json { render :json => operation_result.as_json, status: :ok }
+    #format.json { render :json => operation_result.as_json, status: :ok }
+    format.json { render :json => result_array.as_json, status: :ok }
   end
 end
 
@@ -151,122 +158,140 @@ def social_friends_search
 end
 
 def get_profile
-    @profile = Object
-    @profile =
-        {
-            :profile=>
-                {
-                    :accountid=>@user.user_token,
-                    :email=>@user.email,
-                    :type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':@user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
-                    :firstName=>@user.name,
-                    :lastName=>@user.surname,
-                    :phone=>@user.phone,
-                    :fid=>@user.fb_token,
-                    :birthday=>@user.birthday,
-                    :address=>@user.address,
-                    :company_name=>@user.company_name,
-                    :web_site=>@user.web_site,
-                    :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0),
-                    :reg_number=>@user.company_reg_number,
-                    :cp_name=>@user.contact_person_name,
-                    :cp_position=>@user.contact_person_position,
-                    :cp_birth=>@user.contact_person_date_of_birth,
-                    :cp_phone=>@user.contact_person_phone
-                }
-        }
+  @profile = Object
+  @profile =
+      {
+          :profile=>
+              {
+                  :accountid=>@user.user_token,
+                  :email=>@user.email,
+                  :type=>@user.wallet_type==1?'personal':@user.wallet_type==2?'green':@user.wallet_type==3?'biz':@user.wallet_type==4?'biz partner':@user.wallet_type==5?'pale':'unknown', #available types[personal, green, biz, biz partner, pale]
+                  :firstName=>@user.name,
+                  :lastName=>@user.surname,
+                  :phone=>@user.phone,
+                  :fid=>@user.fb_token,
+                  :birthday=>@user.birthday,
+                  :address=>@user.address,
+                  :company_name=>@user.company_name,
+                  :web_site=>@user.web_site,
+                  :confirmed=>(@user.confirm_type!=nil && @user.confirm_type!=0),
+                  :reg_number=>@user.company_reg_number,
+                  :cp_name=>@user.contact_person_name,
+                  :cp_position=>@user.contact_person_position,
+                  :cp_birth=>@user.contact_person_date_of_birth,
+                  :cp_phone=>@user.contact_person_phone
+              }
+      }
 
-    respond_to do |format|
-      format.json { render :json => @profile.as_json, status: :ok }
-    end
+  respond_to do |format|
+    format.json { render :json => @profile.as_json, status: :ok }
   end
+end
 
   def save_profile
    profile =save_profile_params
 
-    unless (@user.email)
-      unless(Profile.find_by_email(profile[:email]))
-        @user.reg_token= SecureRandom.hex;
-        @user.email =profile[:email];
-        link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
-        send_confirm_mail(@user, link);
-      end
-    end
-    if profile[:firstName]
-      @user.name=profile[:firstName]
-    end
-    if profile[:lastName]
-      @user.surname=profile[:lastName]
-    end
-    if profile[:phone]
-      @user.phone=profile[:phone]
-    end
-    if  profile[:fid]
-      @user.fb_token= profile[:fid]
-    end
-    if profile[:birthday]
-      @user.birthday=profile[:birthday]
-    end
-    if profile[:address]
-      @user.address=profile[:address]
-    end
-    if profile[:company_name]
-      @user.company_name=profile[:company_name]
-    end
-    if profile[:web_site]
-      @user.web_site=profile[:web_site]
-    end
-    # Registration number – рег номер.
-    if profile[:reg_number]
-      @user.company_reg_number=profile[:reg_number]
-    end
-    # Contact person – контакт компании (Имя и фамилия).
-    if profile[:cp_name]
-      @user.contact_person_name=profile[:cp_name]
-    end
-    # Contact person’s position - Позиция контактного лица.
-    if profile[:cp_position]
-      @user.contact_person_position=profile[:cp_position]
-    end
-    # Contact person’s date of birth.
-    if profile[:cp_birth]
-      @user.contact_person_date_of_birth=profile[:cp_birth]
-    end
-    # Contact person’s phone (including country code).
-    if profile[:cp_phone]
-      @user.contact_person_phone=profile[:cp_phone]
-    end
+   if profile[:firstName]
+     @user.name=profile[:firstName]
+   end
+   if profile[:lastName]
+     @user.surname=profile[:lastName]
+   end
+   if profile[:phone]
+     @user.phone=profile[:phone]
+   end
+   if  profile[:fid]
+     @user.fb_token= profile[:fid]
+   end
+   if profile[:birthday]
+     @user.birthday=profile[:birthday]
+   end
+   if profile[:address]
+     @user.address=profile[:address]
+   end
+   if profile[:company_name]
+     @user.company_name=profile[:company_name]
+   end
+   if profile[:web_site]
+     @user.web_site=profile[:web_site]
+   end
+   # Registration number – рег номер.
+   if profile[:reg_number]
+     @user.company_reg_number=profile[:reg_number]
+   end
+   # Contact person – контакт компании (Имя и фамилия).
+   if profile[:cp_name]
+     @user.contact_person_name=profile[:cp_name]
+   end
+   # Contact person’s position - Позиция контактного лица.
+   if profile[:cp_position]
+     @user.contact_person_position=profile[:cp_position]
+   end
+   # Contact person’s date of birth.
+   if profile[:cp_birth]
+     @user.contact_person_date_of_birth=profile[:cp_birth]
+   end
+   # Contact person’s phone (including country code).
+   if profile[:cp_phone]
+     @user.contact_person_phone=profile[:cp_phone]
+   end
+
+   unless (@user.email || @user.confirm_type != 0) #в профиле не указан емэйл или он не подтвержден
+     if profile[:email]
+       emailId = AccountValidators::get_email_match(profile[:email])
+       if(emailId)
+         #проверка, что указанный мэйл никем более не используется
+         searchResult = Profile.where("user_token = :e_mail OR email = :e_mail",{e_mail: profile[:email]}).any?
+         unless searchResult
+           @user.reg_token = SecureRandom.hex;
+           @user.email = profile[:email];
+           link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
+           send_confirm_mail(@user, link);
+         else
+           decline_already_registered
+           return;
+         end
+       else
+         @result = {:result => 16,:message => "e-mail have incorrect format"}
+         respond_to do |format|
+           format.json { render :json => @result.as_json, status: :conflict }
+         end
+         return;
+       end
+     end
+   end
 
     @user.save!
     get_profile
   end
 
-  def signin
-    #if(@sign_in.accountid) #decline authorisation via email+fb_token
-      # поиск аккаунта по емэйл
-      newUser = Profile.find_by_user_token(@sign_in.accountid);
-   # else
-   #   @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
-   # end
+def signin
+  #if(@sign_in.accountid) #decline authorisation via email+fb_token
+  # поиск аккаунта по емэйл
+  newUser = Profile.find_by_user_token(@sign_in.accountid);
+  # else
+  #   @newUser = Profile.find_by_fb_token(@sign_in.fb_token);
+  # end
 
-    if(newUser && !AccountValidators.get_fbid_match(@sign_in.accountid))
-      #checking user password
-      user_password = Digest::SHA2.hexdigest(newUser.salt + @sign_in.password);
-    end
-
-      unless newUser && (user_password == newUser.password) ||  newUser && newUser.temp_account #временному аккаунту нельзя давать логиниться
-        @result = Object
-        @result = {:result => 5 ,:message => "user not found or incorrect password"}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :unauthorized }
-        end
-        return;
-      end
-
-    @session=create_session(newUser);
-    sendmail(newUser, "sign-in");
-    return_session(@session)
+  if(newUser && !AccountValidators.get_fbid_match(@sign_in.accountid))
+    #checking user password
+    user_password = Digest::SHA2.hexdigest(newUser.salt + @sign_in.password);
   end
+
+  unless newUser && (user_password == newUser.password) ||  newUser && newUser.temp_account #временному аккаунту нельзя давать логиниться
+    @result = Object
+    @result = {:result => 5 ,:message => "user not found or incorrect password"}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :unauthorized }
+    end
+    return;
+  end
+  @session=create_session(newUser);
+  if newUser.email
+    sendmail(newUser, "sign-in");
+  end
+  return_session(@session)
+end
 
   def check_session
     set_user_from_session
@@ -289,16 +314,12 @@ def get_profile
   def signup
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-   # опять поиск по емэйлу
 
-    founded_profile = Profile.find_by_user_token(@sign_up.accountid)
-    unless founded_profile
-      founded_profile = Profile.find_by_email(@sign_up.accountid)
-    end
-
-    if founded_profile &&  founded_profile.temp_account
+    founded_profile= Profile.where("user_token = :accountid
+                   OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: @sign_up.accountid}).first
+    if founded_profile || founded_profile.temp_account
       @newUser = founded_profile
-      @newUser.temp_account=FALSE
+      @newUser.temp_account = FALSE
     else
       if founded_profile # обнаружен существующий аккаунт
         @log.info("not registered. accountId have incorrect format")
@@ -461,17 +482,18 @@ def get_profile
   end
 
   def stats_profile
-position=profile_stats_params
+    position=profile_stats_params
+
 #todo добавить skip для position
-feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
+    feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
     feed_container=
         {:stats=>
-         {
-            :friends=>0,
-            :likes=>0, #number of likes for all user's payments,
-            :history=>feeds
+             {
+                 :friends=>0,
+                 :likes=>0, #number of likes for all user's payments,
+                 :history=>feeds
+             }
         }
-      }
     respond_to do |format|
       format.json { render :json => feed_container.as_json, status: :ok }
     end
@@ -481,8 +503,7 @@ feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).inclu
     #todo проверить списки (только для глобал одинаковые)
     queryPrivacy=params.require(:global)
     if queryPrivacy == "0"
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy",
-                                                               {privacy: queryPrivacy})
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy", {privacy: queryPrivacy})
                                                     .includes(:from_profile, :to_profile)
                                                     .order(:viewed).reverse_order
                                                     .order(feed_date: :desc)#.reverse_order
@@ -513,8 +534,6 @@ feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).inclu
   def social_money_send
 
     payment_recievers= params[:accountIDs] #непонятный момент, но ладно. так надо.
-
-
     #на исходном кошельке проверяется наличие необходимой суммы
 
     #создание pay_request
@@ -678,7 +697,7 @@ def checkSessionValid(session)
 
   def sendmail(sign_up, subject)
     if sign_up.valid?
-      Emailer.email_lead(sign_up.email, subject).deliver;
+       Emailer.email_lead(sign_up.email, subject).deliver;
     end
   end
 
