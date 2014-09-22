@@ -12,7 +12,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/OnlinePay@Development__OnlinePay.coverage" NAME="Development: OnlinePay Coverage Results" MODIFIED="1411375294125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
+    <SUITE FILE_PATH="coverage/OnlinePay@Development__OnlinePay.coverage" NAME="Development: OnlinePay Coverage Results" MODIFIED="1411390640828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
     <SUITE FILE_PATH="coverage/OnlinePay@Production__OnlinePay.coverage" NAME="Production: OnlinePay Coverage Results" MODIFIED="1405766536498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -30,8 +30,8 @@
       <file leaf-file-name="friends_helper.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.642857" vertical-offset="28" max-vertical-offset="3077">
-              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            <state vertical-scroll-proportion="-10.928572" vertical-offset="0" max-vertical-offset="3077">
+              <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -40,24 +40,31 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46588695" vertical-offset="4028" max-vertical-offset="10557">
-              <caret line="322" column="8" selection-start-line="322" selection-start-column="8" selection-end-line="322" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.7034036" vertical-offset="331" max-vertical-offset="6970">
+              <caret line="84" column="6" selection-start-line="84" selection-start-column="6" selection-end-line="84" selection-end-column="6" />
               <folding>
                 <element signature="e#1090#2277#0" expanded="false" />
                 <element signature="e#2279#2613#0" expanded="false" />
                 <element signature="e#2615#2916#0" expanded="false" />
-                <element signature="e#6075#7355#0" expanded="false" />
-                <element signature="e#10631#10714#0" expanded="false" />
-                <element signature="e#12116#12956#0" expanded="false" />
-                <element signature="e#13985#15488#0" expanded="false" />
-                <element signature="e#15492#15771#0" expanded="false" />
-                <element signature="e#15775#16184#0" expanded="false" />
-                <element signature="e#16188#16732#0" expanded="false" />
-                <element signature="e#16736#18114#0" expanded="false" />
-                <element signature="e#18118#18276#0" expanded="false" />
-                <element signature="e#18324#19103#0" expanded="false" />
-                <element signature="e#19107#19365#0" expanded="false" />
-                <element signature="e#27241#27558#0" expanded="false" />
+                <element signature="e#6218#7498#0" expanded="false" />
+                <element signature="e#7502#9842#0" expanded="false" />
+                <element signature="e#10774#10857#0" expanded="false" />
+                <element signature="e#11223#14124#0" expanded="false" />
+                <element signature="e#12259#13099#0" expanded="false" />
+                <element signature="e#14128#15631#0" expanded="false" />
+                <element signature="e#15635#15914#0" expanded="false" />
+                <element signature="e#15918#16327#0" expanded="false" />
+                <element signature="e#16331#16875#0" expanded="false" />
+                <element signature="e#16879#18257#0" expanded="false" />
+                <element signature="e#18261#18419#0" expanded="false" />
+                <element signature="e#19250#19508#0" expanded="false" />
+                <element signature="e#19512#19685#0" expanded="false" />
+                <element signature="e#19689#20789#0" expanded="false" />
+                <element signature="e#20812#21069#0" expanded="false" />
+                <element signature="e#21081#21240#0" expanded="false" />
+                <element signature="e#21244#21937#0" expanded="false" />
+                <element signature="e#21941#22168#0" expanded="false" />
+                <element signature="e#27384#27701#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -196,7 +203,7 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1709" />
+    <option name="width" value="1901" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -519,20 +526,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1709" height="1040" extended-state="0" />
+    <frame x="0" y="0" width="1901" height="1040" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6669316" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6664645" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32441473" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3569061" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3569061" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19769557" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28773072" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17707768" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2872928" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25397456" sideWeight="0.5008104" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38762215" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38674033" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -583,13 +590,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/profiles_controller.rb</url>
-          <line>505</line>
+          <line>509</line>
           <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/helpers/friends_helper.rb</url>
-          <line>51</line>
-          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="76" />
@@ -941,14 +943,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.642857" vertical-offset="28" max-vertical-offset="3077">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="4.035714" vertical-offset="385" max-vertical-offset="1479">
@@ -984,26 +978,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.928572" vertical-offset="0" max-vertical-offset="3077">
+          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46588695" vertical-offset="4028" max-vertical-offset="10557">
-          <caret line="322" column="8" selection-start-line="322" selection-start-column="8" selection-end-line="322" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.7034036" vertical-offset="331" max-vertical-offset="6970">
+          <caret line="84" column="6" selection-start-line="84" selection-start-column="6" selection-end-line="84" selection-end-column="6" />
           <folding>
             <element signature="e#1090#2277#0" expanded="false" />
             <element signature="e#2279#2613#0" expanded="false" />
             <element signature="e#2615#2916#0" expanded="false" />
-            <element signature="e#6075#7355#0" expanded="false" />
-            <element signature="e#10631#10714#0" expanded="false" />
-            <element signature="e#12116#12956#0" expanded="false" />
-            <element signature="e#13985#15488#0" expanded="false" />
-            <element signature="e#15492#15771#0" expanded="false" />
-            <element signature="e#15775#16184#0" expanded="false" />
-            <element signature="e#16188#16732#0" expanded="false" />
-            <element signature="e#16736#18114#0" expanded="false" />
-            <element signature="e#18118#18276#0" expanded="false" />
-            <element signature="e#18324#19103#0" expanded="false" />
-            <element signature="e#19107#19365#0" expanded="false" />
-            <element signature="e#27241#27558#0" expanded="false" />
+            <element signature="e#6218#7498#0" expanded="false" />
+            <element signature="e#7502#9842#0" expanded="false" />
+            <element signature="e#10774#10857#0" expanded="false" />
+            <element signature="e#11223#14124#0" expanded="false" />
+            <element signature="e#12259#13099#0" expanded="false" />
+            <element signature="e#14128#15631#0" expanded="false" />
+            <element signature="e#15635#15914#0" expanded="false" />
+            <element signature="e#15918#16327#0" expanded="false" />
+            <element signature="e#16331#16875#0" expanded="false" />
+            <element signature="e#16879#18257#0" expanded="false" />
+            <element signature="e#18261#18419#0" expanded="false" />
+            <element signature="e#19250#19508#0" expanded="false" />
+            <element signature="e#19512#19685#0" expanded="false" />
+            <element signature="e#19689#20789#0" expanded="false" />
+            <element signature="e#20812#21069#0" expanded="false" />
+            <element signature="e#21081#21240#0" expanded="false" />
+            <element signature="e#21244#21937#0" expanded="false" />
+            <element signature="e#21941#22168#0" expanded="false" />
+            <element signature="e#27384#27701#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -68,20 +68,24 @@ end
 
 def social_friends_invite # пригласить друга
   invite_params=params.require(:invite)#.require(accountid: [])
-  result_array = Array.new
+  #result_array = Array.new
+  operation_result = {:result => 0 }
   invite_params.each  { |invition|
-    result_array<<{
-      :p1=>invition[:accountid]
-    } }
+    #result_array<<{
+    #    :accountid=>invition[:accountid],
+    #    :result=>
+            FriendsHelper.invite_new_friend(@user,invition[:accountid])
+    #}
+  }
 
 #  unless invite_params && invite_params[:accountid]
-#    operation_result = {:result => 1 }
+#   operation_result = {:result => 1 }
 #  else
 #     operation_result = {:result => FriendsHelper.invite_new_friend(@user,invite_params[:accountid])?0:1 }
 #  end
   respond_to do |format|
-    #format.json { render :json => operation_result.as_json, status: :ok }
-    format.json { render :json => result_array.as_json, status: :ok }
+    format.json { render :json => operation_result.as_json, status: :ok }
+    #format.json { render :json => result_array.as_json, status: :ok }
   end
 end
 
