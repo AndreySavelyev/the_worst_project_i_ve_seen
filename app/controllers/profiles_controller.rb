@@ -581,7 +581,7 @@ end
         #блокировка суммы к списанию
 
     rescue
-      @result = {:result => 1,:message => "unknown currency"}
+      @result = {:result => 103,:message => "unknown currency"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :error }
       end
@@ -620,7 +620,7 @@ end
       end
 
     rescue
-      @result = {:result => 1,:message => "transaction rolled back"}
+      @result = {:result => 104,:message => "transaction rolled back"}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :error }
       end
@@ -628,7 +628,7 @@ end
     end
     @result = {:result => 0,:message => "ok", :available=> from_profile.available, :holded=> from_profile.holded}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :ok }
     end
   end
 
