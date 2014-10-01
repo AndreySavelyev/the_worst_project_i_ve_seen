@@ -549,6 +549,7 @@ end
       send_request.to_profile = to_profile
       send_request.status=0 #status:NEW
       send_request.fType =4
+      send_request.privacy =2
     rescue
       @result = {:result => 1,:message => "reciever not found"}
       respond_to do |format|
