@@ -75,8 +75,8 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.815" vertical-offset="2452" max-vertical-offset="7259">
-              <caret line="580" column="10" selection-start-line="580" selection-start-column="10" selection-end-line="580" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.70166665" vertical-offset="2350" max-vertical-offset="7259">
+              <caret line="570" column="30" selection-start-line="570" selection-start-column="30" selection-end-line="570" selection-end-column="30" />
               <folding>
                 <element signature="e#1090#2277#0" expanded="false" />
                 <element signature="e#2279#2613#0" expanded="false" />
@@ -974,8 +974,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.815" vertical-offset="2452" max-vertical-offset="7259">
-          <caret line="580" column="10" selection-start-line="580" selection-start-column="10" selection-end-line="580" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.70166665" vertical-offset="2350" max-vertical-offset="7259">
+          <caret line="570" column="30" selection-start-line="570" selection-start-column="30" selection-end-line="570" selection-end-column="30" />
           <folding>
             <element signature="e#1090#2277#0" expanded="false" />
             <element signature="e#2279#2613#0" expanded="false" />
