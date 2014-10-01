@@ -30,8 +30,8 @@
       <file leaf-file-name="friends_helper.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1445">
-              <caret line="166" column="52" selection-start-line="166" selection-start-column="52" selection-end-line="166" selection-end-column="52" />
+            <state vertical-scroll-proportion="-16.892857" vertical-offset="989" max-vertical-offset="1683">
+              <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
               <folding>
                 <element signature="e#34#1318#0" expanded="false" />
                 <element signature="e#1322#1561#0" expanded="false" />
@@ -39,14 +39,24 @@
                 <element signature="e#2099#2240#0" expanded="false" />
                 <element signature="e#2244#2399#0" expanded="false" />
                 <element signature="e#2426#2571#0" expanded="false" />
-                <element signature="e#2575#3008#0" expanded="false" />
                 <element signature="e#3012#3239#0" expanded="false" />
                 <element signature="e#3243#3639#0" expanded="false" />
                 <element signature="e#3643#3753#0" expanded="false" />
                 <element signature="e#3757#3938#0" expanded="false" />
                 <element signature="e#3951#4281#0" expanded="false" />
                 <element signature="e#4285#4396#0" expanded="false" />
-                <element signature="e#4400#4807#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="profiles_helper.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.5714285" vertical-offset="1078" max-vertical-offset="1887">
+              <caret line="66" column="67" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="67" />
+              <folding>
+                <element signature="e#2297#2583#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -75,12 +85,16 @@
       <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70166665" vertical-offset="2350" max-vertical-offset="7259">
-              <caret line="570" column="30" selection-start-line="570" selection-start-column="30" selection-end-line="570" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.45889387" vertical-offset="1121" max-vertical-offset="6545">
+              <caret line="550" column="24" selection-start-line="550" selection-start-column="24" selection-end-line="550" selection-end-column="24" />
               <folding>
                 <element signature="e#1090#2277#0" expanded="false" />
                 <element signature="e#2279#2613#0" expanded="false" />
+                <element signature="e#2615#2916#0" expanded="false" />
                 <element signature="e#2918#3617#0" expanded="false" />
+                <element signature="e#3619#3926#0" expanded="false" />
+                <element signature="e#3928#4318#0" expanded="false" />
+                <element signature="e#4320#4554#0" expanded="false" />
                 <element signature="e#4556#4896#0" expanded="false" />
                 <element signature="e#4898#5241#0" expanded="false" />
                 <element signature="e#5242#5544#0" expanded="false" />
@@ -88,23 +102,43 @@
                 <element signature="e#6147#7427#0" expanded="false" />
                 <element signature="e#7429#9769#0" expanded="false" />
                 <element signature="e#9771#10697#0" expanded="false" />
+                <element signature="e#10699#10776#0" expanded="false" />
+                <element signature="e#10778#11114#0" expanded="false" />
                 <element signature="e#11116#13855#0" expanded="false" />
                 <element signature="e#13857#15360#0" expanded="false" />
                 <element signature="e#15362#15625#0" expanded="false" />
                 <element signature="e#15627#15964#0" expanded="false" />
                 <element signature="e#15966#16482#0" expanded="false" />
+                <element signature="e#16484#17822#0" expanded="false" />
                 <element signature="e#17824#17970#0" expanded="false" />
-                <element signature="e#20616#20654#0" expanded="false" />
-                <element signature="e#20656#20749#0" expanded="false" />
-                <element signature="e#20751#20804#0" expanded="false" />
-                <element signature="e#20912#20993#0" expanded="false" />
-                <element signature="e#20997#21255#0" expanded="false" />
-                <element signature="e#21259#21432#0" expanded="false" />
-                <element signature="e#21436#22588#0" expanded="false" />
-                <element signature="e#22880#23039#0" expanded="false" />
-                <element signature="e#23043#23736#0" expanded="false" />
-                <element signature="e#27251#28863#1" expanded="false" />
+                <element signature="e#22389#22647#0" expanded="false" />
+                <element signature="e#22651#22824#0" expanded="false" />
+                <element signature="e#24272#24431#0" expanded="false" />
+                <element signature="e#24435#25128#0" expanded="false" />
+                <element signature="e#28621#30261#0" expanded="false" />
+                <element signature="e#30575#30892#0" expanded="false" />
+                <element signature="e#30895#31004#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application_helper.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="currency_helper.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
+              <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -127,7 +161,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/db/migrate/20140811062826_create_requests.rb" />
         <option value="$PROJECT_DIR$/app/models/request.rb" />
         <option value="$PROJECT_DIR$/app/models/wallet_messages.rb" />
         <option value="$PROJECT_DIR$/app/views/profiles/signin.json.jbuilder" />
@@ -177,6 +210,7 @@
         <option value="$PROJECT_DIR$/app/helpers/currency_helper.rb" />
         <option value="$PROJECT_DIR$/app/models/payment_request.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20140923134454_create_payment_requests.rb" />
+        <option value="$PROJECT_DIR$/db/migrate/20140811053336_create_iso_currencies.rb" />
         <option value="$PROJECT_DIR$/app/controllers/profiles_controller.rb" />
       </list>
     </option>
@@ -189,8 +223,10 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1950" />
-    <option name="height" value="1040" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="2576" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -281,11 +317,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="db" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="migrate" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -300,6 +332,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="helpers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -498,17 +534,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1950" height="1040" extended-state="0" />
+    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3984127" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39794818" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32441473" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35613462" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18566775" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17619048" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2917127" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17965023" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2917127" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25397456" sideWeight="0.5008104" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38674033" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -559,18 +595,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="81" />
+      <option name="time" value="84" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/routes.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67902994" vertical-offset="0" max-vertical-offset="782">
-          <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Changes.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0745614" vertical-offset="0" max-vertical-offset="1156">
@@ -640,6 +668,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="388" max-vertical-offset="1241">
           <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -773,17 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.035714" vertical-offset="385" max-vertical-offset="1479">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#1298#2293#0" expanded="false" />
-            <element signature="e#2297#2583#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20140903161304_create_friends.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
@@ -799,32 +817,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29032257" vertical-offset="0" max-vertical-offset="527">
-          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/friendship_request.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
-          <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20140903074124_add_feed_amount.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11630559" vertical-offset="0" max-vertical-offset="877">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/pay_request.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="565">
-          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -845,26 +841,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/feed.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03807391" vertical-offset="0" max-vertical-offset="893">
-          <caret line="2" column="2" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/iso_currency.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="613">
           <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20140811053336_create_iso_currencies.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="613">
-          <caret line="0" column="15" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -917,10 +897,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20140923134454_create_payment_requests.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2898305" vertical-offset="254" max-vertical-offset="1037">
+          <caret line="25" column="78" selection-start-line="25" selection-start-column="78" selection-end-line="25" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20140822142649_add_feed_user_data.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5269168" vertical-offset="0" max-vertical-offset="613">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20140811053336_create_iso_currencies.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07753706" vertical-offset="0" max-vertical-offset="877">
+          <caret line="4" column="14" selection-start-line="3" selection-start-column="0" selection-end-line="6" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/friendship_request.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06007067" vertical-offset="0" max-vertical-offset="566">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/pay_request.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
+          <caret line="0" column="21" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/feed.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="722">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
+          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/friends_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1445">
-          <caret line="166" column="52" selection-start-line="166" selection-start-column="52" selection-end-line="166" selection-end-column="52" />
+        <state vertical-scroll-proportion="-16.892857" vertical-offset="989" max-vertical-offset="1683">
+          <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
           <folding>
             <element signature="e#34#1318#0" expanded="false" />
             <element signature="e#1322#1561#0" expanded="false" />
@@ -928,14 +972,22 @@
             <element signature="e#2099#2240#0" expanded="false" />
             <element signature="e#2244#2399#0" expanded="false" />
             <element signature="e#2426#2571#0" expanded="false" />
-            <element signature="e#2575#3008#0" expanded="false" />
             <element signature="e#3012#3239#0" expanded="false" />
             <element signature="e#3243#3639#0" expanded="false" />
             <element signature="e#3643#3753#0" expanded="false" />
             <element signature="e#3757#3938#0" expanded="false" />
             <element signature="e#3951#4281#0" expanded="false" />
             <element signature="e#4285#4396#0" expanded="false" />
-            <element signature="e#4400#4807#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5714285" vertical-offset="1078" max-vertical-offset="1887">
+          <caret line="66" column="67" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="67" />
+          <folding>
+            <element signature="e#2297#2583#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -956,30 +1008,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20140923134454_create_payment_requests.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2898305" vertical-offset="254" max-vertical-offset="1037">
-          <caret line="25" column="78" selection-start-line="25" selection-start-column="78" selection-end-line="25" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20140822142649_add_feed_user_data.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5269168" vertical-offset="0" max-vertical-offset="613">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70166665" vertical-offset="2350" max-vertical-offset="7259">
-          <caret line="570" column="30" selection-start-line="570" selection-start-column="30" selection-end-line="570" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.45889387" vertical-offset="1121" max-vertical-offset="6545">
+          <caret line="550" column="24" selection-start-line="550" selection-start-column="24" selection-end-line="550" selection-end-column="24" />
           <folding>
             <element signature="e#1090#2277#0" expanded="false" />
             <element signature="e#2279#2613#0" expanded="false" />
+            <element signature="e#2615#2916#0" expanded="false" />
             <element signature="e#2918#3617#0" expanded="false" />
+            <element signature="e#3619#3926#0" expanded="false" />
+            <element signature="e#3928#4318#0" expanded="false" />
+            <element signature="e#4320#4554#0" expanded="false" />
             <element signature="e#4556#4896#0" expanded="false" />
             <element signature="e#4898#5241#0" expanded="false" />
             <element signature="e#5242#5544#0" expanded="false" />
@@ -987,22 +1027,22 @@
             <element signature="e#6147#7427#0" expanded="false" />
             <element signature="e#7429#9769#0" expanded="false" />
             <element signature="e#9771#10697#0" expanded="false" />
+            <element signature="e#10699#10776#0" expanded="false" />
+            <element signature="e#10778#11114#0" expanded="false" />
             <element signature="e#11116#13855#0" expanded="false" />
             <element signature="e#13857#15360#0" expanded="false" />
             <element signature="e#15362#15625#0" expanded="false" />
             <element signature="e#15627#15964#0" expanded="false" />
             <element signature="e#15966#16482#0" expanded="false" />
+            <element signature="e#16484#17822#0" expanded="false" />
             <element signature="e#17824#17970#0" expanded="false" />
-            <element signature="e#20616#20654#0" expanded="false" />
-            <element signature="e#20656#20749#0" expanded="false" />
-            <element signature="e#20751#20804#0" expanded="false" />
-            <element signature="e#20912#20993#0" expanded="false" />
-            <element signature="e#20997#21255#0" expanded="false" />
-            <element signature="e#21259#21432#0" expanded="false" />
-            <element signature="e#21436#22588#0" expanded="false" />
-            <element signature="e#22880#23039#0" expanded="false" />
-            <element signature="e#23043#23736#0" expanded="false" />
-            <element signature="e#27251#28863#1" expanded="false" />
+            <element signature="e#22389#22647#0" expanded="false" />
+            <element signature="e#22651#22824#0" expanded="false" />
+            <element signature="e#24272#24431#0" expanded="false" />
+            <element signature="e#24435#25128#0" expanded="false" />
+            <element signature="e#28621#30261#0" expanded="false" />
+            <element signature="e#30575#30892#0" expanded="false" />
+            <element signature="e#30895#31004#0" expanded="false" />
           </folding>
         </state>
       </provider>
