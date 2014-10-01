@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140905053222) do
+ActiveRecord::Schema.define(version: 20140923134454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,11 +54,19 @@ ActiveRecord::Schema.define(version: 20140905053222) do
     t.integer  "to_profile_id"
     t.integer  "fType"
     t.date     "feed_date"
-    t.integer  "amount"
-    t.string   "currency",        limit: 3
-    t.integer  "status",                     default: 0
-    t.integer  "viewed",                     default: 0
-    t.string   "type",            limit: 40, default: "Feed"
+    t.float    "amount"
+    t.string   "currency",                  limit: 3
+    t.integer  "status",                               default: 0
+    t.integer  "viewed",                               default: 0
+    t.string   "type",                      limit: 40, default: "Feed"
+    t.integer  "source_currency"
+    t.float    "source_amount"
+    t.integer  "rate_id"
+    t.float    "conv_commission_amount"
+    t.integer  "conv_commission_id"
+    t.integer  "trans_commission_id"
+    t.integer  "trans_commission_currency"
+    t.float    "trans_commission_amount"
   end
 
   create_table "friends", id: false, force: true do |t|
@@ -124,6 +132,9 @@ ActiveRecord::Schema.define(version: 20140905053222) do
     t.string   "contact_person_phone"
     t.integer  "friends_count",                default: 0
     t.boolean  "temp_account",                 default: false
+    t.float    "available",                    default: 0.0
+    t.float    "holded",                       default: 0.0
+    t.string   "iso_currency",                 default: "EUR"
   end
 
   create_table "providers", force: true do |t|

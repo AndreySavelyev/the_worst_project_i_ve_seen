@@ -5,4 +5,7 @@ module CurrencyHelper
 
   end
 
+  def self.get_amount_decimal(currency_id, amount_integer)
+
+  end
 end

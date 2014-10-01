@@ -85,7 +85,6 @@ def social_friends_invite # пригласить друга
 #  end
   respond_to do |format|
     format.json { render :json => operation_result.as_json, status: :ok }
-    #format.json { render :json => result_array.as_json, status: :ok }
   end
 end
 
@@ -192,7 +191,7 @@ def get_profile
   end
 end
 
-  def save_profile
+def save_profile
    profile =save_profile_params
 
    if profile[:firstName]
@@ -297,114 +296,114 @@ def signin
   return_session(@session)
 end
 
-  def check_session
-    set_user_from_session
-    return_session(@user.session)
-  end
+def check_session
+  set_user_from_session
+  return_session(@user.session)
+end
 
-  def signOff
-    @result = Object
-    @result = {:result => 0 ,:message => "session destroyed"}
-    if(@user.session)
-      unless(@user.session.delete)
-        @result = {:result => 10 ,:message => "session destroy error"}
-      end
-    end
-    respond_to do |format|
-      format.json { render :json => @result.as_json, status: :unauthorized }
+def signOff
+  @result = Object
+  @result = {:result => 0 ,:message => "session destroyed"}
+  if(@user.session)
+    unless(@user.session.delete)
+      @result = {:result => 10 ,:message => "session destroy error"}
     end
   end
+  respond_to do |format|
+    format.json { render :json => @result.as_json, status: :unauthorized }
+  end
+end
 
-  def signup
-    @log = Logger.new(STDOUT)
-    @log.level = Logger::INFO
+def signup
+  @log = Logger.new(STDOUT)
+  @log.level = Logger::INFO
 
-    founded_profile= Profile.where("user_token = :accountid
+  founded_profile= Profile.where("user_token = :accountid
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: @sign_up.accountid}).first
-    if founded_profile && founded_profile.temp_account
-      @newUser = founded_profile
-      @newUser.temp_account = FALSE
-    else
-      if founded_profile # обнаружен существующий аккаунт
-        @log.info("not registered. accountId have incorrect format")
-        @result = Object
-        @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :conflict }
-        end
-        return;
-      end
-      # временный профайл не найден
-      @newUser = Profile.new
-      @newUser.user_token = @sign_up.accountid;
-    end
-
-
-#todo вынести все это безобразие в отдельный модуль
-    facebookId =AccountValidators::get_fbid_match(@sign_up.accountid)
-
-    if(facebookId)
-      @newUser.fb_token=facebookId[0]
-      @log.info("facebookId:#{facebookId}")
-    else
-      emailId = AccountValidators::get_email_match(@sign_up.accountid)
-      if(emailId)
-        @newUser.email=emailId[0];
-        @log.info("emailId:#{emailId}")
-      else
-       # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
-       # if(phone)
-       #   @newUser.phone=@sign_up.accountid
-       #   @log.info("phone:#{phone}")
-       # else
-          @log.info("not registered. accountId have incorrect format")
-          @result = Object
-          @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
-          respond_to do |format|
-            format.json { render :json => @result.as_json, status: :conflict }
-          end
-          return;
-       # end
-      end
-    end
-
-    unless @newUser.fb_token #для  FB account пароль не требуется
-      if(@sign_up.password1.length <8)
-        to_short_password
-        return;
-      end
-      @newUser.salt = SecureRandom.hex;
-      @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
-    end
-
-    if(AccountValidators::is_test_account(@sign_up.accountid))
-      @newUser.reg_token = 'confirm-token';
-    else
-      @newUser.reg_token= SecureRandom.hex;
-    end
-    @newUser.confirm_type=0;#not confirmed
-# добавляем запись
-
-    if(!@newUser.save)
+  if founded_profile && founded_profile.temp_account
+    @newUser = founded_profile
+    @newUser.temp_account = FALSE
+  else
+    if founded_profile # обнаружен существующий аккаунт
+      @log.info("not registered. accountId have incorrect format")
       @result = Object
-      @result = {:result => 4,:message => "not registered"}
+      @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
+        format.json { render :json => @result.as_json, status: :conflict }
       end
       return;
     end
-
-    link="http://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
-    @log.debug(link);
-    #User was successfully created.
-    if (@newUser.email)
-          send_confirm_mail(@newUser, link);
-    end
-
-    return_session(create_session(@newUser));
+    # временный профайл не найден
+    @newUser = Profile.new
+    @newUser.user_token = @sign_up.accountid;
   end
 
-  def confirm
+
+#todo вынести все это безобразие в отдельный модуль
+  facebookId =AccountValidators::get_fbid_match(@sign_up.accountid)
+
+  if(facebookId)
+    @newUser.fb_token=facebookId[0]
+    @log.info("facebookId:#{facebookId}")
+  else
+    emailId = AccountValidators::get_email_match(@sign_up.accountid)
+    if(emailId)
+      @newUser.email=emailId[0];
+      @log.info("emailId:#{emailId}")
+    else
+      # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
+      # if(phone)
+      #   @newUser.phone=@sign_up.accountid
+      #   @log.info("phone:#{phone}")
+      # else
+      @log.info("not registered. accountId have incorrect format")
+      @result = Object
+      @result = {:result => 4,:message => "not registered. accountId have incorrect format"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :conflict }
+      end
+      return;
+      # end
+    end
+  end
+
+  unless @newUser.fb_token #для  FB account пароль не требуется
+    if(@sign_up.password1.length <8)
+      to_short_password
+      return;
+    end
+    @newUser.salt = SecureRandom.hex;
+    @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1);
+  end
+
+  if(AccountValidators::is_test_account(@sign_up.accountid))
+    @newUser.reg_token = 'confirm-token';
+  else
+    @newUser.reg_token= SecureRandom.hex;
+  end
+  @newUser.confirm_type=0;#not confirmed
+# добавляем запись
+
+  if(!@newUser.save)
+    @result = Object
+    @result = {:result => 4,:message => "not registered"}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :error }
+    end
+    return;
+  end
+
+  link="http://api.onlinepay.com/confirm?token=#{@newUser.reg_token}";
+  @log.debug(link);
+  #User was successfully created.
+  if (@newUser.email)
+    send_confirm_mail(@newUser, link);
+  end
+
+  return_session(create_session(@newUser));
+end
+
+def confirm
     @result = Object
     reg_token = request.params['confirm'];
 
@@ -456,105 +455,163 @@ end
     end
   end
 
-  def tabs
-    @log = Logger.new(STDOUT)
-    @log.level = Logger::INFO
-    #validating user token
-    @tabs = ProfilesHelper::get_tabs_format(@user,@user.session.application);
-    respond_to do |format|
-      format.json { render :json => @tabs.as_json, status: :ok }
-    end
+def tabs
+  @log = Logger.new(STDOUT)
+  @log.level = Logger::INFO
+  #validating user token
+  @tabs = ProfilesHelper::get_tabs_format(@user,@user.session.application);
+  respond_to do |format|
+    format.json { render :json => @tabs.as_json, status: :ok }
   end
+end
 
-  def catalog
-    #@path = PathModel.new(catalog_params)
+def catalog
+  @catalog = Object
+  @catalog =
+      {
+          :catalog=>{
+              :id=>"84574vgdxgugdxgy",
+              :pic=> "url",
+              :path=> "/shopping/tvsets",
+              :name=>"tv sets",
+          }
+      }
 
-    @catalog = Object
-    @catalog =
-        {
-            :catalog=>{
-                :id=>"84574vgdxgugdxgy",
-                :pic=> "url",
-                :path=> "/shopping/tvsets",
-                :name=>"tv sets",
-            }
-        }
-
-    respond_to do |format|
-      format.json { render :json => @catalog.as_json, status: :ok }
-    end
+  respond_to do |format|
+    format.json { render :json => @catalog.as_json, status: :ok }
   end
+end
 
-  def stats_profile
-    position=profile_stats_params
+def stats_profile
+  position=profile_stats_params
 
 #todo добавить skip для position
-    feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
-    feed_container=
-        {:stats=>
-             {
-                 :friends=>0,
-                 :likes=>0, #number of likes for all user's payments,
-                 :history=>feeds
-             }
-        }
-    respond_to do |format|
-      format.json { render :json => feed_container.as_json, status: :ok }
-    end
+  feeds= ProfilesHelper::get_feed_message_format(Feed.where(['privacy = 0']).includes(:from_profile, :to_profile).first(position))
+  feed_container=
+      {:stats=>
+           {
+               :friends=>0,
+               :likes=>0, #number of likes for all user's payments,
+               :history=>feeds
+           }
+      }
+  respond_to do |format|
+    format.json { render :json => feed_container.as_json, status: :ok }
   end
+end
 
-  def feed
-    #todo проверить списки (только для глобал одинаковые)
-    queryPrivacy=params.require(:global)
-    if queryPrivacy == "0"
+def feed
+  #todo проверить списки (только для глобал одинаковые)
+  queryPrivacy=params.require(:global)
+  if queryPrivacy == "0"
     feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy", {privacy: queryPrivacy})
                                                     .includes(:from_profile, :to_profile)
                                                     .order(:viewed).reverse_order
                                                     .order(feed_date: :desc)#.reverse_order
                                                     .first(10))
-    else
-      feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user) AND status=0",
-                                                                 {privacy: queryPrivacy, to_user: @user.id, from_user:  @user.id })
-                                                      .includes(:from_profile, :to_profile)
-                                                      .order(:viewed)#.reverse_order
-                                                      .order(feed_date: :desc)#.reverse_order
-                                                      .first(10))
-    end
-      feed_container={:feed=>feeds}
-      respond_to do |format|
-        format.json { render :json => feed_container.as_json, status: :ok }
-      end
+  else
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user) AND status=0",
+                                                               {privacy: queryPrivacy, to_user: @user.id, from_user:  @user.id })
+                                                    .includes(:from_profile, :to_profile)
+                                                    .order(:viewed)#.reverse_order
+                                                    .order(feed_date: :desc)#.reverse_order
+                                                    .first(10))
   end
+  feed_container={:feed=>feeds}
+  respond_to do |format|
+    format.json { render :json => feed_container.as_json, status: :ok }
+  end
+end
 
-  def like
-    @like=Object.new
-    @like={:result=>0}
+def like
+  @like=Object.new
+  @like={:result=>0}
+  respond_to do |format|
+    format.json { render :json => @like.as_json, status: :ok }
+  end
+end
+
+#methods with required confirmation email
+def social_money_send
+  parms=params.require(:sendMoney).permit(:accountid, :amount,:currency,:message,:global)
+  #на исходном кошельке проверяется наличие необходимой суммы
+  #создание pay_request
+  send_request= PayRequest.new
+  send_request.source_amount = parms[:amount]
+  send_request.message = parms[:message]
+  send_request.privacy = parms[:global]
+
+  #TODO разъяснить момент с массивом получаетелей
+  from_profile=  @user
+  send_request.from_profile = from_profile
+  to_profile= Profile.where(:user_token => parms[:accountid]).first!
+  send_request.to_profile = to_profile
+  send_request.status=0 #status:NEW
+
+  #Поиск валюты расчетов
+  currency= IsoCurrency.find_by_Alpha3Code(parms[:currency].upcase)
+
+  # если валюты кошельков различаются, то производится конвертация в валюту назначения. писать в фид, про комиссию за конвертацию.
+  # фиксируется курс валют, на исходном кошельке фиксируется сумма в валюте источника.
+  # запрос шлется в валюте кошелька стока.
+  # комиссия берется в валюте кошелька источника. на исходном кошельке фиксируется сумма в валюте источника.
+  send_request.trans_commission_id=#
+  send_request.trans_commission_currency=currency.Alpha3Code#
+  send_request.trans_commission_amount=0#
+  send_request.conv_commission_id=get_conversation_commission_id#
+  send_request.conv_commission_amount= get_conv_commiss(send_request.conv_commission_id, send_request.source_amount)#
+
+  send_request.amount=send_request.source_amount #todo конвертация валют get_payment_amount( send_request.rate_id, send_request.source_amount) конечная сумма назначения
+  send_request.currency= currency.Alpha3Code #TODO: for test purpose only UER #конечная валюта назначения
+  send_request.source_currency = currency.Alpha3Code
+  send_request.rate_id=get_currency_conversation_rate(send_request.source_currency, send_request.currency)#курс конвертации валют
+  # рассылка уведомлений
+
+  #проверка достаточности суммы к списанию на кошельке источнике
+  #блокировка суммы к списанию
+  from_profile.available = from_profile.available - send_request.trans_commission_amount - send_request.amount - send_request.conv_commission_amount;
+
+
+  if  from_profile.available < 0
+    @result = Object
+    @result = {:result => 101,:message => "not enought money"}
     respond_to do |format|
-      format.json { render :json => @like.as_json, status: :ok }
+      format.json { render :json => @result.as_json, status: :conflict }
     end
+    return
   end
 
-  #methods with required confirmation email
-  def social_money_send
 
-    payment_recievers= params[:accountIDs] #непонятный момент, но ладно. так надо.
-    #на исходном кошельке проверяется наличие необходимой суммы
+  #пошла транзакция
+  from_profile.save!
+  send_request.save!
 
-    #создание pay_request
-    send_request= PayRequest.new
-    send_request.amount = params[:amount]
-    send_request.currency = params[:currency]
-    send_request.message = params[:message]
-    send_request.privacy = params[:global]
-    send_request.to_profile = payment_recievers[0][:id] #TODO разъяснить момент с массивом получаетелей
-    send_request.from_profile = @user
-
-    #если валюты кошельков различаются, то производится конвертация в валюту назначения
-
-    #на исходном кошельке замораживается необходимая сумма
-    #шлется запрос второму кошельку на акцепт суммы
-    #рассылка уведомлений
+  @getResult={:available=> from_profile.available}
+  respond_to do |format|
+    format.json { render :json => @getResult.as_json, status: :ok }
   end
+end
+
+def get_transaction_commission_id
+
+end
+
+def wallet_get_commission_wallet
+  #возвращает кошелек на котором аккамулируются комиссии
+end
+
+def get_conversation_commission_id
+  #ID комиссии
+end
+
+def get_conv_commiss(conv_commission_id, source_amount)
+  #расчет комиссии за конвертацию
+  return 0
+end
+
+def get_currency_conversation_rate(source_currency, dest_currency)
+  return 1
+end
 
   def recieve_pay
 
@@ -575,39 +632,39 @@ end
 
   def social_money_get
 
-  testFriend = Profile
-  .where(user_token: "vk100@onlinepay.com")
-  .includes(:lovers, :patients).first #загружать связи из фрэндов
+    testFriend = Profile
+    .where(user_token: "vk100@onlinepay.com")
+    .includes(:lovers, :patients).first #загружать связи из фрэндов
 
-  #  @gets = Array.new
-  #  @gets <<  {
-  #      :id =>"salkjh234jhkjfh9432y",
-  #      :fromID => "salkjh234jhkjfh9432y",
-  #      :name => "John Smith",
-  #      :pic =>  "url",
-  #      :type =>  "charge", #charge request or money send request
-  #      :amount => 100.00,
-  #      :currency => "eur",
-  #      :message => "Please send me some money for a new car."
-  #  }
-  #  @getResult=Object.new
-  #  @getResult={:moneyRequest=>@gets}
-
-
- # feeed=Message.create( :status => 1)
- # feeed.save()
-
-  newFriend = Profile.find_by_email('vk1002+2@onlinepay.com')
-  FriendsHelper.create_friendship_request(@user, newFriend)
+    #  @gets = Array.new
+    #  @gets <<  {
+    #      :id =>"salkjh234jhkjfh9432y",
+    #      :fromID => "salkjh234jhkjfh9432y",
+    #      :name => "John Smith",
+    #      :pic =>  "url",
+    #      :type =>  "charge", #charge request or money send request
+    #      :amount => 100.00,
+    #      :currency => "eur",
+    #      :message => "Please send me some money for a new car."
+    #  }
+    #  @getResult=Object.new
+    #  @getResult={:moneyRequest=>@gets}
 
 
-  #FriendsHelper.create_friendship(@user, newFriend)
-  @getResult = Array.new
-  testFriend.lovers.each { |feed|
+    # feeed=Message.create( :status => 1)
+    # feeed.save()
+
+    newFriend = Profile.find_by_email('vk1002+2@onlinepay.com')
+    FriendsHelper.create_friendship_request(@user, newFriend)
+
+
+    #FriendsHelper.create_friendship(@user, newFriend)
+    @getResult = Array.new
+    testFriend.lovers.each { |feed|
       @getResult << {
-        :id => FriendsHelper.get_friendship_requests(newFriend)
+          :id => FriendsHelper.get_friendship_requests(newFriend)
       }
-  }
+    }
 
     respond_to do |format|
       format.json { render :json => @getResult.as_json, status: :ok }
