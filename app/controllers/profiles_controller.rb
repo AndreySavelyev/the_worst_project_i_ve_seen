@@ -548,8 +548,8 @@ end
       to_profile= Profile.where(:user_token => parms[:accountid]).first!
       send_request.to_profile = to_profile
       send_request.status=0 #status:NEW
-      send_request.fType =4
-      send_request.privacy =2
+      send_request.fType = 4
+      send_request.privacy = 2
     rescue
       @result = {:result => 1,:message => "reciever not found"}
       respond_to do |format|
@@ -655,12 +655,106 @@ def get_currency_conversation_rate(source_currency, dest_currency)
 end
 
   def recieve_pay
-
+    request_id=params[:requestId]
     #находится запрос в кошельке текущего пользователя по ИД запроса
+    begin
+      payment_request = PayRequest.where(:id => request_id, :status => 0).first!#.includes(:to_profile, :from_profile)
+      from_profile= Profile.find(payment_request.from_profile_id)
+      to_profile= Profile.find(payment_request.to_profile_id)
+    rescue
+    #todo срочно! вынести все рендеринги ошибок в методы!
+        result = {:result => 20, :message => "not found"}
+        respond_to do |format|
+          format.json { render :json => result.as_json, status: :not_found }
+        end
+        return
+    end
+    #проверка, что этот запрос нашего юзера
+    unless payment_request.to_profile_id == @user.id
+     #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
+      result = {:result => 100, :message => "you do not have rights for this action"}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :forbidden }
+      end
+      return
+    end
     #с исходнго кошелька списывается замороженная сумма
+    comiss_wallet=Profile.where(:wallet_type =>  100, :iso_currency => payment_request.from_profile.iso_currency).first!
+    unless comiss_wallet
+      #todo срочно! вынести все рендеринги ошибок в методы!
+      result = {:result => 111, :message => "system's wallet does not exist"}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :internal_server_error }
+      end
+      return
+    end
+    #на кошелек комиссий производится зачисление средств за проведение операции (код операции 1)
+    transaction_commission_entry=Entry.new
+    transaction_commission_entry.payment_request_id = payment_request.id
+    transaction_commission_entry.credit_profile_id = from_profile.id
+    transaction_commission_entry.debt_profile_id = comiss_wallet.id
+    transaction_commission_entry.amount = payment_request.trans_commission_amount
+    transaction_commission_entry.currency_id = from_profile.iso_currency
+    transaction_commission_entry.operation_code = 1 #списание комиссии
+    #на кошелек комиссий производится зачисление средств за конвертацию (код операции 2)
+    convertation_commission_entry=Entry.new
+    convertation_commission_entry.payment_request_id = payment_request.id
+    convertation_commission_entry.credit_profile_id = from_profile.id
+    convertation_commission_entry.debt_profile_id = comiss_wallet.id
+    convertation_commission_entry.amount = payment_request.conv_commission_amount
+    convertation_commission_entry.currency_id = payment_request.from_profile.iso_currency
+    convertation_commission_entry.operation_code = 2 #списание комиссии
     #на кошелек назначения эта сумма зачисляется
+    transaction_entry=Entry.new
+    transaction_entry.payment_request_id = payment_request.id
+    transaction_entry.credit_profile_id = from_profile.id
+    transaction_entry.debt_profile_id = to_profile.id
+    transaction_entry.amount = payment_request.amount
+    transaction_entry.currency_id = payment_request.to_profile.iso_currency
+    transaction_entry.operation_code = 3 #пополнение кошелька
+
+    unless comiss_wallet.iso_currency == payment_request.from_profile.iso_currency
+      #todo срочно! вынести все рендеринги ошибок в методы!
+      result = {:result => 112, :message => "currency convertation internal error"}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :internal_server_error }
+      end
+      return
+    end
+    comiss_wallet.available = comiss_wallet.available + transaction_commission_entry.amount
+    comiss_wallet.available = comiss_wallet.available + convertation_commission_entry.amount
+    to_profile.available = to_profile.available + transaction_entry.amount
+    from_profile.holded = from_profile.holded - payment_request.source_amount
+    from_profile.holded = from_profile.holded - payment_request.conv_commission_amount
+    from_profile.holded = from_profile.holded - payment_request.trans_commission_amount
     #запрос помечается как принятый
+    payment_request.status = 1#статус запроса дружбы 0-new, 1-accepted, 2-declined, 3 -canceled
+
+    #создаем новостные фиды:
+    # 1-отправителю
+    # 2-получателю
+    #newsFeed=Feed.new
+    #newsFeed.from_profile_id = payment_request.to_profile_id
+    #newsFeed.to_profile_id = payment_request.from_profile_id
+    #newsFeed.privacy = 2
+    #newsFeed.amount = payment_request.source_amount
+    #newsFeed.currency = payment_request.source_currency
+    #newsFeed.message = "accepted"
+    #newsFeed.fType = 2
+    payment_request.fType = 2
     #рассылка уведомлений
+
+    ActiveRecord::Base.transaction do
+      #пошла транзакция
+      from_profile.save!
+      to_profile.save!
+      payment_request.save!
+      comiss_wallet.save!
+      transaction_entry.save!
+      convertation_commission_entry.save!
+      transaction_commission_entry.save!
+    end
+
   end
 
   def social_money_charge

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923134454) do
+ActiveRecord::Schema.define(version: 20141002071201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,17 @@ ActiveRecord::Schema.define(version: 20140923134454) do
     t.integer  "CurrencyFrom"
     t.integer  "Rate"
     t.datetime "SetUpDate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entries", force: true do |t|
+    t.integer  "payment_request_id",           null: false
+    t.integer  "credit_profile_id",            null: false
+    t.integer  "debt_profile_id",              null: false
+    t.float    "amount",                       null: false
+    t.string   "currency_id",        limit: 3, null: false
+    t.integer  "operation_code",               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -135,6 +146,7 @@ ActiveRecord::Schema.define(version: 20140923134454) do
     t.float    "available",                    default: 0.0
     t.float    "holded",                       default: 0.0
     t.string   "iso_currency",                 default: "EUR"
+    t.integer  "lock_version",                 default: 0
   end
 
   create_table "providers", force: true do |t|
