@@ -503,14 +503,16 @@ end
 def feed
   #todo проверить списки (только для глобал одинаковые)
   queryPrivacy=params.require(:global)
-  if queryPrivacy == "0"
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy", {privacy: queryPrivacy})
+  if queryPrivacy == "0" || queryPrivacy == "1"
+    # можно отображать только завершенные события
+    #
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND status != 0", {privacy: queryPrivacy})
                                                     .includes(:from_profile, :to_profile)
                                                     .order(:viewed).reverse_order
                                                     .order(feed_date: :desc)#.reverse_order
                                                     .first(10))
   else
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user) AND status=0",
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user)",
                                                                {privacy: queryPrivacy, to_user: @user.id, from_user:  @user.id })
                                                     .includes(:from_profile, :to_profile)
                                                     .order(:viewed)#.reverse_order
@@ -549,7 +551,7 @@ end
       send_request.to_profile = to_profile
       send_request.status=0 #status:NEW
       send_request.fType = 4
-      send_request.privacy = 2
+      #send_request.privacy = 2
     rescue
       @result = {:result => 1,:message => "reciever not found"}
       respond_to do |format|
@@ -656,6 +658,12 @@ end
 
   def recieve_pay
     request_id=params[:requestId]
+    privacy=params[:global]
+
+    unless privacy
+      privacy = 2
+    end
+
     #находится запрос в кошельке текущего пользователя по ИД запроса
     begin
       payment_request = PayRequest.where(:id => request_id, :status => 0).first!#.includes(:to_profile, :from_profile)
@@ -744,6 +752,27 @@ end
     payment_request.fType = 2
     #рассылка уведомлений
 
+    if payment_request.privacy == 0
+      if privacy == 0
+        payment_request.privacy = 0
+      elsif  privacy == 1
+        payment_request.privacy = 1
+      else
+        payment_request.privacy = 2
+      end
+    elsif  payment_request.privacy == 1
+      if privacy == 0
+        payment_request.privacy = 1
+      elsif  privacy == 1
+        payment_request.privacy = 1
+      else
+        payment_request.privacy = 2
+      end
+    else
+      payment_request.privacy = 2
+    end
+
+    begin
     ActiveRecord::Base.transaction do
       #пошла транзакция
       from_profile.save!
@@ -754,7 +783,17 @@ end
       convertation_commission_entry.save!
       transaction_commission_entry.save!
     end
-
+    rescue
+      @result = {:result => 104,:message => "transaction rolled back"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :error }
+      end
+      return
+    end
+    @result = {:result => 0,:message => "ok", :available=> to_profile.available, :holded=> to_profile.holded}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :ok }
+    end
   end
 
   def social_money_charge
