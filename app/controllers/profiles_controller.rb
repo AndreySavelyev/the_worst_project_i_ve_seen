@@ -61,7 +61,7 @@ def get_currency_rates_json
 end
 
 def get_currency_rates(source_currency, destination_currency)
-  newest_rate = ChangeRate.where("CurrencyTo = :to_currency AND CurrencyFrom = :from_curerncy ",
+  newest_rate = ChangeRate.where("CurrencyTo = :to_currency AND CurrencyFrom = :from_currency ",
                    { to_currency: source_currency.Alpha3Code, from_currency:  destination_currency.Alpha3Code }).last
   return newest_rate
 end
@@ -503,17 +503,18 @@ end
 def feed
   #todo проверить списки (только для глобал одинаковые)
   queryPrivacy=params.require(:global)
-  if queryPrivacy == "0" || queryPrivacy == "1"
+  if queryPrivacy == "0" or queryPrivacy == "1"
     # можно отображать только завершенные события
     #
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND status != 0", {privacy: queryPrivacy})
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("(privacy = :privacy AND status != 0) OR (privacy = :privacy AND (to_profile_id = :from_user OR from_profile_id = :from_user))",
+                                                               {:privacy => queryPrivacy, :from_user => @user.id})
                                                     .includes(:from_profile, :to_profile)
-                                                    .order(:viewed).reverse_order
+                                                    .order(:viewed)#.reverse_order
                                                     .order(feed_date: :desc)#.reverse_order
                                                     .first(10))
   else
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("privacy = :privacy AND (to_profile_id = :to_user OR from_profile_id = :from_user)",
-                                                               {privacy: queryPrivacy, to_user: @user.id, from_user:  @user.id })
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("to_profile_id = :to_user OR from_profile_id = :from_user",
+                                                               {:privacy => queryPrivacy, :to_user => @user.id, :from_user => @user.id})
                                                     .includes(:from_profile, :to_profile)
                                                     .order(:viewed)#.reverse_order
                                                     .order(feed_date: :desc)#.reverse_order
@@ -535,7 +536,8 @@ end
 
 #methods with required confirmation email
   def social_money_send
-    begin
+
+    #begin
       parms=params.require(:sendMoney).permit(:accountid, :amount,:currency,:message,:global)
       #на исходном кошельке проверяется наличие необходимой суммы
       #создание pay_request
@@ -545,20 +547,21 @@ end
       send_request.privacy = parms[:global]
 
       #TODO разъяснить момент с массивом получаетелей
-      from_profile=  @user
+      from_profile =  @user
       send_request.from_profile = from_profile
-      to_profile= Profile.where(:user_token => parms[:accountid]).first!
+      to_profile = Profile.where(:user_token => parms[:accountid]).first!
       send_request.to_profile = to_profile
-      send_request.status=0 #status:NEW
-      send_request.fType = 4
       #send_request.privacy = 2
-    rescue
-      @result = {:result => 1,:message => "reciever not found"}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
-      end
-      return
-    end
+    #rescue
+    #  @result = {:result => 1,:message => "reciever not found"}
+    #  respond_to do |format|
+    #    format.json { render :json => @result.as_json, status: :error }
+    #  end
+    #  return
+    #end
+
+    send_request.status=0 #status:NEW
+    send_request.fType = 4
 
     begin
       #Поиск валюты расчетов
@@ -657,6 +660,7 @@ def get_currency_conversation_rate(source_currency, dest_currency)
 end
 
   def recieve_pay
+    log = Logger.new(STDOUT)
     request_id=params[:requestId]
     privacy=params[:global]
 
@@ -665,18 +669,18 @@ end
     end
 
     #находится запрос в кошельке текущего пользователя по ИД запроса
-    begin
+    #begin
       payment_request = PayRequest.where(:id => request_id, :status => 0).first!#.includes(:to_profile, :from_profile)
       from_profile= Profile.find(payment_request.from_profile_id)
       to_profile= Profile.find(payment_request.to_profile_id)
-    rescue
+    #rescue
     #todo срочно! вынести все рендеринги ошибок в методы!
-        result = {:result => 20, :message => "not found"}
-        respond_to do |format|
-          format.json { render :json => result.as_json, status: :not_found }
-        end
-        return
-    end
+    #    result = {:result => 20, :message => "not found"}
+    #    respond_to do |format|
+    #      format.json { render :json => result.as_json, status: :not_found }
+    #    end
+    #    return
+    #end
     #проверка, что этот запрос нашего юзера
     unless payment_request.to_profile_id == @user.id
      #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!

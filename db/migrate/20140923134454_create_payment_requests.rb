@@ -25,6 +25,8 @@ class CreatePaymentRequests < ActiveRecord::Migration
     add_column :profiles, :holded, :float, default: 0
     add_column :profiles, :iso_currency, :string, index: true , default: 'EUR'
     add_column :profiles, :lock_version, :integer, default: 0
+
+    add_column :iso_currencies, :IsoName, :string
   end
 
   def down
@@ -53,5 +55,7 @@ class CreatePaymentRequests < ActiveRecord::Migration
     remove_column  :profiles, :holded
     remove_column  :profiles, :iso_currency
     remove_column  :profiles, :lock_version
+
+    remove_column :iso_currencies, :IsoName
   end
 end
