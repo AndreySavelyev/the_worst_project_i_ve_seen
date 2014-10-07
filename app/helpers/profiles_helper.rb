@@ -13,7 +13,7 @@ module ProfilesHelper
           :data=> srvc.api_data
       } end
 
-    feeds = get_feed_message_format(Feed.where(['privacy = 0 or privacy = 1']).includes(:from_profile, :to_profile).first(2))
+    feeds = get_feed_message_format(Feed.where("(privacy = 0 OR privacy = 1) AND status != 0").includes(:from_profile, :to_profile).first(2))
 
     hotOffers = Array.new
     HotOffer.all.order('created_at DESC').collect   do |hotOffer|

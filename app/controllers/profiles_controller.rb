@@ -482,6 +482,10 @@ def catalog
   end
 end
 
+def union_get_stats_new
+
+end
+
 def stats_profile
   position=profile_stats_params
 
@@ -503,21 +507,32 @@ end
 def feed
   #todo проверить списки (только для глобал одинаковые)
   queryPrivacy=params.require(:global)
-  if queryPrivacy == "0" or queryPrivacy == "1"
+  if queryPrivacy == '0'
+    queryPrivacy=0
+  elsif queryPrivacy == '1'
+    queryPrivacy=1
+  elsif queryPrivacy == '2'
+    queryPrivacy=2
+  end
+
+  if queryPrivacy == 0 or queryPrivacy == 1
     # можно отображать только завершенные события
-    #
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("(privacy = :privacy AND status != 0) OR (privacy = :privacy AND (to_profile_id = :from_user OR from_profile_id = :from_user))",
+
+    # Должно быть отсортировано new, date desc.
+    # Т.е. наверху последние новые запросы.
+
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("(privacy = :privacy AND status != 0) OR (privacy = :privacy AND status != 0 AND (to_profile_id = :from_user OR from_profile_id = :from_user))",
                                                                {:privacy => queryPrivacy, :from_user => @user.id})
                                                     .includes(:from_profile, :to_profile)
-                                                    .order(:viewed)#.reverse_order
-                                                    .order(feed_date: :desc)#.reverse_order
+                                                    .order(viewed: :asc)
+                                                    .order(feed_date: :desc)
                                                     .first(10))
   else
     feeds = ProfilesHelper::get_feed_message_format(Feed.where("to_profile_id = :to_user OR from_profile_id = :from_user",
                                                                {:privacy => queryPrivacy, :to_user => @user.id, :from_user => @user.id})
                                                     .includes(:from_profile, :to_profile)
-                                                    .order(:viewed)#.reverse_order
-                                                    .order(feed_date: :desc)#.reverse_order
+                                                    .order(viewed: :asc)
+                                                    .order(feed_date: :desc)
                                                     .first(10))
   end
   feed_container={:feed=>feeds}
@@ -576,7 +591,7 @@ end
       send_request.trans_commission_amount=0#
       send_request.conv_commission_id=get_conversation_commission_id#
       send_request.conv_commission_amount= get_conv_commiss(send_request.conv_commission_id, send_request.source_amount)#
-
+      send_request.feed_date = Time.now
       send_request.amount=send_request.source_amount #todo конвертация валют get_payment_amount( send_request.rate_id, send_request.source_amount) конечная сумма назначения
       send_request.currency= currency.Alpha3Code #TODO: for test purpose only UER #конечная валюта назначения
       send_request.source_currency = currency.Alpha3Code
