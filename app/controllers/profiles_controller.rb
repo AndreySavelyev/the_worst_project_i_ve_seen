@@ -8,7 +8,7 @@ include FriendsHelper
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
   before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
-  before_action :set_user_from_session, except: [:signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
+  before_action :set_user_from_session, except: [:processing_callback, :signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка app-token только для  :signin,:signUp
   before_action :set_app_profile, only: [ :signin,:signup]
   #before_action :save_profile_params, only: [:save_profile]
@@ -20,6 +20,15 @@ include FriendsHelper
   skip_before_filter :verify_authenticity_token
 
   Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
+
+def processing_callback
+  tada = params[:order]
+
+
+  respond_to do |format|
+    format.xml { render :xml => params , status: :ok }
+  end
+end
 
 def add_currency_rate
   from_currency = params.require(:rates).permit(:from_currency)
@@ -131,6 +140,7 @@ def social_friends_decline #отклонить дружбу
     format.json { render :json => operation_result.as_json, status: :ok }
   end
 end
+
 def social_friends_list #получить список друзей
   #friend_id=params.require(:accountid) #
   friend_list= FriendsHelper.get_friends(@user)
@@ -139,6 +149,7 @@ def social_friends_list #получить список друзей
     format.json { render :json => getResult.as_json, status: :ok }
   end
 end
+
 def social_friends_search
   friend_email=params.require(:search).permit(:email)
   founded=Profile.where("email like :email ",
@@ -556,15 +567,19 @@ end
       parms=params.require(:sendMoney).permit(:accountid, :amount,:currency,:message,:global)
       #на исходном кошельке проверяется наличие необходимой суммы
       #создание pay_request
-      send_request= PayRequest.new
-      send_request.source_amount = parms[:amount]
-      send_request.message = parms[:message]
-      send_request.privacy = parms[:global]
 
+      social_money_send_internal(parms[:amount], parms[:message], parms[:global], parms[:accountid], parms[:currency])
+end
+
+def social_money_send_internal (amount,message, privacy, accountid, currency)
+        send_request= PayRequest.new
+        send_request.source_amount = amount
+        send_request.message = message
+        send_request.privacy = privacy
       #TODO разъяснить момент с массивом получаетелей
       from_profile =  @user
       send_request.from_profile = from_profile
-      to_profile = Profile.where(:user_token => parms[:accountid]).first!
+      to_profile = Profile.where(:user_token =>accountid).first!
       send_request.to_profile = to_profile
       #send_request.privacy = 2
     #rescue
@@ -580,7 +595,7 @@ end
 
     begin
       #Поиск валюты расчетов
-      currency= IsoCurrency.find_by_Alpha3Code(parms[:currency].upcase)
+      currency= IsoCurrency.find_by_Alpha3Code(currency.upcase)
 
       # если валюты кошельков различаются, то производится конвертация в валюту назначения. писать в фид, про комиссию за конвертацию.
       # фиксируется курс валют, на исходном кошельке фиксируется сумма в валюте источника.
@@ -675,7 +690,6 @@ def get_currency_conversation_rate(source_currency, dest_currency)
 end
 
   def recieve_pay
-    log = Logger.new(STDOUT)
     request_id=params[:requestId]
     privacy=params[:global]
 
@@ -815,8 +829,69 @@ end
     end
   end
 
+  def accept_charge #/social/money/pay
+    request_id=params[:requestId]
+    privacy =params[:global]
+    # акцепт чарджа
+    # найти чардж
+    charge_request= ChargeRequest.where(:id=>request_id).first
+    # удостовериться, что чардж предназначен текущему пользователю
+    unless charge_request.to_profile_id == @user.id
+      result = {:result => 100, :message => "you do not have rights for this action"}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :forbidden }
+      end
+      return
+    end
+    # сформировать сендмани
+    #social_money_send_internal (amount, message, privacy, accountid, currency)
+      social_money_send_internal(charge_request.amount, charge_request.message, privacy, charge_request.from_profile.user_token, charge_request.currency)
+  end
+
   def social_money_charge
+
+    log = Logger.new(STDOUT)
+    log.level = Logger::INFO
+    prms= params.require(:chargeMoney)
+    reciever_user_token= prms[:accountId]
+    amount = prms[:amount]
+    currency = prms[:currency]
+    message = prms[:message]
+    privacy = prms[:global]
+
+    begin
+    reciever = Profile.where(:user_token => reciever_user_token).first!
+    rescue
+      @like={:result=>404}
+      respond_to do |format|
+        format.json { render :json => @like.as_json, status: :not_found }
+      end
+      return
+    end
+
     @like=Object.new
+
+    begin
+    charge_request=ChargeRequest.new
+    charge_request.feed_date = Time.now
+    charge_request.status = 0
+    charge_request.fType = 3
+    charge_request.amount = amount #сколько бабала просим перевести
+    charge_request.currency = currency
+    charge_request.privacy = privacy
+    charge_request.message = message
+
+    charge_request.from_profile=@user
+    charge_request.to_profile=reciever
+
+    charge_request.save!
+    rescue
+      @like={:result=>0}
+      respond_to do |format|
+        format.json { render :json => @like.as_json, status: :ok }
+      end
+      return
+    end
     @like={:result=>0}
     respond_to do |format|
       format.json { render :json => @like.as_json, status: :ok }
@@ -824,44 +899,12 @@ end
   end
 
   def social_money_get
+  #Gets unanswered money requests.
+  requests = Feed.where("status = 0 and to_profile_id = :to_profile AND fType=3",{:to_profile => @user.id} ).includes(:from_profile, :to_profile).all
+  respond_to do |format|
+    format.json { render :json => requests, status: :ok }
+  end
 
-    testFriend = Profile
-    .where(user_token: "vk100@onlinepay.com")
-    .includes(:lovers, :patients).first #загружать связи из фрэндов
-
-    #  @gets = Array.new
-    #  @gets <<  {
-    #      :id =>"salkjh234jhkjfh9432y",
-    #      :fromID => "salkjh234jhkjfh9432y",
-    #      :name => "John Smith",
-    #      :pic =>  "url",
-    #      :type =>  "charge", #charge request or money send request
-    #      :amount => 100.00,
-    #      :currency => "eur",
-    #      :message => "Please send me some money for a new car."
-    #  }
-    #  @getResult=Object.new
-    #  @getResult={:moneyRequest=>@gets}
-
-
-    # feeed=Message.create( :status => 1)
-    # feeed.save()
-
-    newFriend = Profile.find_by_email('vk1002+2@onlinepay.com')
-    FriendsHelper.create_friendship_request(@user, newFriend)
-
-
-    #FriendsHelper.create_friendship(@user, newFriend)
-    @getResult = Array.new
-    testFriend.lovers.each { |feed|
-      @getResult << {
-          :id => FriendsHelper.get_friendship_requests(newFriend)
-      }
-    }
-
-    respond_to do |format|
-      format.json { render :json => @getResult.as_json, status: :ok }
-    end
   end
 
 #method /profile/new

@@ -1,0 +1,2 @@
+class ChargeRequest < Feed
+end

@@ -12,7 +12,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/OnlinePay@Development__OnlinePay.coverage" NAME="Development: OnlinePay Coverage Results" MODIFIED="1412683222002" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
+    <SUITE FILE_PATH="coverage/OnlinePay@Development__OnlinePay.coverage" NAME="Development: OnlinePay Coverage Results" MODIFIED="1412780084507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
     <SUITE FILE_PATH="coverage/OnlinePay@Production__OnlinePay.coverage" NAME="Production: OnlinePay Coverage Results" MODIFIED="1405766536498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="OnlinePay" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -26,7 +26,7 @@
     <favorites_list name="OnlinePay" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5398997">
+    <splitter split-orientation="horizontal" split-proportion="0.6806569">
       <split-first>
         <leaf>
           <file leaf-file-name="profile.rb" pinned="false" current="false" current-in-tab="false">
@@ -42,23 +42,52 @@
           <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8574181" vertical-offset="2326" max-vertical-offset="12903">
-                  <caret line="534" column="65" selection-start-line="533" selection-start-column="3" selection-end-line="534" selection-end-column="76" />
+                <state vertical-scroll-proportion="0.59344894" vertical-offset="1885" max-vertical-offset="6766">
+                  <caret line="847" column="127" selection-start-line="847" selection-start-column="127" selection-end-line="847" selection-end-column="127" />
                   <folding>
-                    <element signature="e#1090#2277#0" expanded="false" />
-                    <element signature="e#2279#2613#0" expanded="false" />
-                    <element signature="e#2615#2916#0" expanded="false" />
-                    <element signature="e#2918#3617#0" expanded="false" />
-                    <element signature="e#6147#7427#0" expanded="false" />
-                    <element signature="e#7429#9769#0" expanded="false" />
-                    <element signature="e#9771#10697#0" expanded="false" />
-                    <element signature="e#10699#10776#0" expanded="false" />
-                    <element signature="e#10778#11114#0" expanded="false" />
-                    <element signature="e#11116#13855#0" expanded="false" />
-                    <element signature="e#13857#15360#0" expanded="false" />
-                    <element signature="e#15627#15964#0" expanded="false" />
-                    <element signature="e#15996#16512#0" expanded="false" />
+                    <element signature="e#1253#2440#0" expanded="false" />
+                    <element signature="e#2442#2776#0" expanded="false" />
+                    <element signature="e#2778#3079#0" expanded="false" />
+                    <element signature="e#3081#3780#0" expanded="false" />
+                    <element signature="e#3782#4089#0" expanded="false" />
+                    <element signature="e#4091#4481#0" expanded="false" />
+                    <element signature="e#4483#4717#0" expanded="false" />
+                    <element signature="e#4719#5059#0" expanded="false" />
+                    <element signature="e#5061#5404#0" expanded="false" />
+                    <element signature="e#5406#5708#0" expanded="false" />
+                    <element signature="e#5710#6310#0" expanded="false" />
+                    <element signature="e#6312#7592#0" expanded="false" />
+                    <element signature="e#7594#9934#0" expanded="false" />
+                    <element signature="e#9936#10862#0" expanded="false" />
+                    <element signature="e#10864#10941#0" expanded="false" />
+                    <element signature="e#10943#11279#0" expanded="false" />
+                    <element signature="e#11281#14020#0" expanded="false" />
+                    <element signature="e#14022#15525#0" expanded="false" />
+                    <element signature="e#15792#16129#0" expanded="false" />
+                    <element signature="e#16131#16159#0" expanded="false" />
+                    <element signature="e#16161#16677#0" expanded="false" />
+                    <element signature="e#16679#18458#0" expanded="false" />
+                    <element signature="e#18460#18606#0" expanded="false" />
+                    <element signature="e#18999#22893#0" expanded="false" />
+                    <element signature="e#22895#22933#0" expanded="false" />
+                    <element signature="e#22935#23028#0" expanded="false" />
+                    <element signature="e#23030#23083#0" expanded="false" />
+                    <element signature="e#23085#23189#0" expanded="false" />
+                    <element signature="e#23191#23272#0" expanded="false" />
+                    <element signature="e#23276#29231#0" expanded="false" />
+                    <element signature="e#30047#31326#0" expanded="false" />
+                    <element signature="e#35520#35800#0" expanded="false" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="routes.rb" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/config/routes.rb">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+                  <caret line="34" column="72" selection-start-line="34" selection-start-column="72" selection-end-line="34" selection-end-column="72" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -67,31 +96,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="application_helper.rb" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="application_helper.rb" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="547">
                   <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="currency_helper.rb" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="272">
-                  <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="profiles_helper.rb" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6194332" vertical-offset="0" max-vertical-offset="2074">
-                  <caret line="18" column="65" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
                   <folding />
                 </state>
               </provider>
@@ -114,7 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/profiles/signin.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/views/profiles/signup.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/models/sign_up.rb" />
         <option value="$PROJECT_DIR$/app/models/sign_in.rb" />
@@ -148,7 +156,6 @@
         <option value="$PROJECT_DIR$/db/migrate/20140903161304_create_friends.rb" />
         <option value="$PROJECT_DIR$/app/models/pay_request.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20140905053222_change_feed_statuses.rb" />
-        <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/db/fixtures/currencyes.rb" />
         <option value="$PROJECT_DIR$/db/fixtures/change_rates.rb" />
@@ -164,6 +171,8 @@
         <option value="$PROJECT_DIR$/app/models/entry.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20140923134454_create_payment_requests.rb" />
         <option value="$PROJECT_DIR$/app/helpers/profiles_helper.rb" />
+        <option value="$PROJECT_DIR$/app/models/charge_request.rb" />
+        <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/app/controllers/profiles_controller.rb" />
       </list>
     </option>
@@ -255,7 +264,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="db" />
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -270,10 +279,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="db" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="migrate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -302,42 +307,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OnlinePay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="onlinepay-service-payment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -520,15 +489,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.54915804" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3255167" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3237569" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12837838" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3615635" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12877584" sideWeight="0.49918962" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3615635" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25397456" sideWeight="0.5008104" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3854506" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -580,24 +549,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="89" />
+      <option name="time" value="96" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/etag.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="473" max-vertical-offset="1190">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/conditionalget.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="388" max-vertical-offset="1241">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/head.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7" max-vertical-offset="476">
@@ -682,13 +637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/activesupport-4.1.2/lib/active_support/callbacks.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4707792" vertical-offset="1716" max-vertical-offset="12767">
-          <caret line="118" column="18" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/actionpack-4.1.2/lib/action_controller/metal/implicit_render.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="616">
@@ -766,13 +714,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/payment_request.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49918434" vertical-offset="0" max-vertical-offset="613">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/friendship_request.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06007067" vertical-offset="0" max-vertical-offset="566">
@@ -791,13 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
           <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/routes.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58473283" vertical-offset="127" max-vertical-offset="782">
-          <caret line="30" column="76" selection-start-line="30" selection-start-column="76" selection-end-line="31" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -864,22 +798,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
-          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="722">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20140923134454_create_payment_requests.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6970297" vertical-offset="634" max-vertical-offset="1139">
@@ -936,32 +854,107 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/charge_request.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="893">
+          <caret line="0" column="20" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/payment_request.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13325869" vertical-offset="0" max-vertical-offset="893">
+          <caret line="7" column="55" selection-start-line="7" selection-start-column="55" selection-end-line="7" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/api.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7809331" vertical-offset="8302" max-vertical-offset="24106">
+          <caret line="511" column="24" selection-start-line="511" selection-start-column="24" selection-end-line="511" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/profiles_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6194332" vertical-offset="0" max-vertical-offset="2074">
-          <caret line="18" column="65" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.08222491" vertical-offset="142" max-vertical-offset="2074">
+          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/currency_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17133258" vertical-offset="0" max-vertical-offset="893">
+          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="722">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/routes.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+          <caret line="34" column="72" selection-start-line="34" selection-start-column="72" selection-end-line="34" selection-end-column="72" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/activesupport-4.1.2/lib/active_support/callbacks.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6964286" vertical-offset="2330" max-vertical-offset="12767">
+          <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8574181" vertical-offset="2326" max-vertical-offset="12903">
-          <caret line="534" column="65" selection-start-line="533" selection-start-column="3" selection-end-line="534" selection-end-column="76" />
+        <state vertical-scroll-proportion="0.59344894" vertical-offset="1885" max-vertical-offset="6766">
+          <caret line="847" column="127" selection-start-line="847" selection-start-column="127" selection-end-line="847" selection-end-column="127" />
           <folding>
-            <element signature="e#1090#2277#0" expanded="false" />
-            <element signature="e#2279#2613#0" expanded="false" />
-            <element signature="e#2615#2916#0" expanded="false" />
-            <element signature="e#2918#3617#0" expanded="false" />
-            <element signature="e#6147#7427#0" expanded="false" />
-            <element signature="e#7429#9769#0" expanded="false" />
-            <element signature="e#9771#10697#0" expanded="false" />
-            <element signature="e#10699#10776#0" expanded="false" />
-            <element signature="e#10778#11114#0" expanded="false" />
-            <element signature="e#11116#13855#0" expanded="false" />
-            <element signature="e#13857#15360#0" expanded="false" />
-            <element signature="e#15627#15964#0" expanded="false" />
-            <element signature="e#15996#16512#0" expanded="false" />
+            <element signature="e#1253#2440#0" expanded="false" />
+            <element signature="e#2442#2776#0" expanded="false" />
+            <element signature="e#2778#3079#0" expanded="false" />
+            <element signature="e#3081#3780#0" expanded="false" />
+            <element signature="e#3782#4089#0" expanded="false" />
+            <element signature="e#4091#4481#0" expanded="false" />
+            <element signature="e#4483#4717#0" expanded="false" />
+            <element signature="e#4719#5059#0" expanded="false" />
+            <element signature="e#5061#5404#0" expanded="false" />
+            <element signature="e#5406#5708#0" expanded="false" />
+            <element signature="e#5710#6310#0" expanded="false" />
+            <element signature="e#6312#7592#0" expanded="false" />
+            <element signature="e#7594#9934#0" expanded="false" />
+            <element signature="e#9936#10862#0" expanded="false" />
+            <element signature="e#10864#10941#0" expanded="false" />
+            <element signature="e#10943#11279#0" expanded="false" />
+            <element signature="e#11281#14020#0" expanded="false" />
+            <element signature="e#14022#15525#0" expanded="false" />
+            <element signature="e#15792#16129#0" expanded="false" />
+            <element signature="e#16131#16159#0" expanded="false" />
+            <element signature="e#16161#16677#0" expanded="false" />
+            <element signature="e#16679#18458#0" expanded="false" />
+            <element signature="e#18460#18606#0" expanded="false" />
+            <element signature="e#18999#22893#0" expanded="false" />
+            <element signature="e#22895#22933#0" expanded="false" />
+            <element signature="e#22935#23028#0" expanded="false" />
+            <element signature="e#23030#23083#0" expanded="false" />
+            <element signature="e#23085#23189#0" expanded="false" />
+            <element signature="e#23191#23272#0" expanded="false" />
+            <element signature="e#23276#29231#0" expanded="false" />
+            <element signature="e#30047#31326#0" expanded="false" />
+            <element signature="e#35520#35800#0" expanded="false" />
           </folding>
         </state>
       </provider>
