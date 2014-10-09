@@ -539,7 +539,7 @@ def feed
                                                     .order(feed_date: :desc)
                                                     .first(10))
   else
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("to_profile_id = :to_user OR from_profile_id = :from_user",
+    feeds = ProfilesHelper::get_feed_message_format(Feed.where("((to_profile_id = :to_user OR from_profile_id = :from_user) and status =0) OR ((to_profile_id = :to_user OR from_profile_id = :from_user) and status !=0 and \"fType\" != 0 )",
                                                                {:privacy => queryPrivacy, :to_user => @user.id, :from_user => @user.id})
                                                     .includes(:from_profile, :to_profile)
                                                     .order(viewed: :asc)
@@ -579,7 +579,7 @@ def social_money_send_internal (amount,message, privacy, accountid, currency)
       #TODO разъяснить момент с массивом получаетелей
       from_profile =  @user
       send_request.from_profile = from_profile
-      to_profile = Profile.where(:user_token =>accountid).first!
+      to_profile = Profile.where(:user_token => accountid).first!
       send_request.to_profile = to_profile
       #send_request.privacy = 2
     #rescue
@@ -590,7 +590,7 @@ def social_money_send_internal (amount,message, privacy, accountid, currency)
     #  return
     #end
 
-    send_request.status=0 #status:NEW
+    send_request.status = 0 #status:NEW
     send_request.fType = 4
 
     begin
@@ -689,6 +689,14 @@ def get_currency_conversation_rate(source_currency, dest_currency)
   return 1
 end
 
+  def already_payed_error
+    #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
+    result = {:result => 2, :message => "already payed"}
+    respond_to do |format|
+      format.json { render :json => result.as_json, status: :forbidden }
+    end
+  end
+
   def recieve_pay
     request_id=params[:requestId]
     privacy=params[:global]
@@ -699,17 +707,13 @@ end
 
     #находится запрос в кошельке текущего пользователя по ИД запроса
     #begin
-      payment_request = PayRequest.where(:id => request_id, :status => 0).first!#.includes(:to_profile, :from_profile)
-      from_profile= Profile.find(payment_request.from_profile_id)
-      to_profile= Profile.find(payment_request.to_profile_id)
+      payment_request = PayRequest.where(:id => request_id).first!#.includes(:to_profile, :from_profile)
+    #проверка, что этот запрос нашего юзера
+    unless payment_request.status == 0
+      already_payed_error
+      return
+    end
     #rescue
-    #todo срочно! вынести все рендеринги ошибок в методы!
-    #    result = {:result => 20, :message => "not found"}
-    #    respond_to do |format|
-    #      format.json { render :json => result.as_json, status: :not_found }
-    #    end
-    #    return
-    #end
     #проверка, что этот запрос нашего юзера
     unless payment_request.to_profile_id == @user.id
      #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
@@ -719,6 +723,9 @@ end
       end
       return
     end
+
+    from_profile= Profile.find(payment_request.from_profile_id)
+    to_profile= Profile.find(payment_request.to_profile_id)
     #с исходнго кошелька списывается замороженная сумма
     comiss_wallet=Profile.where(:wallet_type =>  100, :iso_currency => payment_request.from_profile.iso_currency).first!
     unless comiss_wallet
@@ -834,7 +841,13 @@ end
     privacy =params[:global]
     # акцепт чарджа
     # найти чардж
-    charge_request= ChargeRequest.where(:id=>request_id).first
+    charge_request= ChargeRequest.where(:id=>request_id).includes(:from_profile).first
+
+    unless charge_request.status == 0
+      already_payed_error
+      return
+    end
+
     # удостовериться, что чардж предназначен текущему пользователю
     unless charge_request.to_profile_id == @user.id
       result = {:result => 100, :message => "you do not have rights for this action"}
@@ -843,9 +856,14 @@ end
       end
       return
     end
+    charge_request.status = 1;
+    charge_request.fType = 1
     # сформировать сендмани
     #social_money_send_internal (amount, message, privacy, accountid, currency)
-      social_money_send_internal(charge_request.amount, charge_request.message, privacy, charge_request.from_profile.user_token, charge_request.currency)
+    social_money_send_internal(charge_request.amount, charge_request.message, privacy, charge_request.from_profile.user_token, charge_request.currency)
+
+    #это криво. переделать.
+    charge_request.save!
   end
 
   def social_money_charge
@@ -899,12 +917,11 @@ end
   end
 
   def social_money_get
-  #Gets unanswered money requests.
-  requests = Feed.where("status = 0 and to_profile_id = :to_profile AND fType=3",{:to_profile => @user.id} ).includes(:from_profile, :to_profile).all
-  respond_to do |format|
-    format.json { render :json => requests, status: :ok }
-  end
-
+   #Gets unanswered money requests.
+   requests = Feed.where("status = 0 and to_profile_id = :to_profile AND fType=3",{:to_profile => @user.id} ).includes(:from_profile, :to_profile).all
+   respond_to do |format|
+     format.json { render :json => requests, status: :ok }
+   end
   end
 
 #method /profile/new
