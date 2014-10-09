@@ -871,7 +871,7 @@ end
     log = Logger.new(STDOUT)
     log.level = Logger::INFO
     prms= params.require(:chargeMoney)
-    reciever_user_token= prms[:accountId]
+    reciever_user_token= prms[:accountid]
     amount = prms[:amount]
     currency = prms[:currency]
     message = prms[:message]
