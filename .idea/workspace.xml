@@ -42,13 +42,9 @@
           <file leaf-file-name="profiles_controller.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.59344894" vertical-offset="1885" max-vertical-offset="6766">
-                  <caret line="847" column="127" selection-start-line="847" selection-start-column="127" selection-end-line="847" selection-end-column="127" />
+                <state vertical-scroll-proportion="0.33270678" vertical-offset="2475" max-vertical-offset="9333">
+                  <caret line="421" column="2" selection-start-line="421" selection-start-column="2" selection-end-line="421" selection-end-column="2" />
                   <folding>
-                    <element signature="e#1253#2440#0" expanded="false" />
-                    <element signature="e#2442#2776#0" expanded="false" />
-                    <element signature="e#2778#3079#0" expanded="false" />
-                    <element signature="e#3081#3780#0" expanded="false" />
                     <element signature="e#3782#4089#0" expanded="false" />
                     <element signature="e#4091#4481#0" expanded="false" />
                     <element signature="e#4483#4717#0" expanded="false" />
@@ -58,25 +54,22 @@
                     <element signature="e#5710#6310#0" expanded="false" />
                     <element signature="e#6312#7592#0" expanded="false" />
                     <element signature="e#7594#9934#0" expanded="false" />
-                    <element signature="e#9936#10862#0" expanded="false" />
                     <element signature="e#10864#10941#0" expanded="false" />
                     <element signature="e#10943#11279#0" expanded="false" />
                     <element signature="e#11281#14020#0" expanded="false" />
-                    <element signature="e#14022#15525#0" expanded="false" />
-                    <element signature="e#15792#16129#0" expanded="false" />
-                    <element signature="e#16131#16159#0" expanded="false" />
-                    <element signature="e#16161#16677#0" expanded="false" />
-                    <element signature="e#16679#18458#0" expanded="false" />
-                    <element signature="e#18460#18606#0" expanded="false" />
-                    <element signature="e#18999#22893#0" expanded="false" />
-                    <element signature="e#22895#22933#0" expanded="false" />
-                    <element signature="e#22935#23028#0" expanded="false" />
-                    <element signature="e#23030#23083#0" expanded="false" />
-                    <element signature="e#23085#23189#0" expanded="false" />
-                    <element signature="e#23191#23272#0" expanded="false" />
-                    <element signature="e#23276#29231#0" expanded="false" />
-                    <element signature="e#30047#31326#0" expanded="false" />
-                    <element signature="e#35520#35800#0" expanded="false" />
+                    <element signature="e#15781#16118#0" expanded="false" />
+                    <element signature="e#16120#16148#0" expanded="false" />
+                    <element signature="e#16668#18447#0" expanded="false" />
+                    <element signature="e#18449#18595#0" expanded="false" />
+                    <element signature="e#18988#22882#0" expanded="false" />
+                    <element signature="e#22884#22922#0" expanded="false" />
+                    <element signature="e#22924#23017#0" expanded="false" />
+                    <element signature="e#23019#23072#0" expanded="false" />
+                    <element signature="e#23074#23178#0" expanded="false" />
+                    <element signature="e#23180#23261#0" expanded="false" />
+                    <element signature="e#23265#29220#0" expanded="false" />
+                    <element signature="e#30036#31315#0" expanded="false" />
+                    <element signature="e#35509#35789#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -99,7 +92,7 @@
           <file leaf-file-name="application_helper.rb" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="547">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="560">
                   <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
@@ -492,7 +485,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3255167" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5960699" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3237569" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -549,7 +542,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="96" />
+      <option name="time" value="97" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -920,13 +913,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/profiles_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59344894" vertical-offset="1885" max-vertical-offset="6766">
-          <caret line="847" column="127" selection-start-line="847" selection-start-column="127" selection-end-line="847" selection-end-column="127" />
+        <state vertical-scroll-proportion="0.33270678" vertical-offset="2475" max-vertical-offset="9333">
+          <caret line="421" column="2" selection-start-line="421" selection-start-column="2" selection-end-line="421" selection-end-column="2" />
           <folding>
-            <element signature="e#1253#2440#0" expanded="false" />
-            <element signature="e#2442#2776#0" expanded="false" />
-            <element signature="e#2778#3079#0" expanded="false" />
-            <element signature="e#3081#3780#0" expanded="false" />
             <element signature="e#3782#4089#0" expanded="false" />
             <element signature="e#4091#4481#0" expanded="false" />
             <element signature="e#4483#4717#0" expanded="false" />
@@ -936,25 +925,22 @@
             <element signature="e#5710#6310#0" expanded="false" />
             <element signature="e#6312#7592#0" expanded="false" />
             <element signature="e#7594#9934#0" expanded="false" />
-            <element signature="e#9936#10862#0" expanded="false" />
             <element signature="e#10864#10941#0" expanded="false" />
             <element signature="e#10943#11279#0" expanded="false" />
             <element signature="e#11281#14020#0" expanded="false" />
-            <element signature="e#14022#15525#0" expanded="false" />
-            <element signature="e#15792#16129#0" expanded="false" />
-            <element signature="e#16131#16159#0" expanded="false" />
-            <element signature="e#16161#16677#0" expanded="false" />
-            <element signature="e#16679#18458#0" expanded="false" />
-            <element signature="e#18460#18606#0" expanded="false" />
-            <element signature="e#18999#22893#0" expanded="false" />
-            <element signature="e#22895#22933#0" expanded="false" />
-            <element signature="e#22935#23028#0" expanded="false" />
-            <element signature="e#23030#23083#0" expanded="false" />
-            <element signature="e#23085#23189#0" expanded="false" />
-            <element signature="e#23191#23272#0" expanded="false" />
-            <element signature="e#23276#29231#0" expanded="false" />
-            <element signature="e#30047#31326#0" expanded="false" />
-            <element signature="e#35520#35800#0" expanded="false" />
+            <element signature="e#15781#16118#0" expanded="false" />
+            <element signature="e#16120#16148#0" expanded="false" />
+            <element signature="e#16668#18447#0" expanded="false" />
+            <element signature="e#18449#18595#0" expanded="false" />
+            <element signature="e#18988#22882#0" expanded="false" />
+            <element signature="e#22884#22922#0" expanded="false" />
+            <element signature="e#22924#23017#0" expanded="false" />
+            <element signature="e#23019#23072#0" expanded="false" />
+            <element signature="e#23074#23178#0" expanded="false" />
+            <element signature="e#23180#23261#0" expanded="false" />
+            <element signature="e#23265#29220#0" expanded="false" />
+            <element signature="e#30036#31315#0" expanded="false" />
+            <element signature="e#35509#35789#0" expanded="false" />
           </folding>
         </state>
       </provider>

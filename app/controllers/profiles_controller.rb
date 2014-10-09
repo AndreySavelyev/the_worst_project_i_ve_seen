@@ -416,7 +416,7 @@ end
 
 def confirm
     @result = Object
-    reg_token = request.params['confirm'];
+    reg_token = params[:token];
 
       unless reg_token
         @result = {:result => 9 ,:message => "confirm token not valid"}
