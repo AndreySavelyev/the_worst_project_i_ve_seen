@@ -6,7 +6,7 @@ include WalletModule
 include FriendsHelper
 
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
-  before_action :set_user_from_session_and_check_registration,       only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
+  before_action :set_user_from_session_and_check_registration, only: [:social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
   before_action :set_user_from_session, except: [:processing_callback, :signin,:signup, :confirm, :social_money_send, :social_money_charge, :recieve_pay, :social_money_get, :get_new_requests]
   #проверка app-token только для  :signin,:signUp
@@ -23,8 +23,6 @@ include FriendsHelper
 
 def processing_callback
   tada = params[:order]
-
-
   respond_to do |format|
     format.xml { render :xml => params , status: :ok }
   end
@@ -937,16 +935,17 @@ end
 
 :private
 
-def checkSessionValid(session)
-  unless(session)
+ def checkSessionValid(session)
+    unless(session)
     return false;
-  end
+    end
 
     if(session.TimeToDie<Time.now)
-      return false;
+    return false;
     end
     return true;
   end
+
 
   def create_session(user)
 

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/confirm', to: 'profiles#confirm', format: 'json'
   post '/brief', to: 'profiles#brief', format: 'json'
   post '/catalog', to: 'profiles#catalog', format: 'json'
-  post '/social/feed', to: 'profiles#feed', format: 'json'
+  post '/social/feed', to: 'feeds#feed', format: 'json'
   post '/social/like', to: 'profiles#like', format: 'json'
 
 

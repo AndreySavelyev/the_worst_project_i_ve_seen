@@ -11,5 +11,10 @@ class Profile < ActiveRecord::Base
   has_many :patients, through: :friends
   has_many :masters_profiles, :class_name => 'Friend'
   has_many :lovers, through: :masters_profiles
+  
+  
+  def get_friends_id
+    ids = lovers.pluck(:id);
+  end
 
 end

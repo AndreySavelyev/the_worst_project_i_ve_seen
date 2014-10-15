@@ -1,7 +1,5 @@
 module ProfilesHelper
 
-  :public
-
   def self.get_tabs_format (user, app)
 
     #@apps = user.BizAccountService;

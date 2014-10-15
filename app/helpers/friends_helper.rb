@@ -1,6 +1,5 @@
 module FriendsHelper
 
-  :public
   def self.invite_new_friend(user, friend_account_id)
     #определение типа параметра:
     #1- email
@@ -114,9 +113,13 @@ module FriendsHelper
     end
   end
 
-  def self.get_friends(user)
-    #прежде чем выдавать список друзей, нужно их получить
+  def self.get_friends_id(user)
+    return user.lovers.pluck(:id);
+  end
 
+  def self.get_friends(user)
+    
+    #прежде чем выдавать список друзей, нужно их получить
     friend_api_format = Array.new
     user.lovers.each    { |user|
       friend_api_format <<
