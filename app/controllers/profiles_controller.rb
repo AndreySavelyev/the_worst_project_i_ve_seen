@@ -191,10 +191,11 @@ def get_profile
                   :cp_name=>@user.contact_person_name,
                   :cp_position=>@user.contact_person_position,
                   :cp_birth=>@user.contact_person_date_of_birth,
-                  :cp_phone=>@user.contact_person_phone
+                  :cp_phone=>@user.contact_person_phone,
+                  :balance=>@user.get_balance,
+                  :stats=>@user.get_stats                  
               }
       }
-
   respond_to do |format|
     format.json { render :json => @profile.as_json, status: :ok }
   end

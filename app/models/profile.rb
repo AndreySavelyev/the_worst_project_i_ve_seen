@@ -11,10 +11,33 @@ class Profile < ActiveRecord::Base
   has_many :patients, through: :friends
   has_many :masters_profiles, :class_name => 'Friend'
   has_many :lovers, through: :masters_profiles
-  
-  
   def get_friends_id
     ids = lovers.pluck(:id);
+  end
+
+  def self.get_by_token(token)
+
+  end
+
+  def get_balance
+    balance = {
+      :balance=>
+      {
+        :amount=>available,
+        :currency=>iso_currency,
+        :limit=>2500
+      }
+    }
+  end
+  
+  def get_stats
+    stats = {
+      :stats=>
+      {
+        :friends=>lovers.count(),
+        :new=>Feed::get_new(self)
+      }
+  }
   end
 
 end

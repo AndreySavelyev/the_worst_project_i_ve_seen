@@ -8,14 +8,15 @@ class FeedsController < ApplicationController
 
     #todo проверить списки (только для глобал одинаковые)
     queryPrivacy = params.require(:global);
+    
     feeds = nil;
 
     case queryPrivacy
-    when '0'
+    when 0
       feeds = get_global_feed();
-    when '1'
+    when 1
       feeds = get_friends_feed();
-    when '2'
+    when 2
       feeds = get_private_feed();
     else
     end
@@ -28,7 +29,7 @@ class FeedsController < ApplicationController
 
   #use will_paginate gem
   def get_global_feed
-    feed = FeedsHelper::get_feed_message_format(Feed.where("privacy = 0 AND status != 0").includes(:from_profile, :to_profile).order(feed_date: :desc).first(100))
+    feed = FeedsHelper::get_feed_message_format(Feed.where("privacy = 0 AND status != 0").includes(:from_profile, :to_profile).order(id: :desc).first(100))
     return feed  
   end
 
@@ -36,12 +37,12 @@ class FeedsController < ApplicationController
   def get_friends_feed    
     #get friends list    
     ids = $user.get_friends_id;
-    feed = FeedsHelper::get_feed_message_format(Feed.where("privacy = 0 AND status != 0 AND (to_profile_id in (:ids) OR from_profile_id in (:ids))", ids: ids).includes(:from_profile, :to_profile).order(feed_date: :desc).first(100))    
+    feed = FeedsHelper::get_feed_message_format(Feed.where("privacy = 1 AND status != 0 AND (to_profile_id in (:ids) OR from_profile_id in (:ids))", ids: ids).includes(:from_profile, :to_profile).order(id: :desc).first(100))    
     return feed;
   end
 
   def get_private_feed()
-    feed = FeedsHelper::get_feed_message_format(Feed.where("to_profile_id = :id OR from_profile_id = :id", id: $user.id).includes(:from_profile, :to_profile).order(status: :asc, feed_date: :desc).first(100))  
+    feed = FeedsHelper::get_feed_message_format(Feed.where("to_profile_id = :id OR from_profile_id = :id", id: $user.id).includes(:from_profile, :to_profile).order(status: :asc, id: :desc).first(100))  
   end
 
 end
