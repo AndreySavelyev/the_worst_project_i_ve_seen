@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get '/social/friends/list', to: 'profiles#social_friends_list', format: 'json'
   get '/social/friends/count', to: 'profiles#social_friends_count', format: 'json'
   post '/social/friends/search', to: 'profiles#social_friends_search', format: 'json'
-  post '/processing/callback', to: 'profiles#processing_callback', format: 'xml'
+  post '/callback' => 'callback#callback'
   #post '/social/friends/cancel', to: 'profiles#friendship_request_cancel', format: 'json'
   #post '/social/', to: 'profiles#', format: 'json'
   #post '/social/', to: 'profiles#', format: 'json'
@@ -39,4 +39,6 @@ Rails.application.routes.draw do
   post '/profile/save', to: 'profiles#save_profile', format: 'json'
   post '/profile/stats', to: 'profiles#stats_profile', format: 'json'
   get '/tabs', to: 'profiles#tabs', format: 'json'
+    
+  post '/cashin' => 'wallet#cashin', format: 'json'
 end

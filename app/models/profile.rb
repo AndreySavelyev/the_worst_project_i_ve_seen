@@ -15,16 +15,28 @@ class Profile < ActiveRecord::Base
     ids = lovers.pluck(:id);
   end
 
+  def self.create(token)
+    profile = Profile.new
+    profile.user_token = token
+    return profile;
+  end
+  
   def self.get_by_token(token)
-
+    Profile.where("user_token = :accountid
+                   OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
   end
 
   def get_balance
+    
+    w = Wallet.get_wallet(self)
+    
     balance = {
-      :balance=>
+      :wallet=>
       {
-        :amount=>available,
-        :currency=>iso_currency,
+        :id=>w.id,
+        :amount=>w.available,
+        :currency=>w.IsoCurrency.Alpha3Code,
+        :holded=>w.holded,
         :limit=>2500
       }
     }

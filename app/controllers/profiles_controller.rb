@@ -325,14 +325,15 @@ def signOff
 end
 
 def signup
+  
   @log = Logger.new(STDOUT)
   @log.level = Logger::INFO
 
-  founded_profile= Profile.where("user_token = :accountid
-                   OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: @sign_up.accountid}).first
-  if founded_profile && founded_profile.temp_account
+  founded_profile = Profile.get_by_token(@sign_up.accountid); 
+                   
+  if founded_profile && founded_profile.temp_account   
     @newUser = founded_profile
-    @newUser.temp_account = FALSE
+    @newUser.temp_account = FALSE    
   else
     if founded_profile # обнаружен существующий аккаунт
       @log.info("not registered. accountId have incorrect format")
@@ -343,14 +344,14 @@ def signup
       end
       return;
     end
+    
     # временный профайл не найден
-    @newUser = Profile.new
-    @newUser.user_token = @sign_up.accountid;
+    @newUser = Profile.create(@sign_up.accountid);   
   end
 
 
-#todo вынести все это безобразие в отдельный модуль
-  facebookId =AccountValidators::get_fbid_match(@sign_up.accountid)
+  #todo вынести все это безобразие в отдельный модуль
+  facebookId = AccountValidators::get_fbid_match(@sign_up.accountid)
 
   if(facebookId)
     @newUser.fb_token=facebookId[0]
@@ -392,7 +393,7 @@ def signup
     @newUser.reg_token= SecureRandom.hex;
   end
   @newUser.confirm_type=0;#not confirmed
-# добавляем запись
+  # добавляем запись
 
   if(!@newUser.save)
     @result = Object
@@ -400,6 +401,9 @@ def signup
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :error }
     end
+    
+    Wallet.create_wallet(@newUser.user_token)
+        
     return;
   end
 
