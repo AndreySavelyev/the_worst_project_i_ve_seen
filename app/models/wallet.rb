@@ -26,9 +26,9 @@ class Wallet < ActiveRecord::Base
     Wallet.where("id = :id", id: id).includes(:IsoCurrency).first!
   end
   
-  def hold(amount, to_profile)         
-     wr = WalletRequest.create_send_money_wallet_request(self.profile.get_wallet.id, to_profile.get_wallet.id)
-     Entry.create_hold_entry(self, wr, amount)    
+  def hold(pay_request)         
+     wr = WalletRequest.create_send_money_wallet_request(pay_request)
+     Entry.create_hold_entry(wr, pay_request.amount)    
   end
-
+  
 end

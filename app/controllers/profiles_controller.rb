@@ -577,26 +577,6 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
       end
   end
 
-def get_transaction_commission_id
-
-end
-
-def wallet_get_commission_wallet
-  #возвращает кошелек на котором аккамулируются комиссии
-end
-
-def get_conversation_commission_id
-  #ID комиссии
-end
-
-def get_conv_commiss(conv_commission_id, source_amount)
-  #расчет комиссии за конвертацию
-  return 0
-end
-
-def get_currency_conversation_rate(source_currency, dest_currency)
-  return 1
-end
 
   def already_payed_error
     #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
@@ -607,6 +587,7 @@ end
   end
 
   def recieve_pay
+    
     request_id=params[:requestId]
     privacy=params[:global]
 
@@ -622,6 +603,7 @@ end
       already_payed_error
       return
     end
+    
     #rescue
     #проверка, что этот запрос нашего юзера
     unless payment_request.to_profile_id == @user.id
@@ -633,113 +615,9 @@ end
       return
     end
 
-    from_profile= Profile.find(payment_request.from_profile_id)
-    to_profile= Profile.find(payment_request.to_profile_id)
-    #с исходнго кошелька списывается замороженная сумма
-    comiss_wallet=Profile.where(:wallet_type =>  100, :iso_currency => payment_request.from_profile.iso_currency).first!
-    unless comiss_wallet
-      #todo срочно! вынести все рендеринги ошибок в методы!
-      result = {:result => 111, :message => "system's wallet does not exist"}
-      respond_to do |format|
-        format.json { render :json => result.as_json, status: :internal_server_error }
-      end
-      return
-    end
-    #на кошелек комиссий производится зачисление средств за проведение операции (код операции 1)
-    transaction_commission_entry=Entry.new
-    transaction_commission_entry.payment_request_id = payment_request.id
-    transaction_commission_entry.credit_profile_id = from_profile.id
-    transaction_commission_entry.debt_profile_id = comiss_wallet.id
-    transaction_commission_entry.amount = payment_request.trans_commission_amount
-    transaction_commission_entry.currency_id = from_profile.iso_currency
-    transaction_commission_entry.operation_code = 1 #списание комиссии
-    #на кошелек комиссий производится зачисление средств за конвертацию (код операции 2)
-    convertation_commission_entry=Entry.new
-    convertation_commission_entry.payment_request_id = payment_request.id
-    convertation_commission_entry.credit_profile_id = from_profile.id
-    convertation_commission_entry.debt_profile_id = comiss_wallet.id
-    convertation_commission_entry.amount = payment_request.conv_commission_amount
-    convertation_commission_entry.currency_id = payment_request.from_profile.iso_currency
-    convertation_commission_entry.operation_code = 2 #списание комиссии
-    #на кошелек назначения эта сумма зачисляется
-    transaction_entry=Entry.new
-    transaction_entry.payment_request_id = payment_request.id
-    transaction_entry.credit_profile_id = from_profile.id
-    transaction_entry.debt_profile_id = to_profile.id
-    transaction_entry.amount = payment_request.amount
-    transaction_entry.currency_id = payment_request.to_profile.iso_currency
-    transaction_entry.operation_code = 3 #пополнение кошелька
+    payment_request.accept_pay_request(@user, privacy)
 
-    unless comiss_wallet.iso_currency == payment_request.from_profile.iso_currency
-      #todo срочно! вынести все рендеринги ошибок в методы!
-      result = {:result => 112, :message => "currency convertation internal error"}
-      respond_to do |format|
-        format.json { render :json => result.as_json, status: :internal_server_error }
-      end
-      return
-    end
-    comiss_wallet.available = comiss_wallet.available + transaction_commission_entry.amount
-    comiss_wallet.available = comiss_wallet.available + convertation_commission_entry.amount
-    to_profile.available = to_profile.available + transaction_entry.amount
-    from_profile.holded = from_profile.holded - payment_request.source_amount
-    from_profile.holded = from_profile.holded - payment_request.conv_commission_amount
-    from_profile.holded = from_profile.holded - payment_request.trans_commission_amount
-    #запрос помечается как принятый
-    payment_request.status = 1#статус запроса дружбы 0-new, 1-accepted, 2-declined, 3 -canceled
-
-    #создаем новостные фиды:
-    # 1-отправителю
-    # 2-получателю
-    #newsFeed=Feed.new
-    #newsFeed.from_profile_id = payment_request.to_profile_id
-    #newsFeed.to_profile_id = payment_request.from_profile_id
-    #newsFeed.privacy = 2
-    #newsFeed.amount = payment_request.source_amount
-    #newsFeed.currency = payment_request.source_currency
-    #newsFeed.message = "accepted"
-    #newsFeed.fType = 2
-    payment_request.fType = 2
-    #рассылка уведомлений
-
-    if payment_request.privacy == 0
-      if privacy == 0
-        payment_request.privacy = 0
-      elsif  privacy == 1
-        payment_request.privacy = 1
-      else
-        payment_request.privacy = 2
-      end
-    elsif  payment_request.privacy == 1
-      if privacy == 0
-        payment_request.privacy = 1
-      elsif  privacy == 1
-        payment_request.privacy = 1
-      else
-        payment_request.privacy = 2
-      end
-    else
-      payment_request.privacy = 2
-    end
-
-    begin
-    ActiveRecord::Base.transaction do
-      #пошла транзакция
-      from_profile.save!
-      to_profile.save!
-      payment_request.save!
-      comiss_wallet.save!
-      transaction_entry.save!
-      convertation_commission_entry.save!
-      transaction_commission_entry.save!
-    end
-    rescue
-      @result = {:result => 104,:message => "transaction rolled back"}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
-      end
-      return
-    end
-    @result = {:result => 0,:message => "ok", :available=> to_profile.available, :holded=> to_profile.holded}
+    @result = {:result => 0,:message => "ok", :available=> payment_request.to_profile.get_wallet.available, :holded=> payment_request.to_profile.get_wallet.holded}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :ok }
     end
@@ -796,10 +674,10 @@ end
       return
     end
 
-    @like=Object.new
+    @like = Object.new
 
     begin
-    charge_request=ChargeRequest.new
+    charge_request = ChargeRequest.new
     charge_request.feed_date = Time.now
     charge_request.status = 0
     charge_request.fType = 3
@@ -808,8 +686,8 @@ end
     charge_request.privacy = privacy
     charge_request.message = message
 
-    charge_request.from_profile=@user
-    charge_request.to_profile=reciever
+    charge_request.from_profile = @user
+    charge_request.to_profile = reciever
 
     charge_request.save!
     rescue

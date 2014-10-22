@@ -16,12 +16,13 @@ class WalletRequest < ActiveRecord::Base
   end 
   
   
-  def self.create_send_money_wallet_request(from_wallet_id, to_wallet_id)
+  def self.create_send_money_wallet_request(pay_request)
     
     wr = WalletRequest.new
     wr.req_type = Entry::OPERATION_CODES[:payment];
-    wr.sourceWallet_id = from_wallet_id
-    wr.targetWallet_id = to_wallet_id
+    wr.sourceWallet_id = pay_request.from_profile.get_wallet.id
+    wr.targetWallet_id = pay_request.to_profile.get_wallet.id
+    wr.feed_id = pay_request.id 
     wr.token = SecureRandom.hex
     wr.save
     

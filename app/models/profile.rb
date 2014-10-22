@@ -62,5 +62,10 @@ class Profile < ActiveRecord::Base
       }
   }
   end
+  
+  def self.get_sys_profile(currency)
+    
+    Profile.where(:wallet_type =>  100, :iso_currency => currency).first!    
+  end
 
 end

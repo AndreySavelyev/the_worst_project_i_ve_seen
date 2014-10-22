@@ -1,10 +1,9 @@
 class Entry < ActiveRecord::Base
 
-OPERATION_CODES = {cashin: 3, payment: 1, hold: 2}
+OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, comission: 4}
 
 def self.create_cashin_entry(amount, token)
-  
-    
+      
   r = WalletRequest.find_by_token(token)
   
   e = Entry.new
@@ -24,7 +23,7 @@ def self.create_cashin_entry(amount, token)
         
 end
 
-def self.create_hold_entry(wallet, r, amount)
+def self.create_hold_entry(r, amount)
 
   e = Entry.new
   e.payment_request_id = r.id
@@ -43,6 +42,45 @@ def self.create_hold_entry(wallet, r, amount)
   
 end
 
+def self.create_comission_entry(r, sys_wallet)
+  
+  e = Entry.new
+  e.payment_request_id = r.id
+  e.credit_profile_id = sys_wallet.profile.id
+  e.debt_profile_id = r.wallet_request.sourceWallet.profile.id
+  e.credit_wallet_id = sys_wallet.id
+  e.debit_wallet_id = r.wallet_request.sourceWallet.id
+  e.amount = r.conv_commission_amount.to_f + r.trans_commission_amount.to_f
+  e.currency_id = r.wallet_request.sourceWallet.IsoCurrency.id
+  e.operation_code = OPERATION_CODES[:comission]
+  e.save!
+  
+  e.rollover
+  
+  return e  
+    
+end
+
+def self.create_payment_entry(r)
+  
+  e = Entry.new
+  e.payment_request_id = r.id
+  e.credit_profile_id = r.wallet_request.targetWallet.profile.id
+  e.debt_profile_id = r.wallet_request.sourceWallet.profile.id
+  e.credit_wallet_id = r.wallet_request.targetWallet.id
+  e.debit_wallet_id = r.wallet_request.sourceWallet.id
+  e.amount = r.amount
+  e.currency_id = r.wallet_request.sourceWallet.IsoCurrency.id
+  e.operation_code = OPERATION_CODES[:payment]
+  e.save!
+  
+  e.rollover
+  
+  return e  
+      
+end
+  
+
 def rollover()
   
    credit_wallet = Wallet.get_wallet_by_id(self.credit_wallet_id);
@@ -56,9 +94,18 @@ def rollover()
       debit_wallet.decrement(:available, by = self.amount)
       debit_wallet.increment(:holded, by = self.amount)
       debit_wallet.save!
-    when 2
-      feeds = get_private_feed();
+    when OPERATION_CODES[:comission]
+      credit_wallet.increment(:available, by = self.amount)
+      debit_wallet.decrement(:available, by = self.amount)
+      credit_wallet.save!    
+      debit_wallet.save!    
+    when OPERATION_CODES[:payment]
+      credit_wallet.increment(:available, by = self.amount)
+      debit_wallet.decrement(:holded, by = self.amount)  
+      credit_wallet.save!    
+      debit_wallet.save!
     else
+      
     end       
 end
 

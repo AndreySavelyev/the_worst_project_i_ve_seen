@@ -2,7 +2,7 @@ class PayRequest < Feed
 
   COMISSIONS = {personal_green: 1.9, personal_biz: 3}
 
-  def self.create_pay_request(from_user_id, to_user_id, amount, message, privacy, currency)
+ def self.create_pay_request(from_user_id, to_user_id, amount, message, privacy, currency)
 
     send_request = PayRequest.new
     send_request.source_amount = amount
@@ -17,10 +17,49 @@ class PayRequest < Feed
     send_request.set_comission(currency)
 
     if send_request.check_balance
-    send_request.from_profile.get_wallet.hold(send_request.source_amount, send_request.to_profile)
-    send_request.save!
+     send_request.save!
+     send_request.from_profile.get_wallet.hold(send_request)
     end
 
+  end
+
+ def accept_pay_request(to_profile, privacy)
+    if check_balance
+      pay_comission
+      Entry.create_payment_entry(self)
+      self.status = 1
+      set_privacy(privacy)
+    self.save!
+    end
+  end
+ 
+  
+  def pay_comission    
+    sys_w = Profile.get_sys_profile(self.to_profile.iso_currency.upcase).get_wallet
+    Entry.create_comission_entry(self, sys_w)    
+  end
+  
+ def set_privacy(privacy)
+    self.fType = 2  
+    if self.privacy == 0
+      if privacy == 0
+      self.privacy = 0
+      elsif  privacy == 1
+      self.privacy = 1
+      else
+      self.privacy = 2
+      end
+    elsif  self.privacy == 1
+      if privacy == 0
+      self.privacy = 1
+      elsif  privacy == 1
+      self.privacy = 1
+      else
+      self.privacy = 2
+      end
+    else
+    self.privacy = 2
+    end
   end
 
   def set_comission(currency)
@@ -72,6 +111,10 @@ class PayRequest < Feed
     end
 
     return comission
+  end
+  
+  def self.get_by_id(id)
+       PayRequest.where(:id => request_id).includes(:to_profile, :from_profile).first!
   end
 
 end
