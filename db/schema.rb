@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017125411) do
+ActiveRecord::Schema.define(version: 20141022075423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20141017125411) do
     t.integer  "rate_id"
     t.float    "conv_commission_amount"
     t.integer  "conv_commission_id"
-    t.integer  "trans_commission_id"
+    t.float    "comission_value"
     t.integer  "trans_commission_currency"
     t.float    "trans_commission_amount"
   end

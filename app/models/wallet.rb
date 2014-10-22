@@ -3,6 +3,7 @@ class Wallet < ActiveRecord::Base
   belongs_to :IsoCurrency
   belongs_to :session
   has_many :requests
+    
   def self.create_wallet(profile)    
     wallet = Wallet.new
     wallet.profile = profile;
@@ -23,6 +24,11 @@ class Wallet < ActiveRecord::Base
   
   def self.get_wallet_by_id(id)
     Wallet.where("id = :id", id: id).includes(:IsoCurrency).first!
+  end
+  
+  def hold(amount, to_profile)         
+     wr = WalletRequest.create_send_money_wallet_request(self.profile.get_wallet.id, to_profile.get_wallet.id)
+     Entry.create_hold_entry(self, wr, amount)    
   end
 
 end

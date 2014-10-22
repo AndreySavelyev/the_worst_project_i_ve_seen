@@ -1,7 +1,6 @@
 require 'openssl'
 
 class CallbackController < ApplicationController
-
   #rescue_from ArgumentError, with: :argument_invalid
   def callback
     order = params[:orderXML]
@@ -18,13 +17,23 @@ class CallbackController < ApplicationController
     p ext_hash
 
     if my_hash == ext_hash
-      h = CallbackHelper.parse_callback(order_xml)      
-      token = h["order"]["number"]      
-      amount = h["order"]["amount"]     
-      puts order_xml     
-      Entry.create_cashin_entry(amount, token)            
+      h = CallbackHelper.parse_callback(order_xml)
+
+      token = "";
+
+      puts Rails.env
+  
+      if Rails.env == "development"
+        token =  "0d0e8674fc76aae2a587ba4c591ebd36"
+      else
+        token = h["order"]["number"]
+      end
+
+      amount = h["order"]["amount"]
+      puts order_xml
+      Entry.create_cashin_entry(amount, token)
     else
-      raise ArgumentError.new('Hashes are not valid.');
+      raise ArgumentError.new('Hashes are not valid.')
     end
 
     respond_to do |format|
@@ -38,5 +47,5 @@ class CallbackController < ApplicationController
       format.html { render :text => error.message , status: 400 }
     end
   end
-   
+
 end

@@ -1,4 +1,7 @@
 class Profile < ActiveRecord::Base
+  
+  ACCOUNT_TYPE = {personal: 0, green: 1, biz: 2, system: 100}
+  
   has_many :hot_offers, dependent: :destroy
   has_many :sourceFeeds, :class_name => 'Feed', :foreign_key => 'to_profile_id'
   has_many :destinationFeeds, :class_name => 'Feed', :foreign_key => 'from_profile_id'
@@ -18,12 +21,20 @@ class Profile < ActiveRecord::Base
   def self.create(token)
     profile = Profile.new
     profile.user_token = token
+    profile.wallet_type = ACCOUNT_TYPE[:personal]
     return profile;
   end
   
   def self.get_by_token(token)
     Profile.where("user_token = :accountid
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
+  end
+  
+  def get_wallet
+    if self.wallet == nil
+      Wallet.create_wallet(self)
+    end
+    return wallet
   end
 
   def get_balance

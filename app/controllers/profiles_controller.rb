@@ -21,13 +21,6 @@ include FriendsHelper
 
   Time::DATE_FORMATS[:session_date_time] = "%Y-%m-%d %k:%M"
 
-def processing_callback
-  tada = params[:order]
-  respond_to do |format|
-    format.xml { render :xml => params , status: :ok }
-  end
-end
-
 def add_currency_rate
   from_currency = params.require(:rates).permit(:from_currency)
   to_currency = params.require(:rates).permit(:to_currency)
@@ -151,7 +144,7 @@ end
 def social_friends_search
   friend_email=params.require(:search).permit(:email)
   founded=Profile.where("email like :email ",
-                   { email: friend_email[:email]+'%' }).all
+                   { email: friend_email[:email].downcase+'%' }).all
   friend_list=Array.new
   if founded
     founded.each { |friend|
@@ -574,101 +567,14 @@ end
       social_money_send_internal(parms[:amount], parms[:message], parms[:global], parms[:accountid], parms[:currency])
 end
 
-def social_money_send_internal (amount,message, privacy, accountid, currency)
-        send_request= PayRequest.new
-        send_request.source_amount = amount
-        send_request.message = message
-        send_request.privacy = privacy
-      #TODO разъяснить момент с массивом получаетелей
-      from_profile =  @user
-      send_request.from_profile = from_profile
-      to_profile = Profile.where(:user_token => accountid).first!
-      send_request.to_profile = to_profile
-      #send_request.privacy = 2
-    #rescue
-    #  @result = {:result => 1,:message => "reciever not found"}
-    #  respond_to do |format|
-    #    format.json { render :json => @result.as_json, status: :error }
-    #  end
-    #  return
-    #end
-
-    send_request.status = 0 #status:NEW
-    send_request.fType = 4
-
-    begin
-      #Поиск валюты расчетов
-      currency= IsoCurrency.find_by_Alpha3Code(currency.upcase)
-
-      # если валюты кошельков различаются, то производится конвертация в валюту назначения. писать в фид, про комиссию за конвертацию.
-      # фиксируется курс валют, на исходном кошельке фиксируется сумма в валюте источника.
-      # запрос шлется в валюте кошелька стока.
-      # комиссия берется в валюте кошелька источника. на исходном кошельке фиксируется сумма в валюте источника.
-      send_request.trans_commission_id=#
-          send_request.trans_commission_currency=currency.Alpha3Code#
-      send_request.trans_commission_amount=0#
-      send_request.conv_commission_id=get_conversation_commission_id#
-      send_request.conv_commission_amount= get_conv_commiss(send_request.conv_commission_id, send_request.source_amount)#
-      send_request.feed_date = Time.now
-      send_request.amount=send_request.source_amount #todo конвертация валют get_payment_amount( send_request.rate_id, send_request.source_amount) конечная сумма назначения
-      send_request.currency= currency.Alpha3Code #TODO: for test purpose only UER #конечная валюта назначения
-      send_request.source_currency = currency.Alpha3Code
-      send_request.rate_id=get_currency_conversation_rate(send_request.source_currency, send_request.currency)#курс конвертации валют
-        # рассылка уведомлений
-
-        #проверка достаточности суммы к списанию на кошельке источнике
-        #блокировка суммы к списанию
-
-    rescue
-      @result = {:result => 103,:message => "unknown currency"}
+def social_money_send_internal (amount, message, privacy, accountid, currency)  
+      f_amount = amount.to_s.gsub(',', '.').to_f
+      to_profile = Profile.get_by_token(accountid)
+      send_request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
+      @result = {:result => 0,:message => "ok", :available=> @user.get_wallet.available, :holded=> @user.get_wallet.holded}
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
+        format.json { render :json => @result.as_json, status: :ok }
       end
-      return
-    end
-
-    begin
-
-      payment_total_amount=  send_request.amount + send_request.trans_commission_amount + send_request.conv_commission_amount;
-      from_profile.available = from_profile.available - payment_total_amount
-      from_profile.holded = from_profile.holded + payment_total_amount
-
-
-      if from_profile.available < 0
-        @result = Object
-        @result = {:result => 101, :message => "not enought money"}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :forbidden }
-        end
-        return
-      end
-
-      if  send_request.amount <= 0
-        @result = Object
-        @result = {:result => 102, :message => "zero payment summ"}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :forbidden }
-        end
-        return
-      end
-
-      ActiveRecord::Base.transaction do
-        #пошла транзакция
-        from_profile.save!
-        send_request.save!
-      end
-
-    rescue
-      @result = {:result => 104,:message => "transaction rolled back"}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
-      end
-      return
-    end
-    @result = {:result => 0,:message => "ok", :available=> from_profile.available, :holded=> from_profile.holded}
-    respond_to do |format|
-      format.json { render :json => @result.as_json, status: :ok }
-    end
   end
 
 def get_transaction_commission_id
