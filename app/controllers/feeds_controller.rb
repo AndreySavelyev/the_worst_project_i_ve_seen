@@ -39,7 +39,7 @@ class FeedsController < ApplicationController
     feed = FeedsHelper::get_feed_message_format(Feed.where('privacy = 0 AND status != 0 AND (to_profile_id in (:ids) OR from_profile_id in (:ids))', ids: ids).includes(:from_profile, :to_profile).order(id: :desc).first(100))
   end
 
-  def get_private_feed()
+  def get_private_feed
     feed = FeedsHelper::get_feed_message_format(Feed.where('to_profile_id = :id OR from_profile_id = :id', id: $user.id).includes(:from_profile, :to_profile).order(status: :asc, id: :desc).first(100))
   end
 
