@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'push_notifications/save_token'
+
   resources :profiles
   post '/signin', to: 'profiles#signin', format: 'json'
   post '/signup', to: 'profiles#signup', format: 'json'
@@ -41,4 +43,6 @@ Rails.application.routes.draw do
   get '/tabs', to: 'profiles#tabs', format: 'json'
     
   post '/cashin' => 'wallet#cashin', format: 'json'
+
+  get '/profile/token' => 'push_notifications#token', format: 'json'
 end
