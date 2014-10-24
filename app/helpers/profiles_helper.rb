@@ -64,7 +64,7 @@ module ProfilesHelper
             :paymentId => feed.id,
             :for => feed.description,
             :pic => feed.from_profile.pic_url,
-            :type => ProfilesHelper.get_feed_type_string(feed.fType), #available types[charge, charge new, request, request new]
+            :type => ProfilesHelper.get_feed_type_string(feed.fType, feed.status), #available types[charge, charge new, request, request new]
             :amount => feed.amount,
             :currency => feed.currency,
             :viewed => feed.viewed
@@ -86,26 +86,26 @@ module ProfilesHelper
     return 'unknown privacy type'
   end
 
-  def self.get_feed_type_string(feed_integer_type)
+  def self.get_feed_type_string(feed_integer_type, status)
     #kovalevckiy via skype: pay, charge, pay new, charge new, request, ad
 
     if feed_integer_type === 0
       return 'request'
     end
 
-    if feed_integer_type === 1
-      return 'charge'
-    end
-
-    if feed_integer_type === 2
+    if feed_integer_type === 2 && status === 1
       return 'pay'
     end
 
-    if feed_integer_type === 3
+    if feed_integer_type == 3 && status == 0
       return 'charge new'
     end
 
-    if feed_integer_type === 4
+    if feed_integer_type == 3 && status == 1
+      return 'charge'
+    end
+
+    if feed_integer_type === 2 && status === 0
       return 'pay new'
     end
 

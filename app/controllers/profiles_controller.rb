@@ -74,7 +74,7 @@ def social_friends_invite # пригласить друга
     #result_array<<{
     #    :accountid=>invition[:accountid],
     #    :result=>
-            FriendsHelper.invite_new_friend(@user,invition[:accountid])
+             FriendsHelper.invite_new_friend(@user,invition[:accountid])
     #}
   }
 
@@ -511,43 +511,6 @@ def stats_profile
   end
 end
 
-def feed
-  #todo проверить списки (только для глобал одинаковые)
-  queryPrivacy=params.require(:global)
-  if queryPrivacy == '0'
-    queryPrivacy=0
-  elsif queryPrivacy == '1'
-    queryPrivacy=1
-  elsif queryPrivacy == '2'
-    queryPrivacy=2
-  end
-
-  if queryPrivacy == 0 or queryPrivacy == 1
-    # можно отображать только завершенные события
-
-    # Должно быть отсортировано new, date desc.
-    # Т.е. наверху последние новые запросы.
-
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("(privacy = :privacy AND status != 0) OR (privacy = :privacy AND status != 0 AND (to_profile_id = :from_user OR from_profile_id = :from_user))",
-                                                               {:privacy => queryPrivacy, :from_user => @user.id})
-                                                    .includes(:from_profile, :to_profile)
-                                                    .order(viewed: :asc)
-                                                    .order(feed_date: :desc)
-                                                    .first(10))
-  else
-    feeds = ProfilesHelper::get_feed_message_format(Feed.where("((to_profile_id = :to_user OR from_profile_id = :from_user) and status =0) OR ((to_profile_id = :to_user OR from_profile_id = :from_user) and status !=0 and \"fType\" != 0 )",
-                                                               {:privacy => queryPrivacy, :to_user => @user.id, :from_user => @user.id})
-                                                    .includes(:from_profile, :to_profile)
-                                                    .order(viewed: :asc)
-                                                    .order(feed_date: :desc)
-                                                    .first(10))
-  end
-  feed_container={:feed=>feeds}
-  respond_to do |format|
-    format.json { render :json => feed_container.as_json, status: :ok }
-  end
-end
-
 def like
   @like=Object.new
   @like={:result=>0}
@@ -558,19 +521,14 @@ end
 
 #methods with required confirmation email
   def social_money_send
-
-    #begin
       parms=params.require(:sendMoney).permit(:accountid, :amount,:currency,:message,:global)
-      #на исходном кошельке проверяется наличие необходимой суммы
-      #создание pay_request
-
       social_money_send_internal(parms[:amount], parms[:message], parms[:global], parms[:accountid], parms[:currency])
 end
 
 def social_money_send_internal (amount, message, privacy, accountid, currency)  
       f_amount = amount.to_s.gsub(',', '.').to_f
       to_profile = Profile.get_by_token(accountid)
-      send_request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
+      PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
       @result = {:result => 0,:message => "ok", :available=> @user.get_wallet.available, :holded=> @user.get_wallet.holded}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :ok }
@@ -615,7 +573,7 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
       return
     end
 
-    payment_request.accept_pay_request(@user, privacy)
+    payment_request.accept_pay_request(privacy)
 
     @result = {:result => 0,:message => "ok", :available=> payment_request.to_profile.get_wallet.available, :holded=> payment_request.to_profile.get_wallet.holded}
     respond_to do |format|
@@ -628,7 +586,7 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
     privacy =params[:global]
     # акцепт чарджа
     # найти чардж
-    charge_request= ChargeRequest.where(:id=>request_id).includes(:from_profile).first
+    charge_request = ChargeRequest.where(:id=>request_id).includes(:from_profile).first
 
     unless charge_request.status == 0
       already_payed_error
@@ -643,64 +601,40 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
       end
       return
     end
-    charge_request.status = 1;
-    charge_request.fType = 1
-    # сформировать сендмани
-    #social_money_send_internal (amount, message, privacy, accountid, currency)
-    social_money_send_internal(charge_request.amount, charge_request.message, privacy, charge_request.from_profile.user_token, charge_request.currency)
+    charge_request.accept_charge(privacy)
 
-    #это криво. переделать.
-    charge_request.save!
+    @result = {:result => 0,:message => "ok", :available=> charge_request.to_profile.get_wallet.available, :holded=> charge_request.to_profile.get_wallet.holded}
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: :ok }
+    end
+
   end
 
   def social_money_charge
 
     log = Logger.new(STDOUT)
     log.level = Logger::INFO
-    prms= params.require(:chargeMoney)
-    reciever_user_token= prms[:accountid]
+    prms = params.require(:chargeMoney)
+    to_user_token = prms[:accountid]
     amount = prms[:amount]
+    f_amount = amount.to_s.gsub(',', '.').to_f
     currency = prms[:currency]
     message = prms[:message]
     privacy = prms[:global]
 
     begin
-    reciever = Profile.where(:user_token => reciever_user_token).first!
-    rescue
-      @like={:result=>404}
-      respond_to do |format|
-        format.json { render :json => @like.as_json, status: :not_found }
-      end
-      return
+      ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
+      @result = {:result => 0,:message => "ok", :available=> @user.get_wallet.available, :holded=> @user.get_wallet.holded}
+      @status = :ok
+    rescue NoMoney => e
+      @result = {:result => 101, :message => 'no money for commission payment'}
+      @status = :forbidden
     end
 
-    @like = Object.new
-
-    begin
-    charge_request = ChargeRequest.new
-    charge_request.feed_date = Time.now
-    charge_request.status = 0
-    charge_request.fType = 3
-    charge_request.amount = amount #сколько бабала просим перевести
-    charge_request.currency = currency
-    charge_request.privacy = privacy
-    charge_request.message = message
-
-    charge_request.from_profile = @user
-    charge_request.to_profile = reciever
-
-    charge_request.save!
-    rescue
-      @like={:result=>0}
-      respond_to do |format|
-        format.json { render :json => @like.as_json, status: :ok }
-      end
-      return
-    end
-    @like={:result=>0}
     respond_to do |format|
-      format.json { render :json => @like.as_json, status: :ok }
+      format.json { render :json => @result.as_json, status: @status }
     end
+
   end
 
   def social_money_get

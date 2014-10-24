@@ -28,7 +28,7 @@ class WalletRequest < ActiveRecord::Base
     
     return wr       
   end
-  
+
   def self.find_by_token(token)
     WalletRequest.where("token = :token",token: token).take!
   end

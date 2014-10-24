@@ -19,7 +19,7 @@ module FeedsHelper
             :paymentId => feed.id,
             :for => feed.description,
             :pic => feed.from_profile.pic_url,
-            :type => ProfilesHelper.get_feed_type_string(feed.fType), #available types[charge, charge new, request, request new]
+            :type => ProfilesHelper.get_feed_type_string(feed.fType, feed.status), #available types[charge, charge new, request, request new]
             :amount => feed.amount,
             :currency => feed.currency,
             :viewed => feed.viewed

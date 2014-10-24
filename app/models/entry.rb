@@ -1,6 +1,6 @@
 class Entry < ActiveRecord::Base
 
-OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, comission: 4}
+OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, commission: 4}
 
 def self.create_cashin_entry(amount, token)
       
@@ -42,7 +42,7 @@ def self.create_hold_entry(r, amount)
   
 end
 
-def self.create_comission_entry(r, sys_wallet)
+def self.create_commission_entry(r, sys_wallet)
   
   e = Entry.new
   e.payment_request_id = r.id
@@ -50,9 +50,9 @@ def self.create_comission_entry(r, sys_wallet)
   e.debt_profile_id = r.wallet_request.sourceWallet.profile.id
   e.credit_wallet_id = sys_wallet.id
   e.debit_wallet_id = r.wallet_request.sourceWallet.id
-  e.amount = r.conv_commission_amount.to_f + r.trans_commission_amount.to_f
+  e.amount = r.conv_commission_amount.to_f + r.commission_amount.to_f
   e.currency_id = r.wallet_request.sourceWallet.IsoCurrency.id
-  e.operation_code = OPERATION_CODES[:comission]
+  e.operation_code = OPERATION_CODES[:commission]
   e.save!
   
   e.rollover
@@ -94,14 +94,14 @@ def rollover()
       debit_wallet.decrement(:available, by = self.amount)
       debit_wallet.increment(:holded, by = self.amount)
       debit_wallet.save!
-    when OPERATION_CODES[:comission]
+    when OPERATION_CODES[:commission]
       credit_wallet.increment(:available, by = self.amount)
       debit_wallet.decrement(:available, by = self.amount)
       credit_wallet.save!    
       debit_wallet.save!    
     when OPERATION_CODES[:payment]
       credit_wallet.increment(:available, by = self.amount)
-      debit_wallet.decrement(:holded, by = self.amount)  
+      debit_wallet.decrement(:holded, by = self.amount)
       credit_wallet.save!    
       debit_wallet.save!
     else
