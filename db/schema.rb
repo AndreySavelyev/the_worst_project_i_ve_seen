@@ -68,18 +68,18 @@ ActiveRecord::Schema.define(version: 20141027133638) do
     t.integer  "fType"
     t.date     "feed_date"
     t.float    "amount"
-    t.string   "currency",                  limit: 3
-    t.integer  "status",                               default: 0
-    t.integer  "viewed",                               default: 0
-    t.string   "type",                      limit: 40, default: "Feed"
+    t.string   "currency",               limit: 3
+    t.integer  "status",                            default: 0
+    t.integer  "viewed",                            default: 0
+    t.string   "type",                   limit: 40, default: "Feed"
     t.integer  "source_currency"
     t.float    "source_amount"
     t.integer  "rate_id"
     t.float    "conv_commission_amount"
     t.integer  "conv_commission_id"
-    t.float    "comission_value"
-    t.integer  "trans_commission_currency"
-    t.float    "trans_commission_amount"
+    t.float    "commission_value"
+    t.integer  "commission_currency"
+    t.float    "commission_amount"
   end
 
   create_table "friends", id: false, force: true do |t|
@@ -173,6 +173,74 @@ ActiveRecord::Schema.define(version: 20141027133638) do
   end
 
   add_index "providers", ["application_id"], name: "index_providers_on_application_id", using: :btree
+
+  create_table "push_tokens", force: true do |t|
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "profile_id"
+  end
+
+  add_index "push_tokens", ["profile_id"], name: "index_push_tokens_on_profile_id", using: :btree
+
+  create_table "rpush_apps", force: true do |t|
+    t.string   "name",                                null: false
+    t.string   "environment"
+    t.text     "certificate"
+    t.string   "password"
+    t.integer  "connections",             default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type",                                null: false
+    t.string   "auth_key"
+    t.string   "client_id"
+    t.string   "client_secret"
+    t.string   "access_token"
+    t.datetime "access_token_expiration"
+  end
+
+  create_table "rpush_feedback", force: true do |t|
+    t.string   "device_token", limit: 64, null: false
+    t.datetime "failed_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "app_id"
+  end
+
+  add_index "rpush_feedback", ["device_token"], name: "index_rpush_feedback_on_device_token", using: :btree
+
+  create_table "rpush_notifications", force: true do |t|
+    t.integer  "badge"
+    t.string   "device_token",      limit: 64
+    t.string   "sound",                        default: "default"
+    t.string   "alert"
+    t.text     "data"
+    t.integer  "expiry",                       default: 86400
+    t.boolean  "delivered",                    default: false,     null: false
+    t.datetime "delivered_at"
+    t.boolean  "failed",                       default: false,     null: false
+    t.datetime "failed_at"
+    t.integer  "error_code"
+    t.text     "error_description"
+    t.datetime "deliver_after"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "alert_is_json",                default: false
+    t.string   "type",                                             null: false
+    t.string   "collapse_key"
+    t.boolean  "delay_while_idle",             default: false,     null: false
+    t.text     "registration_ids"
+    t.integer  "app_id",                                           null: false
+    t.integer  "retries",                      default: 0
+    t.string   "uri"
+    t.datetime "fail_after"
+    t.boolean  "processing",                   default: false,     null: false
+    t.integer  "priority"
+    t.text     "url_args"
+    t.string   "category"
+  end
+
+  add_index "rpush_notifications", ["delivered", "failed"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "SessionId",      null: false
