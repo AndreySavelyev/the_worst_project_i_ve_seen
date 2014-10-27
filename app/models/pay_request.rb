@@ -21,6 +21,8 @@ class PayRequest < Feed
       send_request.from_profile.get_wallet.hold(send_request)
     end
 
+   return send_request
+
  end
 
   def self.create_accepted_request(from_user_id, to_user_id, amount, message, privacy, currency)
@@ -35,7 +37,7 @@ class PayRequest < Feed
     send_request.status = 1 #status:ACCEPTED
     send_request.fType = 2
 
-    send_request.set_commission(currency)
+       send_request.set_commission(currency)
 
     if send_request.check_balance
       send_request.save!

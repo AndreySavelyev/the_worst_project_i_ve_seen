@@ -118,7 +118,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			<BR>
 			<A href="#social/money/charge">/social/money/charge</A>
 			<BR>
-			<A href="#social/money/recieve">/social/money/recieve</A>
+			<A href="#social/money/receive">/social/money/receive</A>
 			<BR>
 			<A href="#social/money/get">/social/money/get</A>
 			<BR>
@@ -148,13 +148,17 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			<BR>
 			<A href="#profile/balance">/profile/balance</A>
 			<BR>
-			<A href="http://api.onlinepay.com/api.html#profile/new">/profile/new</A>
-			<!--
-			<br	/>
-			<a href="#wallet/in">/wallet/in</a>
-			<br	/>
-			<a href="#wallet/out">/wallet/out</a>
-			-->
+			<A href="#profile/new">/profile/new</A>
+            <BR>
+            <A href="#profile/token">/profile/token</A>
+            <BR>
+            <A href="#cashin">/cashin</A>
+            <!--
+            <br	/>
+            <a href="#wallet/in">/wallet/in</a>
+            <br	/>
+            <a href="#wallet/out">/wallet/out</a>
+            -->
 		</P>
 		<H2>Data format description.</H2>
 		<P>
@@ -711,8 +715,8 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 		<P>
 			NO DATA:
 		</P><!-- end /social/invite/fb -->
-		<!-- /social/invite/email-->
 
+        <!-- /social/invite/email-->
 		<H4><STRONG><A
 		id="social/invite/email">/social/invite/email</A></STRONG></H4>Request method:
 		POST
@@ -727,7 +731,9 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 		<H5>Returns:</H5>
 		<P>
 			NO DATA:
-		</P><!-- end /social/invite/fb -->
+		</P>
+        <!-- end /social/invite/fb -->
+
 		<!-- /social/like-->
 		<H4><STRONG><A id="social/like">/social/like</A></STRONG></H4>Request method:
 		POST
@@ -755,7 +761,9 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<BR>
 				<SPAN class="l1">}</SPAN>
 			</CODE>
-		</P><!-- end /social/like -->
+		</P>
+        <!-- end /social/like -->
+
 		<!-- /social/money/send -->
 		<H4><STRONG><A
 		id="social/money/send">/social/money/send</A></STRONG></H4>Request method: POST
@@ -797,9 +805,10 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<BR>
 				<SPAN class="l1">}</SPAN>
 			</CODE>
-		</P><!-- end /social/money/send -->
-		<!-- /social/money/charge -->
+		</P>
+        <!-- end /social/money/send -->
 
+		<!-- /social/money/charge -->
 		<H4><STRONG><A
 		id="social/money/charge">/social/money/charge</A></STRONG></H4>Request method:
 		POST
@@ -841,13 +850,15 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<BR>
 				<SPAN class="l1">}</SPAN>
 			</CODE>
-		</P><!-- end /social/money/charge -->
-		<!-- /social/money/recieve -->
+		</P>
+        <!-- end /social/money/charge -->
 
-		<H4><STRONG><A id="social/money/recieve">/social/money/recieve |
+        <!-- /social/money/receive -->
+
+		<H4><STRONG><A id="social/money/receive">/social/money/receive |
 		pay</A></STRONG></H4>Request method: POST
 		<P>
-			Description: If someone sends you money you should recieve it.
+			Description: If someone sends you money you should receive it.
 		</P>
 		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
@@ -856,8 +867,11 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
 				<BR>
 				<SPAN
-				class="l2">"requestId" : "asddfkjh342987jfdh"</SPAN>
+				class="l2">"requestId" : "asddfkjh342987jfdh" # id field from feeds method</SPAN>
 				<BR>
+				<SPAN
+                        class="l2">"global" : "[0|1|2]" # 0-private, 1-freinds only, 2-global</SPAN>
+                <BR>
 				<SPAN
 				class="l1">}</SPAN> </CODE>
 		</P>
@@ -870,13 +884,14 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<BR>
 				<SPAN class="l1">}</SPAN>
 			</CODE>
-		</P><!-- end /social/money/recieve -->
-		<!-- /social/money/get -->
+		</P>
+        <!-- end /social/money/recieve -->
 
+        <!-- /social/money/get -->
 		<H4><STRONG><A id="social/money/get">/social/money/get</A></STRONG></H4>Request
 		method: GET
 		<P>
-			Description: Gets unanswered money requests.
+			Description: Gets unanswered money requests. [OBSOLETE - use feeds instead]
 		</P>
 		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
@@ -917,7 +932,8 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				class="l2">}]</SPAN>
 				<BR>
 				<SPAN class="l1">}</SPAN> </CODE>
-		</P><!-- end /social/money/get -->
+		</P>
+        <!-- end /social/money/get -->
 
 		<!-- /social/friends/invite -->
 		<H4><STRONG><A id="social/friends/invite">/social/friends/invite</A></STRONG></H4>Request method: POST
@@ -1108,7 +1124,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 		<H4><STRONG><A id="profile/new">/profile/new</A></STRONG></H4>Request method:
 		GET
 		<P>
-			Description: Gets new events for pending request collection.
+			Description: Gets new events for pending request collection [OBSOLETE - use profile/get].
 		</P>
 		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
 
@@ -1401,7 +1417,78 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				</CODE> </SMALL>
 		</P><!-- end profile/save -->
 
-		<H2> Shopping.</H2>
+
+        <!-- /cashin -->
+        <H4><STRONG> <A id="cashin">/cashin</A> </STRONG></H4>Request method: POST
+        <P>
+            Description: Method creates a request for user's cashin operation
+        </P>
+        <H5>Headers:</H5>
+        <SMALL>session-token:test-token;</SMALL>
+
+        <H5>Data:</H5>
+        <P>no parameters</P>>
+        <H5>Returns:</H5>
+        <P>
+            <SMALL>
+                <CODE class="prettyprint lang-n">
+                    <SPAN class="l1">{</SPAN>
+                    <BR>
+                    <SPAN class="l2">"id":199, #cashin request identifier</SPAN>
+                    <BR>
+                    <SPAN class="l3">"req_type":3, #always 3 for cashin req</SPAN>
+                    <BR>
+                    <SPAN class="l3">"req_status":null,  #always null for cashin req</SPAN>
+                    <BR>
+                    <SPAN class="l3">"sourceWallet_id":1, #from wallet id</SPAN>
+                    <BR>
+                    <SPAN class="l3">"targetWallet_id":1, #to wallet id</SPAN>
+                    <BR>
+                    <SPAN class="l3">"created_at": "2014-10-27T09:44:39.659Z",</SPAN>
+                    <BR>
+                    <SPAN class="l3">"updated_at": "2014-10-27T09:44:39.659Z",</SPAN>
+                    <BR>
+                    <SPAN class="l3">"token": "3ee78c08ac7cee96a5eaf00d15979d7a", #request order number for PSP processing,</SPAN>
+                    <BR>
+                    <SPAN class="l3">"feed_id": null #always null</SPAN>
+                    <BR>
+                    <SPAN class="l1">}</SPAN>
+                </CODE> </SMALL>
+        </P>
+        <!-- end cashin -->
+
+        <!-- /profile/token -->
+        <H4><STRONG> <A id="profile/token">/profile/token</A> </STRONG></H4>Request method: GET
+        <P>
+            Description: Gets/Sends mobile device token
+        </P>
+        <H5>Headers:</H5>
+        <SMALL>session-token:test-token;</SMALL>
+
+        <H5>Data:</H5>
+        <P>token=device token</P>>
+        <H5>Returns:</H5>
+        <P>
+            <SMALL>
+                <CODE class="prettyprint lang-n">
+                    <SPAN class="l1">{</SPAN>
+                    <BR>
+                    <SPAN class="l2">"id":199, #token id</SPAN>
+                    <BR>
+                    <SPAN class="l3">"token":"sadasd", #device token</SPAN>
+                    <BR>
+                    <SPAN class="l3">"created_at": "2014-10-27T09:44:39.659Z",</SPAN>
+                    <BR>
+                    <SPAN class="l3">"updated_at": "2014-10-27T09:44:39.659Z",</SPAN>
+                    <BR>
+                    <SPAN class="l3">"profile_id": "1", #user's profile id,</SPAN>
+                    <BR>
+                    <SPAN class="l1">}</SPAN>
+                </CODE> </SMALL>
+        </P>
+        <!-- end /profile/token -->
+
+        <H2> Shopping.</H2>
 		<H2> Services.</H2>
 		<H2> Shop integration API.</H2>
 		<H2> Service integration API.</H2>

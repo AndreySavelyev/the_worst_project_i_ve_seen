@@ -525,10 +525,21 @@ end
       social_money_send_internal(parms[:amount], parms[:message], parms[:global], parms[:accountid], parms[:currency])
 end
 
-def social_money_send_internal (amount, message, privacy, accountid, currency)  
+def social_money_send_internal (amount, message, privacy, accountid, currency)
+
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::INFO
+
       f_amount = amount.to_s.gsub(',', '.').to_f
       to_profile = Profile.get_by_token(accountid)
-      PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
+      request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
+      begin
+        PushTokens.send_payment_push(request)
+      rescue => e
+        @log.error e.message
+        e.backtrace.each { |line| @log.error line }
+      end
+
       @result = {:result => 0,:message => "ok", :available=> @user.get_wallet.available, :holded=> @user.get_wallet.holded}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :ok }
