@@ -44,5 +44,5 @@ Rails.application.routes.draw do
     
   post '/cashin' => 'wallet#cashin', format: 'json'
 
-  get '/profile/token' => 'push_notifications#token', format: 'json'
+  post '/profile/token' => 'push_notifications#token', format: 'json'
 end
