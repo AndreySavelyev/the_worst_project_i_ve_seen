@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   get '/tabs', to: 'profiles#tabs', format: 'json'
     
   post '/cashin' => 'wallet#cashin', format: 'json'
+  post '/payout' => 'wallet#payout', format: 'json'
+  post '/complete_payout' => 'wallet#complete_payout', format: 'json'
 
   post '/profile/token' => 'push_notifications#token', format: 'json'
 end

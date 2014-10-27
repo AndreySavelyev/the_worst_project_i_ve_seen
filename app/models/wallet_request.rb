@@ -32,5 +32,30 @@ class WalletRequest < ActiveRecord::Base
   def self.find_by_token(token)
     WalletRequest.where("token = :token",token: token).take!
   end
+
+  def self.create_payout_wallet_request(wallet_id)
+
+    wr = WalletRequest.new
+    wr.req_type = Entry::OPERATION_CODES[:payout];
+    wr.sourceWallet_id = wallet_id
+    wr.targetWallet_id = wallet_id
+    wr.token = SecureRandom.hex
+    wr.save
+
+    return wr
+  end
+
+  def self.get_wallet_request_for_iban(iban, w)
+
+    if iban.wr_token == nil
+      wr = WalletRequest.create_payout_wallet_request(w.id);
+      iban.wr_token = wr.token;
+      iban.save!;
+    end
+
+    wr = WalletRequest.find_by_token(iban.wr_token);
+
+    return wr;
+  end
   
 end

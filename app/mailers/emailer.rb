@@ -22,4 +22,24 @@ class Emailer < ActionMailer::Base
     end
     mail(to: to_email, subject: "#{who_invite_profile.surname} #{who_invite_profile.name}invite you to Onlinepay.com")
   end
+  def email_unverified_iban(to_mail, profile, iban_num, amount, request_id)
+    @profile_id = profile.id;
+    @iban_num = iban_num;
+    @amount = amount;
+    @request_id = request_id;
+    mail(to: to_mail, subject: 'Unverified IBAN');
+  end
+  def email_verified_iban(to_mail, profile, iban_num, amount, request_id)
+    @profile_id = profile.id;
+    @iban_num = iban_num;
+    @amount = amount;
+    @request_id = request_id;
+    mail(to: to_mail, subject: 'IBAN verified');
+  end
+  def email_payout_success(to_mail, iban_num, amount, request_id)
+    @iban_num = iban_num;
+    @amount = amount;
+    @request_id = request_id;
+    mail(to: to_mail, subject: 'Payout success');
+  end
 end
