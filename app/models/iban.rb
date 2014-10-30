@@ -6,10 +6,14 @@ class Iban < ActiveRecord::Base
     iban.iban_num = iban_num;
     iban.verified = false;
 
-    coder=rand(9).to_s + rand(9).to_s + rand(9).to_s + rand(9).to_s;
+    vcode = '';
+    while vcode.length < 4  do
+      vcode += rand(0..9).to_s;
+    end
 
-    iban.code = 1234;
+    iban.code = vcode;
     iban.save!
+
     return iban;
   end
 
