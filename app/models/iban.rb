@@ -5,6 +5,7 @@ class Iban < ActiveRecord::Base
     iban.profile_id = profile.id;
     iban.iban_num = iban_num;
     iban.verified = false;
+    iban.is_default = false;
 
     vcode = '';
     while vcode.length < 4  do
