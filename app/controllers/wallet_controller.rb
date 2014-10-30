@@ -1,6 +1,6 @@
 class WalletController < ApplicationController
   
-  before_action :set_user_from_session, only:  [:cashin, :payout, :complete_payout]
+  before_action :set_user_from_session, only:  [:cashin, :cashout, :complete_payout]
   
   def cashin
     w = Wallet::get_wallet($user)
@@ -10,9 +10,9 @@ class WalletController < ApplicationController
     end
   end
 
-  def payout
+  def cashout
     begin
-      payout=params.require(:payout).permit(:iban, :amount, :code);
+      payout=params.require(:cashout).permit(:iban, :amount, :code);
 
       iban_num = payout[:iban];
       amount = payout[:amount];
@@ -27,7 +27,7 @@ class WalletController < ApplicationController
 
         wr = WalletRequest.get_wallet_request_for_iban(iban, w);
 
-        if (code==nil)
+        if (!WalletHelper.check_iban_validation_code(code.to_s))
           Emailer
           .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
           .deliver;

@@ -36,7 +36,7 @@ class WalletRequest < ActiveRecord::Base
   def self.create_payout_wallet_request(wallet_id)
 
     wr = WalletRequest.new
-    wr.req_type = Entry::OPERATION_CODES[:payout];
+    wr.req_type = Entry::OPERATION_CODES[:cashout];
     wr.sourceWallet_id = wallet_id
     wr.targetWallet_id = wallet_id
     wr.token = SecureRandom.hex
