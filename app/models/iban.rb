@@ -5,6 +5,9 @@ class Iban < ActiveRecord::Base
     iban.profile_id = profile.id;
     iban.iban_num = iban_num;
     iban.verified = false;
+
+    coder=rand(9).to_s + rand(9).to_s + rand(9).to_s + rand(9).to_s;
+
     iban.code = 1234;
     iban.save!
     return iban;
