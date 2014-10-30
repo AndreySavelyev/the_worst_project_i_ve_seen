@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'mood/set_mood'
+
+  get 'avatar/upload'
+
   get 'push_notifications/save_token'
 
   resources :profiles
@@ -47,4 +51,6 @@ Rails.application.routes.draw do
   post '/complete_payout' => 'wallet#complete_payout', format: 'json'
 
   post '/profile/token' => 'push_notifications#token', format: 'json'
+  post '/profile/upload' => 'avatar#upload', format: 'json'
+  post '/social/mood/set' =>'mood#set_mood', format: 'json'
 end

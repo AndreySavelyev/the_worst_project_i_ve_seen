@@ -125,7 +125,7 @@ module FriendsHelper
       friend_api_format <<
           {
               :accountid=>user.user_token,
-              :pic =>  user.pic_url,
+              :pic =>  user.avatar_url,
               :name=> user.name,
               :surname=> user.surname
           }

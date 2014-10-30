@@ -113,4 +113,34 @@ module ProfilesHelper
       return 'ad'
     end
   end
+
+  def self.get_profile_format(user)
+    {
+        :profile =>
+            {
+                :accountid => user.user_token,
+                :email => user.email,
+                :type => user.wallet_type == 1 ? 'personal' : @user.wallet_type==2 ? 'green' : @user.wallet_type==3 ? 'biz' : @user.wallet_type == 4 ? 'biz partner' : @user.wallet_type == 5 ? 'pale' : 'personal', #available types[personal, green, biz, biz partner, pale]
+                :firstName => user.name,
+                :lastName => user.surname,
+                :phone => user.phone,
+                :fid => user.fb_token,
+                :birthday => user.birthday,
+                :address => user.address,
+                :company_name => user.company_name,
+                :web_site => user.web_site,
+                :confirmed => (user.confirm_type!=nil && user.confirm_type!=0),
+                :reg_number => user.company_reg_number,
+                :cp_name => user.contact_person_name,
+                :cp_position => user.contact_person_position,
+                :cp_birth => user.contact_person_date_of_birth,
+                :cp_phone => user.contact_person_phone,
+                :balance => user.get_balance,
+                :stats => user.get_stats,
+                :pic => user.avatar_url,
+                :mood => user.mood
+            }
+    }
+  end
+
 end
