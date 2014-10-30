@@ -97,8 +97,8 @@ class PayRequest < Feed
     self.conv_commission_id = get_conversation_commission_id
     self.conv_commission_amount = get_conv_commission(self.conv_commission_id, self.source_amount)
     self.amount = self.source_amount #not convertible by currency rate
-    self.currency = currency_dest
-    self.source_currency = currency.Alpha3Code
+    self.currency = currency_dest.Alpha3Code
+    self.source_currency = currency.id
     self.rate_id = IsoCurrency.get_currency_conversion_rate(self.source_currency, self.currency)
 
   end

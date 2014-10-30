@@ -40,3 +40,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'rack-cors', :require => 'rack/cors'
 gem 'rpush'
+
+gem "paperclip", "~> 4.2"
+gem 'aws-sdk', '~> 1.5.7'

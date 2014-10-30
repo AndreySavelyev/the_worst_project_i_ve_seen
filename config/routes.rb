@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'mood/set_mood'
+
+  get 'avatar/upload'
+
   get 'push_notifications/save_token'
 
   resources :profiles
@@ -46,5 +50,7 @@ Rails.application.routes.draw do
   post '/cashout' => 'wallet#cashout', format: 'json'
   post '/complete_cashout' => 'wallet#complete_cashout', format: 'json'
 
-  get '/profile/token' => 'push_notifications#token', format: 'json'
+  post '/profile/token' => 'push_notifications#token', format: 'json'
+  post '/profile/upload' => 'avatar#upload', format: 'json'
+  post '/social/mood/set' =>'mood#set_mood', format: 'json'
 end

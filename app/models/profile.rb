@@ -15,6 +15,16 @@ class Profile < ActiveRecord::Base
   has_many :patients, through: :friends
   has_many :masters_profiles, :class_name => 'Friend'
   has_many :lovers, through: :masters_profiles
+
+  has_attached_file :avatar, styles: {medium: ["300x300>", :png], thumb: ["51x51>", :png]}
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
+  def avatar_url
+    avatar.url(:thumb)
+  end
+
+  attr_accessor :image_data, :image
+
   def get_friends_id
     ids = lovers.pluck(:id);
   end
@@ -23,7 +33,7 @@ class Profile < ActiveRecord::Base
     profile = Profile.new
     profile.user_token = token
     profile.wallet_type = ACCOUNT_TYPE[:personal]
-    return profile;
+    return profile
   end
   
   def self.get_by_token(token)
@@ -42,31 +52,49 @@ class Profile < ActiveRecord::Base
     
     w = Wallet.get_wallet(self)
     
-    balance = {
+   {
       :wallet=>
       {
         :id=>w.id,
-        :amount=>w.available,
+        :amount=>WalletHelper::format_to_currency(w.available),
         :currency=>w.IsoCurrency.Alpha3Code,
-        :holded=>w.holded,
-        :limit=>2500
+        :held=>w.holded,
+        :limit=>2500,
+        :revenue=>w.get_revenue
       }
     }
   end
   
   def get_stats
-    stats = {
+    {
       :stats=>
       {
         :friends=>lovers.count(),
         :new=>Feed::get_new(self)
       }
-  }
+    }
   end
   
   def self.get_sys_profile(currency)
-    
     Profile.where(:wallet_type =>  100, :iso_currency => currency).first!    
+  end
+
+  def decode_image_data
+    puts "decoding"
+    if self.image_data.present?
+      # If image_data is present, it means that we were sent an image over
+      # JSON and it needs to be decoded.  After decoding, the image is processed
+      # normally via Paperclip.
+      if self.image_data.present?
+        data = StringIO.new(Base64.decode64(self.image_data))
+        puts data
+        data.class.class_eval {attr_accessor :original_filename, :content_type}
+        data.original_filename = self.id.to_s + ".jpeg"
+        data.content_type = "image/jpeg"
+        self.avatar = data
+        self.save!
+      end
+    end
   end
 
 end

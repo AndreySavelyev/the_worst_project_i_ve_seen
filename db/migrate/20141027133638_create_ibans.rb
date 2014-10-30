@@ -6,7 +6,6 @@ class CreateIbans < ActiveRecord::Migration
       t.boolean :verified
       t.integer :code
       t.string :wr_token
-
       t.timestamps
     end
   end
