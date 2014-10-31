@@ -511,6 +511,7 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
       request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
       begin
         PushTokens.send_payment_push(request)
+        Emailer.email_receipt(request).deliver
       rescue => e
         @log.error e.message
         e.backtrace.each { |line| @log.error line }
@@ -610,8 +611,9 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
     privacy = prms[:global]
 
     begin
-      ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
+      request = ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
       @result = {:result => 0,:message => "ok", :available=> @user.get_wallet.available, :holded=> @user.get_wallet.holded}
+      PushTokens::send_charge_push(request)
       @status = :ok
     rescue NoMoney => e
       @result = {:result => 101, :message => 'no money for commission payment'}

@@ -11,7 +11,7 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
   charge_request = ChargeRequest.new
   charge_request.feed_date = Time.now
   charge_request.status = 0
-  charge_request.fType = 3
+  charge_request.fType = GlobalConstants::REQUEST_TYPES[:charge]
   charge_request.source_amount = amount.to_f
   charge_request.amount = amount.to_f
   charge_request.currency = IsoCurrency.find_by_Alpha3Code(currency).Alpha3Code
@@ -24,6 +24,7 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
 
   if charge_request.check_balance
     charge_request.save!
+    return charge_request
   else
     raise NoMoney.new
   end

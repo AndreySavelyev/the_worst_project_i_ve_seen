@@ -12,7 +12,7 @@ class PayRequest < Feed
     send_request.from_profile_id = from_user_id
     send_request.to_profile_id = to_user_id
     send_request.status = 0 #status:NEW
-    send_request.fType = 2
+    send_request.fType = GlobalConstants::REQUEST_TYPES[:pay]
 
     send_request.set_commission(currency)
 
@@ -35,7 +35,7 @@ class PayRequest < Feed
     send_request.from_profile_id = from_user_id
     send_request.to_profile_id = to_user_id
     send_request.status = 1 #status:ACCEPTED
-    send_request.fType = 2
+    send_request.fType = GlobalConstants::REQUEST_TYPES[:pay]
 
        send_request.set_commission(currency)
 
