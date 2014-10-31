@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   post '/cashin' => 'wallet#cashin', format: 'json'
   post '/cashout/new' => 'wallet#cashout', format: 'json'
   post '/cashout/complete' => 'wallet#complete_cashout', format: 'json'
+  post '/cashout/list' => 'wallet#list', format: 'json'
 
   post '/profile/token' => 'push_notifications#token', format: 'json'
   post '/profile/upload' => 'avatar#upload', format: 'json'

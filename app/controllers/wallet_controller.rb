@@ -109,5 +109,21 @@ class WalletController < ApplicationController
       end
     end
   end
+
+  def list
+    list = Iban.where("profile_id = :id",
+                      {:id => $user.id}).to_a
+
+    ibans = Array.new;
+
+    list.each do |e|
+      ibans << {:iban => e.iban_num, :default => e.is_default}
+    end
+
+    respond_to do |format|
+      format.json { render :json => ibans.as_json, status: :ok }
+    end
+
+  end
   
 end
