@@ -33,10 +33,10 @@ class WalletRequest < ActiveRecord::Base
     WalletRequest.where("token = :token",token: token).take!
   end
 
-  def self.create_payout_wallet_request(wallet_id)
+  def self.create_cashout_wallet_request(wallet_id)
 
     wr = WalletRequest.new
-    wr.req_type = Entry::OPERATION_CODES[:payout];
+    wr.req_type = Entry::OPERATION_CODES[:cashout];
     wr.sourceWallet_id = wallet_id
     wr.targetWallet_id = wallet_id
     wr.token = SecureRandom.hex
@@ -48,7 +48,7 @@ class WalletRequest < ActiveRecord::Base
   def self.get_wallet_request_for_iban(iban, w)
 
     if iban.wr_token == nil
-      wr = WalletRequest.create_payout_wallet_request(w.id);
+      wr = WalletRequest.create_cashout_wallet_request(w.id);
       iban.wr_token = wr.token;
       iban.save!;
     end

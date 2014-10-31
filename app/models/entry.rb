@@ -1,6 +1,6 @@
 class Entry < ActiveRecord::Base
 
-  OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, commission: 4, payout: 5}
+  OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, commission: 4, cashout: 5}
 
   def self.create_cashin_entry(amount, token)
 
@@ -89,7 +89,7 @@ class Entry < ActiveRecord::Base
     e.debit_wallet_id = r.sourceWallet.id
     e.amount = amount
     e.currency_id = r.sourceWallet.IsoCurrency.id
-    e.operation_code = OPERATION_CODES[:payout]
+    e.operation_code = OPERATION_CODES[:cashout]
     e.save!
 
     e.rollover
@@ -120,7 +120,7 @@ class Entry < ActiveRecord::Base
         debit_wallet.decrement(:holded, by = self.amount)
         credit_wallet.save!
         debit_wallet.save!
-      when OPERATION_CODES[:payout]
+      when OPERATION_CODES[:cashout]
         debit_wallet.decrement(:holded, by = self.amount)
         debit_wallet.save!
       else
