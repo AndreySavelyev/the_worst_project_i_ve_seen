@@ -49,7 +49,7 @@ class Emailer < ActionMailer::Base
 
   def email_pay_request_new(request)
       @request = request
-      mail(to: @request.to_profile.email, subject: 'Recieve money from #{@@request.from_profile.name} #{@@request.from_profile.surname}')
+      mail(to: @request.to_profile.email, subject: "Recieve money from #{@request.from_profile.name} #{@request.from_profile.surname}")
   end
 
   def email_pay_request_from(request)
@@ -67,6 +67,9 @@ class Emailer < ActionMailer::Base
   def email_receipt(request)
 
     r_type = request.fType
+
+    puts r_type
+    puts request.status
 
     if r_type == GlobalConstants::REQUEST_TYPES[:pay] && request.status == 0
       email_pay_request_new(request)
