@@ -2,6 +2,12 @@ class WalletController < ApplicationController
 
   before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout]
 
+  ERR_CODES = {no_err: 0,
+               not_enough_money: 101,
+               iban_not_verified: 201,
+               iban_wrong_code: 202,
+               general_err: 901}
+
   def cashin
     w = Wallet::get_wallet($user)
     wr = WalletRequest.create_cash_in_wallet_request(w.id)
@@ -18,16 +24,24 @@ class WalletController < ApplicationController
       amount = cashout[:amount]
       code = cashout[:code]
 
+      if iban_num.to_s.blank?
+        raise
+      end
+
       iban = Iban.get_iban($user, iban_num);
-      cashout_result = {:result => '0', :request_id => '-1'}
+
+      cashout_result = {:result => 'No message.',
+                        :request_id => '-1',
+                        :err_code => ERR_CODES[:no_err]}
+      request_status=:ok
 
       w = Wallet.get_wallet($user)
 
-      status=nil
-
       if (amount.to_f > w.available)
-        status=:internal_server_error
-        cashout_result[:result] = 'Not enough money in wallet.'
+        cashout_result[:result] =
+            "Not enough money in wallet. Current wallet balance:#{w.available}."
+        cashout_result[:err_code] = ERR_CODES[:not_enough_money]
+        request_status=:internal_server_error
       else
         if (iban.verified == false)
 
@@ -38,10 +52,12 @@ class WalletController < ApplicationController
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
 
-            cashout_result[:result] = 'No verified'
+            cashout_result[:result] = "IBAN:#{iban.iban_num} is not verified."
             cashout_result[:request_id] = wr.id;
-          elsif (iban.code==code.to_i)
+            cashout_result[:err_code] = ERR_CODES[:iban_not_verified]
+            request_status = :internal_server_error
 
+          elsif (iban.code==code.to_i)
             iban.verified = true
             iban.save!
 
@@ -51,31 +67,43 @@ class WalletController < ApplicationController
             .email_verified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
 
-            cashout_result[:result] = "IBAN verified, cashout sum held:#{e.amount}"
+            cashout_result[:result] =
+                "IBAN:#{iban.iban_num} verified, cashout sum held:#{e.amount}"
             cashout_result[:request_id] = wr.id
-          else
-            cashout_result[:result] = 'IBAN didn\'t verified. Wrong code.'
-            cashout_result[:request_id] = wr.id
-          end
-        elsif (iban.verified == true)
+            cashout_result[:err_code] = ERR_CODES[:no_err]
+            request_status = :ok
 
+          else
+
+            cashout_result[:result] =
+                "IBAN:#{iban.iban_num} has not been verified. Wrong verification code is entered: #{code}."
+            cashout_result[:request_id] = wr.id
+            cashout_result[:err_code] = ERR_CODES[:iban_wrong_code]
+            request_status = :internal_server_error
+
+          end
+
+        elsif (iban.verified == true)
           wr = WalletRequest.get_wallet_request_for_iban(iban, w)
           e = Entry.create_hold_entry(wr, amount)
 
           cashout_result[:result] = "Cashout sum held:#{w.holded.to_f+e.amount}"
           cashout_result[:request_id] = wr.id
-
+          cashout_result[:err_code] = ERR_CODES[:no_err]
+          request_status = :ok
         end
       end
 
       respond_to do |format|
-        format.json { render :json => cashout_result.as_json, status: :ok }
+        format.json { render :json => cashout_result.as_json, status: request_status }
       end
 
     rescue
-      @bad_request={:result => 'Internal Error!'}
+      bad_request= {:result => 'Internal server error is occurred!',
+                    :request_id => -1,
+                    :err_code => ERR_CODES[:general_err]}
       respond_to do |format|
-        format.json { render :json => @bad_request.as_json, status: :internal_server_error }
+        format.json { render :json => bad_request.as_json, status: :internal_server_error }
       end
     end
   end
@@ -87,8 +115,11 @@ class WalletController < ApplicationController
       wr = WalletRequest.find_by_id(cashout[:request_id])
       iban = Iban.find_by_wr_token(wr.token)
 
-      status = nil
-      result = nil
+      cashout_complete_result = {:result => 'No message.',
+                                 :request_id => '-1',
+                                 :err_code => ERR_CODES[:no_err]}
+
+      request_status = :ok
 
       if (iban.verified)
 
@@ -109,34 +140,50 @@ class WalletController < ApplicationController
 
         Emailer.email_payout_success('vk@onlinepay.com', iban.iban_num, sum_cashout, wr.id)
         .deliver
-        result='Cashout succesfull'
-        status=:ok
+        cashout_complete_result[:result]="Cashout for IBAN:#{iban.iban_num} has been succesfull."
+        cashout_complete_result[:request_id]=wr.id
+        cashout_complete_result[:err_code]=ERR_CODES[:no_err]
+        request_status=:ok
       else
-        result='Iban is not verified yet'
-        status=:internal_server_error
+        cashout_complete_result[:result]="IBAN:#{iban.iban_num} is not verified yet."
+        cashout_complete_result[:request_id]=wr.id
+        cashout_complete_result[:err_code]=ERR_CODES[:iban_not_verified]
+        request_status=:internal_server_error
       end
 
       respond_to do |format|
-        format.json { render :json => {:result => result}.as_json, status: status }
+        format.json { render :json => cashout_complete_result.as_json, status: request_status }
       end
     rescue
-      @bad_request={:result => 'Internal Error!'}
+      bad_request={:result => 'Internal server error is occurred!',
+                   :request_id => -1,
+                   :err_code => ERR_CODES[:general_err]}
       respond_to do |format|
-        format.json { render :json => @bad_request.as_json, status: :internal_server_error }
+        format.json { render :json => bad_request.as_json, status: :internal_server_error }
       end
     end
   end
 
   def list
-    list = Iban.find_ibans_by_id($user.id)
-    ibans = Array.new
 
-    list.each do |e|
-      ibans << {:iban => e.iban_num, :default => e.is_default}
-    end
+    begin
+      list = Iban.find_ibans_by_id($user.id)
+      ibans = Array.new
 
-    respond_to do |format|
-      format.json { render :json => ibans.as_json, status: :ok }
+      list.each do |e|
+        ibans << {:iban => e.iban_num, :default => e.is_default}
+      end
+
+      respond_to do |format|
+        format.json { render :json => ibans.as_json, status: :ok }
+      end
+    rescue
+      bad_request={:result => 'Internal server error is occurred!',
+                   :request_id => -1,
+                   :err_code => ERR_CODES[:general_err]}
+      respond_to do |format|
+        format.json { render :json => bad_request.as_json, status: :internal_server_error }
+      end
     end
   end
 end
