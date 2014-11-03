@@ -30,7 +30,13 @@ class WalletRequest < ActiveRecord::Base
   end
 
   def self.find_by_token(token)
-    WalletRequest.where("token = :token",token: token).take!
+    WalletRequest.where('token = :token',token: token).take!
+  end
+
+
+  def self.find_by_id(id)
+    wr = WalletRequest.where('id = :id', id: id).first
+    return wr
   end
 
   def self.create_cashout_wallet_request(wallet_id)
@@ -55,7 +61,7 @@ class WalletRequest < ActiveRecord::Base
 
     wr = WalletRequest.find_by_token(iban.wr_token);
 
-    return wr;
+    return wr
   end
   
 end

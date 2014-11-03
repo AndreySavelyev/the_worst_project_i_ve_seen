@@ -19,11 +19,19 @@ class Iban < ActiveRecord::Base
   end
 
   def self.get_iban(profile, iban_num)
-    i = Iban.where("iban_num = :iban and profile_id = :id",
-                   {:iban => iban_num, :id => profile.id}).first;
+    i = Iban.where('iban_num = :iban and profile_id = :id',
+                   {:iban => iban_num, :id => profile.id}).first
     if (i == nil)
       i = create_iban(profile, iban_num)
     end
-    return i;
+    return i
+  end
+
+  def self.find_by_wr_token(wr_token)
+    return Iban.where('wr_token = :wr_token', wr_token: wr_token).first
+  end
+
+  def self.find_ibans_by_id(id)
+    return Iban.where('profile_id = :id', id: id).to_a
   end
 end
