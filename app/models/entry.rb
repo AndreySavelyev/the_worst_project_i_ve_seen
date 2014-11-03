@@ -127,4 +127,8 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def self.find_by_payment_req_id(payment_request_id)
+    return Entry.where('payment_request_id = :payment_request_id', payment_request_id: payment_request_id).to_a
+  end
+
 end

@@ -12,18 +12,18 @@ class WalletController < ApplicationController
 
   def cashout
     begin
-      cashout=params.require(:cashout).permit(:iban, :amount, :code);
+      cashout=params.require(:cashout).permit(:iban, :amount, :code)
 
-      iban_num = cashout[:iban];
-      amount = cashout[:amount];
-      code = cashout[:code];
+      iban_num = cashout[:iban]
+      amount = cashout[:amount]
+      code = cashout[:code]
 
       iban = Iban.get_iban($user, iban_num);
-      cashout_result = {:result => '0', :request_id => '-1'};
+      cashout_result = {:result => '0', :request_id => '-1'}
 
-      w = Wallet.get_wallet($user);
+      w = Wallet.get_wallet($user)
 
-      status=nil;
+      status=nil
 
       if (amount.to_f > w.available)
         status=:internal_server_error
@@ -31,39 +31,39 @@ class WalletController < ApplicationController
       else
         if (iban.verified == false)
 
-          wr = WalletRequest.get_wallet_request_for_iban(iban, w);
+          wr = WalletRequest.get_wallet_request_for_iban(iban, w)
 
           if (!WalletHelper.check_iban_validation_code(code.to_s))
             Emailer
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
-            .deliver;
+            .deliver
 
-            cashout_result[:result] = 'No verified';
+            cashout_result[:result] = 'No verified'
             cashout_result[:request_id] = wr.id;
           elsif (iban.code==code.to_i)
 
-            iban.verified = true;
-            iban.save!;
+            iban.verified = true
+            iban.save!
 
-            e = Entry.create_hold_entry(wr, amount);
+            e = Entry.create_hold_entry(wr, amount)
 
             Emailer
             .email_verified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
-            .deliver;
+            .deliver
 
-            cashout_result[:result] = "IBAN verified, cashout sum held:#{e.amount}";
-            cashout_result[:request_id] = wr.id;
+            cashout_result[:result] = "IBAN verified, cashout sum held:#{e.amount}"
+            cashout_result[:request_id] = wr.id
           else
-            cashout_result[:result] = 'IBAN didn\'t verified. Wrong code.';
-            cashout_result[:request_id] = wr.id;
+            cashout_result[:result] = 'IBAN didn\'t verified. Wrong code.'
+            cashout_result[:request_id] = wr.id
           end
         elsif (iban.verified == true)
 
-          wr = WalletRequest.get_wallet_request_for_iban(iban, w);
-          e = Entry.create_hold_entry(wr, amount);
+          wr = WalletRequest.get_wallet_request_for_iban(iban, w)
+          e = Entry.create_hold_entry(wr, amount)
 
-          cashout_result[:result] = "Cashout sum held:#{w.holded.to_f+e.amount}";
-          cashout_result[:request_id] = wr.id;
+          cashout_result[:result] = "Cashout sum held:#{w.holded.to_f+e.amount}"
+          cashout_result[:request_id] = wr.id
 
         end
       end
@@ -82,26 +82,27 @@ class WalletController < ApplicationController
 
   def complete_cashout
     begin
-      cashout=params.require(:complete_cashout).permit(:request_id);
-      wr = WalletRequest.where("id = :id", :id => cashout[:request_id]).first;
-      iban = Iban.where("wr_token = :wr_token", :wr_token => wr.token).first;
+      cashout=params.require(:complete_cashout).permit(:request_id)
+
+      wr = WalletRequest.find_by_id(cashout[:request_id])
+      iban = Iban.find_by_wr_token(wr.token)
 
       status = nil
       result = nil
 
       if (iban.verified)
 
-        entries = Entry.where("payment_request_id = :payment_request_id", :payment_request_id => wr.id).to_a;
+        entries = Entry.find_by_payment_req_id(wr.id)
         sum_cashout = 0
 
         entries.each do |e|
           sum_cashout += e.amount;
         end
 
-        ep = Entry.create_payout_entry(wr, sum_cashout);
+        Entry.create_payout_entry(wr, sum_cashout)
 
         iban.wr_token = nil
-        iban.save!;
+        iban.save!
 
         Emailer.email_payout_success($user.email, iban.iban_num, sum_cashout, wr.id)
         .deliver
@@ -127,10 +128,8 @@ class WalletController < ApplicationController
   end
 
   def list
-    list = Iban.where("profile_id = :id",
-                      {:id => $user.id}).to_a
-
-    ibans = Array.new;
+    list = Iban.find_ibans_by_id($user.id)
+    ibans = Array.new
 
     list.each do |e|
       ibans << {:iban => e.iban_num, :default => e.is_default}
