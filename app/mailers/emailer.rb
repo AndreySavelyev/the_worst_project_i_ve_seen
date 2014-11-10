@@ -11,10 +11,22 @@ class Emailer < ActionMailer::Base
     @log.info("create email for #{form_email} #{subject}")
     mail(to: form_email, subject: subject)
   end
+
+  def email_recovery(request)
+    @request = request
+    mail(to: @request.sourceWallet.profile.email, subject: 'Password recovery request.')
+  end
+
+  def email_recovery_success(request)
+    @request = request
+    mail(to: @request.sourceWallet.profile.email, subject: 'Password recovery success.')
+  end
+
   def email_confirm(form_email, confirm_link)
-    @confrimation_link  = confirm_link #переменная дл  шаблона
+    @confirmation_link  = confirm_link #переменная дл  шаблона
     mail(to: form_email, subject: 'Welcome to Onlinepay.com')
   end
+
   def email_friend_invite(to_email, who_invite_profile)
     @download_link  = GlobalSettings.find_by_settings_key('app_ios_download_link')
     unless @download_link #TODO сделать один синглтон с настройками
@@ -49,7 +61,9 @@ class Emailer < ActionMailer::Base
 
   def email_pay_request_new(request)
       @request = request
-      mail(to: @request.to_profile.email, subject: "Recieve money from #{@request.from_profile.name} #{@request.from_profile.surname}")
+      mail(to: @request.to_profile.email, subject: "Receive money from #{@request.from_profile.name} #{@request.from_profile.surname}") do |format|
+        format.text {render 'email_pay_request_new'}
+      end
   end
 
   def email_pay_request_from(request)

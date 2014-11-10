@@ -37,7 +37,7 @@ class PayRequest < Feed
     send_request.status = 1 #status:ACCEPTED
     send_request.fType = GlobalConstants::REQUEST_TYPES[:pay]
 
-       send_request.set_commission(currency)
+    send_request.set_commission(currency)
 
     if send_request.check_balance
       send_request.save!

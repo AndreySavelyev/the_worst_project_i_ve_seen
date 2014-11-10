@@ -1,19 +1,17 @@
-﻿﻿<!DOCTYPE HTML> <!-- saved from url=(0033)http://api.onlinepay.com/api.html -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML
+﻿<HTML
 lang="en" xmlns="http://www.w3.org/1999/xhtml">
 	<HEAD>
 		<META content="IE=11.0000"
 		http-equiv="X-UA-Compatible">
 
 		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<TITLE>Onlinepay.com- API for Mobile application</TITLE>
-		<META name="author" content="v.kovalevsky">
+		<TITLE>onlinepay.com- API for Mobile application</TITLE>
+		<META name="author" content="v.kovalevskiy">
 		<SCRIPT src=""></SCRIPT>
 		<!-- Date: 2014-06-06 -->
 		<STYLE>
 			h4 {
-				color: red
+				color: red;
 			}
 
 			.l1 {
@@ -21,7 +19,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			}
 
 			.l2 {
-				padding-left: 3em;
+				padding-left: 3em
 			}
 			.l3 {
 				padding-left: 5em;
@@ -155,6 +153,12 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
             <A href="#profile/upload">/profile/upload</A>
             <BR>
             <A href="#cashin">/cashin</A>
+            <BR>
+            <A href="#cashout/new">/cashout/new</A>
+            <BR>
+            <A href="#cashout/complete">/cashout/complete</A>
+            <BR>
+            <A href="#cashout/list">/cashout/list</A>
             <!--
             <br	/>
             <a href="#wallet/in">/wallet/in</a>
@@ -1463,7 +1467,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
         <SMALL>session-token:test-token;</SMALL>
 
         <H5>Data:</H5>
-        <P>no parameters</P>>
+        <P>no parameters</P>
         <H5>Returns:</H5>
         <P>
             <SMALL>
@@ -1492,6 +1496,96 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
                 </CODE> </SMALL>
         </P>
         <!-- end cashin -->
+
+
+        <!-- /cashout/new -->
+        <H4><STRONG> <A id="cashout/new">/cashout/new</A> </STRONG></H4>Request method: POST
+        <P>
+            Description: Method creates a request for user's cashout operation
+        </P>
+        <H5>Headers:</H5>
+        <SMALL>session-token:test-token;</SMALL>
+
+        <H5>Data:</H5>
+
+        <P><CODE>
+            <SMALL>
+                <SPAN class="l1">{</SPAN><BR/>
+                <SPAN class="l1">"cashout" : {</SPAN><BR/>
+                <SPAN class="l2">"iban":"324324234234",</SPAN><BR/>
+                <SPAN class="l2">"amount":"100",</SPAN><BR/>
+                <SPAN class="l2">"code":"", #should be empty for new ibans</SPAN><BR/>
+                <SPAN class="l2">}</SPAN><BR/>
+                <SPAN class="l1">}</SPAN>
+            </SMALL>
+        </CODE>
+        </P>
+        <H5>Returns:</H5>
+        <P>
+            <CODE><SMALL>
+                <SPAN class="l1">{</SPAN><BR/>
+                <SPAN class="l2">"result": "No verified",</SPAN><BR/>
+                <SPAN class="l2">"request_id": 483</SPAN><BR/>
+                <SPAN class="l1">}</SPAN>
+            </SMALL>
+            </CODE>
+        </P>
+        <!-- end cashout/new -->
+
+        <!-- /cashout/complete -->
+        <H4><STRONG> <A id="cashout/complete">/cashout/complete</A> </STRONG></H4>Request method: POST
+        <P>
+            Description: Method completes cashout request
+        </P>
+        <H5>Headers:</H5>
+        <SMALL>session-token:test-token;</SMALL>
+
+        <H5>Data:</H5>
+
+        <P><CODE>
+            <SMALL>
+                <SPAN class="l1">{</SPAN><BR/>
+                <SPAN class="l1">"complete_cashout" : {</SPAN><BR/>
+                <SPAN class="l2">"request_id":"324324234234",</SPAN><BR/>
+                <SPAN class="l2">}</SPAN><BR/>
+                <SPAN class="l1">}</SPAN>
+            </SMALL>
+        </CODE>
+        </P>
+        <H5>Returns:</H5>
+        <P>
+            <CODE><SMALL>
+                <SPAN class="l1">{"result":"Iban is not verified yet"}</SPAN><BR/>
+            </SMALL>
+            </CODE>
+        </P>
+        <!-- end cashout/complete -->
+
+        <!-- /cashout/list -->
+        <H4><STRONG> <A id="cashout/list">/cashout/list</A> </STRONG></H4>Request method: POST
+        <P>
+            Description: Gets list of IBANS
+        </P>
+        <H5>Headers:</H5>
+        <SMALL>session-token:test-token;</SMALL>
+
+        <H5>Data:</H5>
+
+        <P>no parameters</P>
+        <H5>Returns:</H5>
+        <P>
+            <CODE>
+                <SMALL>
+                    <SPAN class="l1">[{</SPAN><BR/>
+                    <SPAN class="l2">"iban": "324324234234",</SPAN><BR/>
+                    <SPAN class="l2">"default": false,</SPAN><BR/>
+                    <SPAN class="l2">"verified": false</SPAN><BR/>
+                    <SPAN class="l1">}]</SPAN>
+                </SMALL>
+            </CODE>
+        </P>
+        <!-- end cashout/list -->
+
 
         <!-- /profile/token -->
         <H4><STRONG> <A id="profile/token">/profile/token</A> </STRONG></H4>Request method: GET

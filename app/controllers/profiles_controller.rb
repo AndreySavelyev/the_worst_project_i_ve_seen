@@ -526,7 +526,7 @@ def social_money_send_internal (amount, message, privacy, accountid, currency)
 
   def already_payed_error
     #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
-    result = {:result => 2, :message => "already payed"}
+    result = {:result => 2, :message => "already paid"}
     respond_to do |format|
       format.json { render :json => result.as_json, status: :forbidden }
     end

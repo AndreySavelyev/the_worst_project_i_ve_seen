@@ -7,8 +7,10 @@ class AvatarController < ApplicationController
     $user.image_data = params[:image_data]
     $user.decode_image_data
 
+    result = {:url =>  $user.avatar}
+
     respond_to do |format|
-      format.json { render :json => $user.avatar.as_json, status: :ok }
+      format.json { render :json => result.as_json, status: :ok }
     end
   end
 

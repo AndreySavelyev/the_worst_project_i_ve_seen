@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'password_recovery/request'
+
   get 'mood/set_mood'
 
   get 'avatar/upload'
@@ -54,4 +56,9 @@ Rails.application.routes.draw do
   post '/profile/token' => 'push_notifications#token', format: 'json'
   post '/profile/upload' => 'avatar#upload', format: 'json'
   post '/social/mood/set' =>'mood#set_mood', format: 'json'
+
+  post 'profile/recover' => 'password_recovery#recover', format: 'json'
+  post 'profile/recover/token' => 'password_recovery#token', format: 'json'
+  post 'profile//recover/password' => 'password_recovery#password', format: 'json'
+
 end

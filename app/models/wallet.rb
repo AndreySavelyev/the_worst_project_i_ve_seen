@@ -32,8 +32,8 @@ class Wallet < ActiveRecord::Base
   end
 
   def get_revenue
-    credit = Entry.sum(:credit_wallet_id)
-    debit = Entry.sum(:debit_wallet_id)
+    credit = Entry.where("credit_wallet_id = :credit_wallet_id", credit_wallet_id: self.id).sum(:amount)
+    debit = Entry.where("debit_wallet_id = :debit_wallet_id", debit_wallet_id: self.id).sum(:amount)
     credit + debit
   end
   

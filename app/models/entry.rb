@@ -1,6 +1,6 @@
 class Entry < ActiveRecord::Base
 
-  OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, commission: 4, cashout: 5}
+  OPERATION_CODES = {cashin: 3, payment: 1, hold: 2, commission: 4, cashout: 5, recovery: 6}
 
   def self.create_cashin_entry(amount, token)
 

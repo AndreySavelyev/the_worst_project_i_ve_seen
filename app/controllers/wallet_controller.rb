@@ -1,6 +1,6 @@
 class WalletController < ApplicationController
 
-  before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout]
+  before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout, :list]
 
   def cashin
     w = Wallet::get_wallet($user)
@@ -18,7 +18,7 @@ class WalletController < ApplicationController
       amount = cashout[:amount]
       code = cashout[:code]
 
-      iban = Iban.get_iban($user, iban_num);
+      iban = Iban.get_iban($user, iban_num)
       cashout_result = {:result => '0', :request_id => '-1'}
 
       w = Wallet.get_wallet($user)
@@ -132,7 +132,7 @@ class WalletController < ApplicationController
     ibans = Array.new
 
     list.each do |e|
-      ibans << {:iban => e.iban_num, :default => e.is_default}
+      ibans << {:iban => e.iban_num, :default => e.is_default, :verified => e.verified}
     end
 
     respond_to do |format|

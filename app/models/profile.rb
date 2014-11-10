@@ -40,6 +40,10 @@ class Profile < ActiveRecord::Base
     Profile.where("user_token = :accountid
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
   end
+
+  def self.get_by_email(email)
+    Profile.where("email = :email",{email: email}).first!
+  end
   
   def get_wallet
     if self.wallet == nil
@@ -95,6 +99,12 @@ class Profile < ActiveRecord::Base
         self.save!
       end
     end
+  end
+
+  def set_password(pass_phrase)
+    self.salt = SecureRandom.hex
+    self.password = Digest::SHA2.hexdigest(self.salt + pass_phrase)
+    self.save!
   end
 
 end
