@@ -23,11 +23,9 @@ class WalletController < ApplicationController
 
       w = Wallet.get_wallet($user)
 
-      status=nil
-
       if (amount.to_f > w.available)
-        status=:internal_server_error
-        cashout_result[:result] = 'Not enough money in wallet.'
+        cashout_result[:result] = 401
+        cashout_result[:message] = 'Not enough money in wallet.'
       else
         if (iban.verified == false)
 
@@ -37,8 +35,8 @@ class WalletController < ApplicationController
             Emailer
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
-
-            cashout_result[:result] = 'No verified'
+            cashout_result[:result] = 401
+            cashout_result[:message] = 'Not verified'
             cashout_result[:request_id] = wr.id;
           elsif (iban.code==code.to_i)
 
@@ -51,10 +49,12 @@ class WalletController < ApplicationController
             .email_verified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
 
-            cashout_result[:result] = "IBAN verified, cashout sum held:#{e.amount}"
+            cashout_result[:result] = 200
+            cashout_result[:message] = "IBAN verified, cashout sum held:#{e.amount}"
             cashout_result[:request_id] = wr.id
           else
-            cashout_result[:result] = 'IBAN didn\'t verified. Wrong code.'
+            cashout_result[:result] = 401
+            cashout_result[:message] = 'IBAN was not verified or code has a worng value.'
             cashout_result[:request_id] = wr.id
           end
         elsif (iban.verified == true)
@@ -62,14 +62,15 @@ class WalletController < ApplicationController
           wr = WalletRequest.get_wallet_request_for_iban(iban, w)
           e = Entry.create_hold_entry(wr, amount)
 
-          cashout_result[:result] = "Cashout sum held:#{w.holded.to_f+e.amount}"
+          cashout_result[:result] = 200
+          cashout_result[:message] = "Cashout sum held:#{w.holded.to_f+e.amount}"
           cashout_result[:request_id] = wr.id
 
         end
       end
 
       respond_to do |format|
-        format.json { render :json => cashout_result.as_json, status: :ok }
+        format.json { render :json => cashout_result.as_json, status: cashout_result[:result] }
       end
 
     rescue

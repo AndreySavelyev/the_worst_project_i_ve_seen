@@ -227,8 +227,8 @@ def save_profile
          unless searchResult
            @user.reg_token = SecureRandom.hex;
            @user.email = profile[:email];
-           link="https://api.onlinepay.com/confirm?token=#{@user.reg_token}";
-           send_confirm_mail(@user, link);
+           link="http://test.chargebutton.com/confirm?token=#{@user.reg_token}"
+           send_confirm_mail(@user, link)
          else
            decline_already_registered
            return;

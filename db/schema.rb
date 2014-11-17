@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141030194849) do
+ActiveRecord::Schema.define(version: 20141110071020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 20141030194849) do
     t.integer  "CurrencyFrom"
     t.integer  "Rate"
     t.datetime "SetUpDate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chat_tissues", force: true do |t|
+    t.string   "text"
+    t.integer  "from_profile_id"
+    t.string   "to_profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
