@@ -120,7 +120,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			<BR>
 			<A href="#social/money/get">/social/money/get</A>
 			<BR>
-			<A href="#social/money/get">/social/money/get</A>
+			<A href="#social/money/pay/decline">/social/money/pay/decline</A>
 			<BR>
 			<A href="#social/friends/invite">/social/friends/invite</A>
 			<BR>
@@ -658,7 +658,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<BR>
 				<SPAN class="l4">"pic": "/avatars/thumb/missing.png",</SPAN>
 				<BR>
-				<SPAN class="l4">"type" : "charge", #available types [charge, pay, request, charge new, pay new, ad]</SPAN>
+				<SPAN class="l4">"type" : "charge", #available types [charge, pay, request, request new, charge new, pay new, ad, pay declined, request declined]</SPAN>
 				<BR>
 				<SPAN class="l4">"amount": "10",</SPAN>
 				<BR>
@@ -940,6 +940,39 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				<SPAN class="l1">}</SPAN> </CODE>
 		</P>
         <!-- end /social/money/get -->
+
+
+
+		<!-- /social/money/pay/decline -->
+
+		<H4><STRONG><A id="social/money/pay/decline">/social/money/pay/decline</A></STRONG></H4>
+		Request method: POST
+		<P>
+			Description: Declines payment from a user.
+		</P>
+		<H5>Headers:</H5><SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN
+						class="l2">"requestId" : "asddfkjh342987jfdh" # id field from feeds method</SPAN>
+				<BR>
+				<SPAN
+						class="l1">}</SPAN> </CODE>
+		</P>
+		<H5>Returns:</H5>
+		<P>
+			<CODE class="prettyprint lang-n"><SPAN class="l1">{</SPAN>
+				<BR>
+				<SPAN class="l2">"result" : [0|1|N]</SPAN>
+				<BR>
+				<SPAN class="l1">}</SPAN>
+			</CODE>
+		</P>
+		<!-- end /social/money/pay/decline -->
+
 
 		<!-- /social/friends/invite -->
 		<H4><STRONG><A id="social/friends/invite">/social/friends/invite</A></STRONG></H4>Request method: POST

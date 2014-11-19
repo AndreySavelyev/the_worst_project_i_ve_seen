@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   post '/social/feed', to: 'feeds#feed', format: 'json'
   post '/social/like', to: 'profiles#like', format: 'json'
 
-
   post '/social/feed/viewed', to: 'profiles#social_feed_viewed', format: 'json'
   post '/social/friends/invite', to: 'profiles#social_friends_invite', format: 'json'
   post '/social/friends/request', to: 'profiles#social_friends_request', format: 'json'
@@ -29,18 +28,16 @@ Rails.application.routes.draw do
   get '/social/friends/count', to: 'profiles#social_friends_count', format: 'json'
   post '/social/friends/search', to: 'profiles#social_friends_search', format: 'json'
   post '/callback' => 'callback#callback'
-  #post '/social/friends/cancel', to: 'profiles#friendship_request_cancel', format: 'json'
-  #post '/social/', to: 'profiles#', format: 'json'
-  #post '/social/', to: 'profiles#', format: 'json'
-
 
   get '/social/money/rates', to: 'profiles#get_currency_rates_json', format: 'json'
   post '/social/money/rates', to: 'profiles#add_currency_rate', format: 'json'
 
   post '/social/money/send', to: 'profiles#social_money_send', format: 'json'
   post '/social/money/charge', to: 'profiles#social_money_charge', format: 'json'
-  post '/social/money/receive', to: 'profiles#recieve_pay', format: 'json'
+  post '/social/money/receive', to: 'profiles#receive_pay', format: 'json'
   post '/social/money/pay', to: 'profiles#accept_charge', format: 'json'
+  post '/social/money/pay/decline', to: 'wallet#decline_pay_request', format: 'json'
+
   get '/social/money/get', to: 'profiles#social_money_get', format: 'json'
   get '/profile/new', to: 'profiles#get_new_requests', format: 'json'
   get '/profile/get', to: 'profiles#get_profile', format: 'json'
@@ -60,5 +57,8 @@ Rails.application.routes.draw do
   post 'profile/recover' => 'password_recovery#recover', format: 'json'
   post 'profile/recover/token' => 'password_recovery#token', format: 'json'
   post 'profile//recover/password' => 'password_recovery#password', format: 'json'
+
+  get 'chat/tissue/get' => 'chat#get', format: 'json'
+  post 'chat/tissue/send' => 'chat#send', format: 'json'
 
 end

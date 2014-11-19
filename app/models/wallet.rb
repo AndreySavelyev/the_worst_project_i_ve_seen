@@ -31,6 +31,11 @@ class Wallet < ActiveRecord::Base
      Entry.create_hold_entry(wr, pay_request.amount)    
   end
 
+  def cancel_hold(pay_request)
+    wr = WalletRequest.create_return_money_wallet_request(pay_request)
+    Entry.create_cancellation_entry(wr, pay_request.amount)
+  end
+
   def get_revenue
     credit = Entry.where("credit_wallet_id = :credit_wallet_id", credit_wallet_id: self.id).sum(:amount)
     debit = Entry.where("debit_wallet_id = :debit_wallet_id", debit_wallet_id: self.id).sum(:amount)

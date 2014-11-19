@@ -41,6 +41,10 @@ class Profile < ActiveRecord::Base
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
   end
 
+  def self.get_by_accountid(token)
+    Profile.find_by_user_token(token)
+  end
+
   def self.get_by_email(email)
     Profile.where("email = :email",{email: email}).first!
   end

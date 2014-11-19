@@ -1,6 +1,6 @@
 class WalletController < ApplicationController
 
-  before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout, :list]
+  before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout, :list, :decline_pay_request]
 
   def cashin
     w = Wallet::get_wallet($user)
@@ -35,7 +35,7 @@ class WalletController < ApplicationController
             Emailer
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
-            cashout_result[:result] = 401
+            cashout_result[:result] = 200
             cashout_result[:message] = 'Not verified'
             cashout_result[:request_id] = wr.id;
           elsif (iban.code==code.to_i)
@@ -140,4 +140,23 @@ class WalletController < ApplicationController
       format.json { render :json => ibans.as_json, status: :ok }
     end
   end
+
+  def decline_pay_request
+
+    request_id = params[:requestId]
+    pr = PayRequest.find(request_id)
+
+    begin
+      pr.decline_pay_request($user.id)
+      result = {:result => 0, :message => 'payment canceled by user', code: 200}
+    rescue PaymentRequest::NotOwner
+      result = {:result => 401, :message => 'not an owner', code: 401}
+    end
+
+    respond_to do |format|
+      format.json { render :json => result.as_json, status: result[:code] }
+    end
+
+  end
+
 end

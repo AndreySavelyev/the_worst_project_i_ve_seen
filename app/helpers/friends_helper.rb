@@ -1,5 +1,7 @@
 module FriendsHelper
 
+  include GlobalConstants
+
   def self.invite_new_friend(user, friend_account_id)
     #определение типа параметра:
     #1- email
@@ -55,17 +57,18 @@ module FriendsHelper
       return
     end
 
-    if FriendshipRequest.where( :from_profile_id => user.id, :to_profile_id => friend.id).any?
+    if FriendshipRequest.where(:from_profile_id => user.id, :to_profile_id => friend.id, :status => 1).any?
       return #не давать создавать повторный запрос
     end
 
     request= FriendshipRequest.new
     request.from_profile=user
     request.to_profile=friend
-    request.fType = 0
+    request.fType = GlobalConstants::REQUEST_TYPES[:friendship]
     request.feed_date = Time.now
     request.privacy = 2 #friends
     request.message = 'be my friend'
+    request.status = 0
     return request.save
   end
 
@@ -91,17 +94,19 @@ module FriendsHelper
     return Feed.where(:to_profile_id => user.id,:viewed => 0).count
   end
 
-  def self.friendship_request_status(user, friend_id, status_new)
+  def self.friendship_request_status(user, friend_id, status)
     friend= Profile.find_by_user_token(friend_id)
     unless friend
       ret false
     end
     #найти запрос от друга
     friendship_request = find_request(user, friend.user_token, 0)
-    if(friendship_request)
+    if (friendship_request)
       ActiveRecord::Base.transaction do
-        friendship_request.update(:status=>status_new)
-        create_friendship(user,friend)
+        friendship_request.update(:status => status)
+        if status != 2
+          create_friendship(user, friend)
+        end
       end
     end
   end

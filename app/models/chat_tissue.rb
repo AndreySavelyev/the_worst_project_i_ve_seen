@@ -11,9 +11,7 @@ class ChatTissue < ActiveRecord::Base
   end
 
   def self.get_tissues(from_profile_id, to_profile_id)
-
-    ChatTissue.where("from_profile_id = :from_profile_id AND to_profile_id = :to_profile_id", from_profile_id: from_profile_id, to_profile_id: to_profile_id)
-
+    ChatTissue.where('from_profile_id = :from_profile_id AND to_profile_id = :to_profile_id', from_profile_id: from_profile_id, to_profile_id: to_profile_id)
   end
 
 end

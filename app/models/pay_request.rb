@@ -1,3 +1,7 @@
+class NotOwner < StandardError
+
+end
+
 class PayRequest < Feed
 
   include GlobalConstants
@@ -19,11 +23,22 @@ class PayRequest < Feed
     if send_request.check_balance
       send_request.save!
       send_request.from_profile.get_wallet.hold(send_request)
+    else
+      raise Entry::NoMoney.new
     end
 
    return send_request
 
  end
+
+  def decline_pay_request(owner_profile_id)
+    if self.to_profile.id != owner_profile_id
+        raise PayRequest::NotOwner.new
+    end
+    self.status = 2
+    self.from_profile.get_wallet.cancel_hold(self)
+    self.save!
+  end
 
   def self.create_accepted_request(from_user_id, to_user_id, amount, message, privacy, currency)
 
@@ -44,6 +59,8 @@ class PayRequest < Feed
       send_request.from_profile.get_wallet.hold(send_request)
       Entry.create_payment_entry(send_request)
       send_request.save!
+    else
+      raise Entry::NoMoney.new
     end
   end
 
@@ -53,7 +70,9 @@ class PayRequest < Feed
       Entry.create_payment_entry(self)
       self.status = 1
       set_privacy(privacy)
-    self.save!
+      self.save!
+    else
+      raise Entry::NoMoney.new
     end
   end
  

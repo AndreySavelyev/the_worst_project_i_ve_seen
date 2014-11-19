@@ -29,6 +29,19 @@ class WalletRequest < ActiveRecord::Base
     return wr       
   end
 
+  def self.create_return_money_wallet_request(pay_request)
+
+    wr = WalletRequest.new
+    wr.req_type = Entry::OPERATION_CODES[:cancellation]
+    wr.sourceWallet_id = pay_request.from_profile.get_wallet.id
+    wr.targetWallet_id = pay_request.to_profile.get_wallet.id
+    wr.feed_id = pay_request.id
+    wr.token = SecureRandom.hex
+    wr.save
+
+    return wr
+  end
+
   def self.find_by_token(token)
     WalletRequest.where('token = :token',token: token).take!
   end

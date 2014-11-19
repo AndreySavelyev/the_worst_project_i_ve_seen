@@ -18,23 +18,23 @@ class ApplicationController < ActionController::Base
     session_token = request.headers['session-token']
     #collecting some data for user
     session = Session.find_by_SessionId(session_token)
-    unless(checkSessionValid(session))
-      result = {:result => 11,:message =>"session not valid", :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : "" }
+    if !check_session_valid(session)
+      result = {:result => 11,:message =>'session not valid', :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : "" }
       respond_to do |format|
         format.json { render :json => result.as_json, status: :unauthorized }
       end
-    return
+    else
+      $user = session.profile
     end
-    $user = session.profile
   end
   
- def checkSessionValid(session)
+ def check_session_valid(session)
    
     unless session
       return false
     end
 
-    if  session.TimeToDie <Time.now
+    if  session.TimeToDie < Time.now
       return false
     end
      true

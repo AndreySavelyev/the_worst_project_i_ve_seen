@@ -1,7 +1,3 @@
-class NoMoney < StandardError
-
-end
-
 class ChargeRequest < Feed
 
   include GlobalConstants
@@ -26,7 +22,7 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
     charge_request.save!
     return charge_request
   else
-    raise NoMoney.new
+    raise Entry::NoMoney.new
   end
 
 end

@@ -1,5 +1,7 @@
 module ProfilesHelper
 
+  include GlobalConstants
+
   def self.get_tabs_format (user, app)
 
     #@apps = user.BizAccountService;
@@ -11,7 +13,7 @@ module ProfilesHelper
           :data=> srvc.api_data
       } end
 
-    feeds = get_feed_message_format(Feed.where("(privacy = 0 OR privacy = 1) AND status != 0").includes(:from_profile, :to_profile).first(2))
+    feeds = get_feed_message_format(Feed.where('privacy = 0 AND status = 1 AND "fType" != 3').includes(:from_profile, :to_profile).order(id: :desc).first(3))
 
     hotOffers = Array.new
     HotOffer.all.order('created_at DESC').collect   do |hotOffer|
@@ -49,26 +51,8 @@ module ProfilesHelper
     feeds = Array.new
     if feeds_list
       feeds_list.each { |feed|
-        feeds << {
-            :id => feed.id,
-            :message => feed.message,
-            :from => "#{feed.from_profile.name} #{feed.from_profile.surname}",
-            :from_id => feed.from_profile.user_token,
-            :from_email => feed.from_profile.email,
-            :to => "#{feed.to_profile.name} #{feed.to_profile.surname}",
-            :to_id => feed.to_profile.user_token,
-            :to_email => feed.to_profile.email,
-            :global => feed.privacy,
-            :date => feed.created_at.to_s(:session_date_time),
-            :likes => feed.likes,
-            :paymentId => feed.id,
-            :for => feed.description,
-            :pic => feed.from_profile.pic_url,
-            :type => ProfilesHelper.get_feed_type_string(feed.fType, feed.status), #available types[charge, charge new, request, request new]
-            :amount => feed.amount,
-            :currency => feed.currency,
-            :viewed => feed.viewed
-        } }
+        feeds << FeedsHelper::format_feed(feed)
+        }
     end
     return feeds;
   end
@@ -89,27 +73,39 @@ module ProfilesHelper
   def self.get_feed_type_string(feed_integer_type, status)
     #kovalevckiy via skype: pay, charge, pay new, charge new, request, ad
 
-    if feed_integer_type === 0
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:friendship] && status == 1
       return 'request'
     end
 
-    if feed_integer_type === 2 && status === 1
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:friendship] && status == 0
+      return 'request new'
+    end
+
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:friendship] && status == 2
+      return 'request declined'
+    end
+
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:pay] && status == 1
       return 'pay'
     end
 
-    if feed_integer_type == 3 && status == 0
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:charge] && status == 0
       return 'charge new'
     end
 
-    if feed_integer_type == 3 && status == 1
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:charge] && status == 1
       return 'charge'
     end
 
-    if feed_integer_type === 2 && status === 0
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:pay] && status == 0
       return 'pay new'
     end
 
-    if feed_integer_type === 20
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:pay] && status == 2
+      return 'pay declined'
+    end
+
+    if feed_integer_type == GlobalConstants::REQUEST_TYPES[:ad]
       return 'ad'
     end
   end

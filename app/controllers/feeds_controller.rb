@@ -28,13 +28,13 @@ class FeedsController < ApplicationController
 
   #use will_paginate gem
   def get_global_feed
-   FeedsHelper::get_feed_message_format(Feed.where('privacy = 0 AND status != 0 AND "fType" != 3').includes(:from_profile, :to_profile).order(id: :desc).first(100))
+   FeedsHelper::get_feed_message_format(Feed.where('privacy = 0 AND status = 1 AND "fType" != 3').includes(:from_profile, :to_profile).order(id: :desc).first(100))
   end
 
   #hard-nailed solution
   def get_friends_feed
     ids = $user.get_friends_id
-    FeedsHelper::get_feed_message_format(Feed.where('privacy = 1 AND status != 0 AND "fType" != 3 AND (to_profile_id in (:ids) OR from_profile_id in (:ids))', ids: ids).includes(:from_profile, :to_profile).order(id: :desc).first(100))
+    FeedsHelper::get_feed_message_format(Feed.where('privacy = 1 AND status = 1 AND "fType" != 3 AND (to_profile_id in (:ids) OR from_profile_id in (:ids))', ids: ids).includes(:from_profile, :to_profile).order(id: :desc).first(100))
   end
 
   def get_private_feed

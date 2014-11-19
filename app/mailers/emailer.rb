@@ -4,12 +4,12 @@ class Emailer < ActionMailer::Base
 
   default from: "noreply@chargebutton.com"
 
-  def email_lead(form_email, subject)
-    #@lead_email = form_email
+  def email_lead(email_profile)
     @log = Logger.new(STDOUT)
     @log.level = Logger::INFO
-    @log.info("create email for #{form_email} #{subject}")
-    mail(to: form_email, subject: subject)
+    @log.info("create email for #{email_profile[:email]} signin")
+    @email_profile = email_profile
+    mail(to: email_profile[:email], subject: "Sign in notification from onlinepay.com")
   end
 
   def email_recovery(request)
@@ -24,7 +24,7 @@ class Emailer < ActionMailer::Base
 
   def email_confirm(form_email, confirm_link)
     @confirmation_link  = confirm_link #переменная дл  шаблона
-    mail(to: form_email, subject: 'Welcome to Onlinepay.com')
+    mail(to: form_email, subject: 'Welcome to onlinepay.com')
   end
 
   def email_friend_invite(to_email, who_invite_profile)
@@ -38,6 +38,7 @@ class Emailer < ActionMailer::Base
     end
     mail(to: to_email, subject: "#{who_invite_profile.surname} #{who_invite_profile.name}invite you to Onlinepay.com")
   end
+
   def email_unverified_iban(to_mail, profile, iban_num, amount, request_id)
     @profile_id = profile.id
     @iban_num = iban_num
@@ -45,6 +46,7 @@ class Emailer < ActionMailer::Base
     @request_id = request_id
     mail(to: to_mail, subject: 'Unverified IBAN')
   end
+
   def email_verified_iban(to_mail, profile, iban_num, amount, request_id)
     @profile_id = profile.id
     @iban_num = iban_num
@@ -52,6 +54,7 @@ class Emailer < ActionMailer::Base
     @request_id = request_id
     mail(to: to_mail, subject: 'IBAN verified')
   end
+
   def email_payout_success(to_mail, iban_num, amount, request_id)
     @iban_num = iban_num
     @amount = amount
