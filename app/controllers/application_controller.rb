@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
 
   def set_user_from_session
     session_token = request.headers['session-token']
+    puts session_token
     #collecting some data for user
     session = Session.find_by_SessionId(session_token)
     if !check_session_valid(session)

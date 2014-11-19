@@ -4,7 +4,6 @@ module FeedsHelper
     feeds = Array.new
     if feeds_list
       feeds_list.each { |feed|
-        format_feed(feed)
         feeds << format_feed(feed)
       }
     end

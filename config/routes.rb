@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
   get 'password_recovery/request'
-
   get 'mood/set_mood'
-
   get 'avatar/upload'
-
   get 'push_notifications/save_token'
 
-  resources :profiles
+  get 'chat/tissue/get' => 'chat#get_tissues', format: 'json'
+  post 'chat/tissue/send' => 'chat#send_tissue', format: 'json'
+
   post '/signin', to: 'profiles#signin', format: 'json'
   post '/signup', to: 'profiles#signup', format: 'json'
   get '/signoff', to: 'profiles#signOff', format: 'json'
@@ -57,8 +56,5 @@ Rails.application.routes.draw do
   post 'profile/recover' => 'password_recovery#recover', format: 'json'
   post 'profile/recover/token' => 'password_recovery#token', format: 'json'
   post 'profile//recover/password' => 'password_recovery#password', format: 'json'
-
-  get 'chat/tissue/get' => 'chat#get', format: 'json'
-  post 'chat/tissue/send' => 'chat#send', format: 'json'
 
 end

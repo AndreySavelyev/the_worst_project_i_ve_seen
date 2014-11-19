@@ -159,7 +159,12 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
             <A href="#cashout/complete">/cashout/complete</A>
             <BR>
             <A href="#cashout/list">/cashout/list</A>
-            <!--
+			<BR>
+			<A href="#chat/tissue/send">/chat/tissue/send</A>
+			<BR>
+			<A href="#chat/tissue/get">/chat/tissue/get</A>
+
+			<!--
             <br	/>
             <a href="#wallet/in">/wallet/in</a>
             <br	/>
@@ -1676,6 +1681,89 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
                 original image url
         </P>
         <!-- end /profile/upload -->
+
+			<!-- /chat/tissue/send -->
+			<H4><STRONG> <A id="chat/tissue/send">/chat/tissue/send</A> </STRONG></H4>Request method: POST
+			<P>
+				Description: Sends a tissue (chat message) from one user to another
+			</P>
+			<H5>Headers:</H5>
+			<SMALL>session-token:test-token;</SMALL>
+
+			<H5>Data:</H5>
+			<P>
+				<CODE>
+					<SMALL>
+
+						<SPAN class="l1">{</SPAN><BR/>
+						<SPAN class="l2">"tissue":</SPAN><BR/>
+						<SPAN class="l2">{</SPAN><BR/>
+						<SPAN class="l3">"to_account_id":"v.kovalevskiy+201@cardpay.com",</SPAN><BR/>
+						<SPAN class="l3">"text":"Hi how're you"</SPAN><BR/>
+						<SPAN class="l2">}</SPAN><BR/>
+						<SPAN class="l1">}</SPAN><BR/>
+					</SMALL>
+				</CODE>
+
+			</P>
+
+			<H5>Returns:</H5>
+			<P>
+				<CODE>
+					<SMALL>
+
+						<SPAN class="l1">{</SPAN><BR/>
+						<SPAN class="l2">"id": 7,</SPAN><BR/>
+						<SPAN class="l2">"message": "Hi how're you",</SPAN><BR/>
+						<SPAN class="l2">"from": "Kovalevskiy Vlad",</SPAN><BR/>
+						<SPAN class="l2">"from_id": "fbid_963743763651638",</SPAN><BR/>
+						<SPAN class="l2">"from_email": "ikik1@yandex.ru",</SPAN><BR/>
+						<SPAN class="l2">"to": "Durham Lord",</SPAN><BR/>
+						<SPAN class="l2">"to_id": "v.kovalevskiy+201@cardpay.com",</SPAN><BR/>
+						<SPAN class="l2">"to_email": "v.kovalevskiy+201@cardpay.com",</SPAN><BR/>
+						<SPAN class="l2">"date": "2014-11-19T12:14:09.879Z",</SPAN><BR/>
+						<SPAN class="l2">"pic": "/system/profiles/avatars/000/000/114/thumb/114.png?1415081354"</SPAN><BR/>
+						<SPAN class="l1">}</SPAN><BR/>
+					</SMALL>
+				</CODE>
+			</P>
+			<!-- end /chat/tissue/send -->
+
+			<!-- /chat/tissue/get -->
+			<H4><STRONG> <A id="chat/tissue/get">/chat/tissue/get</A> </STRONG></H4>Request method: GET
+			<P>
+				Description: Gets list of tissues for the user to specified accountId
+			</P>
+			<H5>Headers:</H5>
+			<SMALL>session-token:test-token;</SMALL>
+
+			<H5>Data:</H5>
+			<P>
+				?to_account_id=some_account_id
+			</P>
+
+			<H5>Returns:</H5>
+			<P>
+				<CODE>
+					<SMALL>
+
+						<SPAN class="l1">[{</SPAN><BR/>
+						<SPAN class="l2">"id": 7,</SPAN><BR/>
+						<SPAN class="l2">"message": "Hi how're you",</SPAN><BR/>
+						<SPAN class="l2">"from": "Kovalevskiy Vlad",</SPAN><BR/>
+						<SPAN class="l2">"from_id": "fbid_963743763651638",</SPAN><BR/>
+						<SPAN class="l2">"from_email": "ikik1@yandex.ru",</SPAN><BR/>
+						<SPAN class="l2">"to": "Durham Lord",</SPAN><BR/>
+						<SPAN class="l2">"to_id": "v.kovalevskiy+201@cardpay.com",</SPAN><BR/>
+						<SPAN class="l2">"to_email": "v.kovalevskiy+201@cardpay.com",</SPAN><BR/>
+						<SPAN class="l2">"date": "2014-11-19T12:14:09.879Z",</SPAN><BR/>
+						<SPAN class="l2">"pic": "/system/profiles/avatars/000/000/114/thumb/114.png?1415081354"</SPAN><BR/>
+						<SPAN class="l1">}]</SPAN><BR/>
+					</SMALL>
+				</CODE>
+			</P>
+			<!-- end /chat/tissue/get -->
+
 
 
         <H2> Shopping.</H2>
