@@ -11,26 +11,10 @@ class PushTokens < ActiveRecord::Base
   end
 
   def self.send_payment_push(request)
-    #app = Rpush::Apns::App.where(name: 'ios_app')
-    #app.name = "ios_app"
-    #app.certificate = File.read("./certs/ios/sandbox.pem")
-    #app.environment = "sandbox" # APNs environment.
-    #app.password = "123456"
-    #app.connections = 1
-    #app.save!
 
     tokens = get_tokens(request.to_profile_id)
-    app = Rpush::Apns::App.find_by_name("ios_app")
 
-    if app == nil
-      app = Rpush::Apns::App.new
-      app.name = "ios_app"
-      app.certificate = File.read("./certs/ios/sandbox.pem")
-      app.environment = "sandbox" # APNs environment.
-      app.password = "123456"
-      app.connections = 1
-      app.save!
-    end
+    app = init_application
 
     tokens.each do |t|
       n = Rpush::Apns::Notification.new
@@ -44,15 +28,41 @@ class PushTokens < ActiveRecord::Base
   end
 
   def self.send_charge_push(request)
-    #app = Rpush::Apns::App.where(name: 'ios_app')
-    #app.name = "ios_app"
-    #app.certificate = File.read("./certs/ios/sandbox.pem")
-    #app.environment = "sandbox" # APNs environment.
-    #app.password = "123456"
-    #app.connections = 1
-    #app.save!
 
     tokens = get_tokens(request.to_profile_id)
+
+    app = init_application
+
+    tokens.each do |t|
+      n = Rpush::Apns::Notification.new
+      n.app = app
+      n.device_token = t.token
+      n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
+      n.data = FeedsHelper::format_feed(request).as_json
+      n.save!
+    end
+
+  end
+
+  def self.send_tissue_push(tissue)
+
+    tokens = get_tokens(request.to_profile.id)
+    app = init_application
+
+    tokens.each do |t|
+      n = Rpush::Apns::Notification.new
+      n.app = app
+      n.device_token = t.token
+      n.alert = "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}"
+      n.data = ChatHelper::format_tissue(tissue).as_json
+      n.save!
+    end
+
+  end
+
+  :private
+
+  def self.init_application
     app = Rpush::Apns::App.find_by_name("ios_app")
 
     if app == nil
@@ -65,15 +75,7 @@ class PushTokens < ActiveRecord::Base
       app.save!
     end
 
-    tokens.each do |t|
-      n = Rpush::Apns::Notification.new
-      n.app = app
-      n.device_token = t.token
-      n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
-      n.data = FeedsHelper::format_feed(request).as_json
-      n.save!
-    end
-
+    app
   end
 
 

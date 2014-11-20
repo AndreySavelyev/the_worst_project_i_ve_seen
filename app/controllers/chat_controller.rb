@@ -9,6 +9,8 @@ class ChatController < ApplicationController
 
    tissue = ChatTissue::send_tissue($user.id, to_profile.id, p[:text])
 
+   PushTokens::send_tissue_push(tissue)
+
    respond_to do |format|
      format.json { render :json => tissue.as_json, status: :ok }
    end

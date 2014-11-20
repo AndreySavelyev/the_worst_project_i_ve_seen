@@ -258,7 +258,7 @@ class ProfilesController < ApplicationController
 
     unless profile && (user_password == profile.password) || profile && profile.temp_account #временному аккаунту нельзя давать логиниться
       @result = Object
-      @result = {:result => 5, :message => "user not found or incorrect password"}
+      @result = {:result => 5, :message => 'user not found or incorrect password'}
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :unauthorized }
       end
