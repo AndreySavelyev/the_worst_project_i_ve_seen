@@ -37,7 +37,7 @@ class WalletController < ApplicationController
 
           wr = WalletRequest.get_wallet_request_for_iban(iban, w)
 
-          if !WalletHelper.check_iban_validation_code(code.to_s)
+          if code.to_s.empty?
             Emailer
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
