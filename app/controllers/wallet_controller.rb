@@ -93,7 +93,7 @@ class WalletController < ApplicationController
       end
 
       respond_to do |format|
-        format.json { render :json => cashout_result.as_json, status: cashout_result[:result] }
+        format.json { render :json => cashout_result.as_json, status: cashout_result[:code] }
       end
 
     rescue

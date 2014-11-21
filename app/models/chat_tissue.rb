@@ -17,5 +17,5 @@ class ChatTissue < ActiveRecord::Base
                      from_profile_id: from_profile_id,
                      to_profile_id: to_profile_id).includes(:from_profile, :to_profile).order(id: :desc).first(100)
   end
-
+  
 end

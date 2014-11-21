@@ -139,4 +139,10 @@ module ProfilesHelper
     }
   end
 
+  def self.trust_user(password1, password2, trusted_accountid)
+
+    !trusted_accountid ? (password1 == password2) : trusted_accountid
+
+  end
+
 end

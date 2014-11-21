@@ -249,14 +249,32 @@ class ProfilesController < ApplicationController
   def signin
 
     profile = Profile.find_by_user_token(@sign_in.accountid)
-    user_password = nil
+
+    trusted_accountid = false
 
     if profile && !AccountValidators.get_fbid_match(@sign_in.accountid)
       #checking user password
       user_password = Digest::SHA2.hexdigest(profile.salt + @sign_in.password)
+    else
+      trusted_accountid = true
     end
 
-    unless profile && (user_password == profile.password) || profile && profile.temp_account #временному аккаунту нельзя давать логиниться
+    if profile != nil && ProfilesHelper::trust_user(user_password, profile.password, trusted_accountid)
+      @session = create_session(profile);
+
+      if profile.email && profile.valid?
+        email_profile = {:name => profile.name,
+                         :surname => profile.surname,
+                         :email => profile.email,
+                         :user_agent => request.user_agent,
+                         :host => request.host,
+                         :ip => request.remote_ip}
+
+        Emailer.email_lead(email_profile).deliver
+      end
+      return_session(@session)
+    else
+
       @result = Object
       @result = {:result => 5, :message => 'user not found or incorrect password'}
       respond_to do |format|
@@ -264,20 +282,6 @@ class ProfilesController < ApplicationController
       end
       return
     end
-
-    @session = create_session(profile);
-
-    if profile.email && profile.valid?
-      email_profile = {:name => profile.name,
-                       :surname => profile.surname,
-                       :email => profile.email,
-                       :user_agent => request.user_agent,
-                       :host => request.host,
-                       :ip => request.remote_ip}
-
-      Emailer.email_lead(email_profile).deliver
-    end
-    return_session(@session)
   end
 
   def check_session
