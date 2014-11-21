@@ -117,6 +117,7 @@ module ProfilesHelper
                 :accountid => user.user_token,
                 :email => user.email,
                 :type => user.wallet_type == 1 ? 'personal' : user.wallet_type==2 ? 'green' : user.wallet_type==3 ? 'biz' : user.wallet_type == 4 ? 'biz partner' : user.wallet_type == 5 ? 'pale' : 'personal', #available types[personal, green, biz, biz partner, pale]
+                :type_code => user.wallet_type,
                 :firstName => user.name,
                 :lastName => user.surname,
                 :phone => user.phone,
