@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+ChatTissue:
+  fields:
+    default: text, from_profile_id, to_profile_id
+    form: text, from_profile_id, to_profile_id
+  relationships: 
+  application: Application

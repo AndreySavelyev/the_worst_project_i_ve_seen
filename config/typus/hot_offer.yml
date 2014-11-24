@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+HotOffer:
+  fields:
+    default: title, currency, pic_url, price, profile_id
+    form: title, currency, pic_url, price, profile_id
+  relationships: 
+  application: Application

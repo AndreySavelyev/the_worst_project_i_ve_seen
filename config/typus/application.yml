@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+Application:
+  fields:
+    default: version, appToken, validUntil
+    form: version, appToken, validUntil
+  relationships: providers, sessions
+  application: Application

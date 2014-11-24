@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+GlobalSettings:
+  fields:
+    default: settings_key, settings_value
+    form: settings_key, settings_value
+  relationships: 
+  application: Application

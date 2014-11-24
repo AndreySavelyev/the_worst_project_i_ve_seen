@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+BizAccountService:
+  fields:
+    default: pic, api_data, profile_id
+    form: pic, api_data, profile_id
+  relationships: Profile
+  application: Application

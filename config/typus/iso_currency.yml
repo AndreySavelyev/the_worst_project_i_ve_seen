@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+IsoCurrency:
+  fields:
+    default: Alpha3Code, Numeric3Code, Name, Precision, IsoName
+    form: Alpha3Code, Numeric3Code, Name, Precision, IsoName
+  relationships: Wallet
+  application: Application

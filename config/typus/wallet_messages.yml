@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+WalletMessages:
+  fields:
+    default: message, Request_id
+    form: message, Request_id
+  relationships: 
+  application: Application

@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+PushTokens:
+  fields:
+    default: token, profile_id
+    form: token, profile_id
+  relationships: 
+  application: Application

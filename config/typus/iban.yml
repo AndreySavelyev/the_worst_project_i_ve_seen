@@ -1,0 +1,9 @@
+# Use the README file as a reference to customize settings.
+
+Iban:
+  fields:
+    default: profile_id, iban_num, verified, code, wr_token, is_default
+    form: profile_id, iban_num, verified, code, wr_token, is_default
+  relationships: 
+  application: Application
+  search: profile_id, iban_num

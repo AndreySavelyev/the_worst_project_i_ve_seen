@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+Session:
+  fields:
+    default: SessionId, TimeToDie, profile_id, application_id
+    form: SessionId, TimeToDie, profile_id, application_id
+  relationships: 
+  application: Application

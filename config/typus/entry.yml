@@ -1,0 +1,8 @@
+# Use the README file as a reference to customize settings.
+
+Entry:
+  fields:
+    default: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id
+    form: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id
+  relationships: 
+  application: Application
