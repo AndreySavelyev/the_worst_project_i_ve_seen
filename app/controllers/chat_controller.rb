@@ -12,7 +12,7 @@ class ChatController < ApplicationController
    PushTokens::send_tissue_push(tissue)
 
    respond_to do |format|
-     format.json { render :json => tissue.as_json, status: :ok }
+     format.json { render json: ChatHelper::format_tissue(tissue).as_json, status: :ok }
    end
 
   end

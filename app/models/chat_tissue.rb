@@ -9,7 +9,7 @@ class ChatTissue < ActiveRecord::Base
     tissue.from_profile_id = from_profile_id
     tissue.to_profile_id = to_profile_id
     tissue.save!
-    ChatHelper::format_tissue(tissue)
+    tissue
   end
 
   def self.get_tissues(from_profile_id, to_profile_id)

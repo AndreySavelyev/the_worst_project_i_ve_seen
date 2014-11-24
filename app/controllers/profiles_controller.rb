@@ -260,7 +260,8 @@ class ProfilesController < ApplicationController
     end
 
     if profile != nil && ProfilesHelper::trust_user(user_password, profile.password, trusted_accountid)
-      @session = create_session(profile);
+
+      @session = create_session(profile)
 
       if profile.email && profile.valid?
         email_profile = {:name => profile.name,

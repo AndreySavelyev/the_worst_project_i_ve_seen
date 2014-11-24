@@ -46,7 +46,7 @@ class PushTokens < ActiveRecord::Base
 
   def self.send_tissue_push(tissue)
 
-    tokens = get_tokens(request.to_profile.id)
+    tokens = get_tokens(tissue.to_profile.id)
     app = init_application
 
     tokens.each do |t|
