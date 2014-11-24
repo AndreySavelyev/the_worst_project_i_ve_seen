@@ -5,4 +5,4 @@ Friend:
     default: profile_id, friend_id
     form: profile_id, friend_id
   relationships: 
-  application: Application
+  application: Profiles

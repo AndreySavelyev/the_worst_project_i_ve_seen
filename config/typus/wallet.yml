@@ -5,4 +5,4 @@ Wallet:
     default: available, holded, profile_id, IsoCurrency_id
     form: available, holded, profile_id, IsoCurrency_id
   relationships: requests
-  application: Application
+  application: Wallets

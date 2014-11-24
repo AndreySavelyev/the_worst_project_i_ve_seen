@@ -5,4 +5,4 @@ WalletMessages:
     default: message, Request_id
     form: message, Request_id
   relationships: 
-  application: Application
+  application: Wallets

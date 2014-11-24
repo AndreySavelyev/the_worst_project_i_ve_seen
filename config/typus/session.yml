@@ -2,7 +2,9 @@
 
 Session:
   fields:
-    default: SessionId, TimeToDie, profile_id, application_id
+    default: created_at, SessionId, TimeToDie, profile_id, application_id
     form: SessionId, TimeToDie, profile_id, application_id
   relationships: 
-  application: Application
+  application: Profiles
+  search: profile_id
+  order_by: -created_at

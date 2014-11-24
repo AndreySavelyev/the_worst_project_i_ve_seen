@@ -5,5 +5,5 @@ Iban:
     default: profile_id, iban_num, verified, code, wr_token, is_default
     form: profile_id, iban_num, verified, code, wr_token, is_default
   relationships: 
-  application: Application
+  application: Wallets
   search: profile_id, iban_num

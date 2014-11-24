@@ -5,4 +5,4 @@ FriendshipRequest:
     default: message, privacy, likes, description, from_profile_id, to_profile_id, fType, feed_date, amount, currency, status, viewed, source_currency, source_amount, rate_id, conv_commission_amount, conv_commission_id, commission_value, commission_currency, commission_amount
     form: message, privacy, likes, description, from_profile_id, to_profile_id, fType, feed_date, amount, currency, status, viewed, source_currency, source_amount, rate_id, conv_commission_amount, conv_commission_id, commission_value, commission_currency, commission_amount
   relationships: wallet_request
-  application: Application
+  application: Profiles

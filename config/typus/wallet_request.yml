@@ -5,4 +5,4 @@ WalletRequest:
     default: req_status, sourceWallet_id, targetWallet_id, token, feed_id
     form: req_status, sourceWallet_id, targetWallet_id, token, feed_id
   relationships: 
-  application: Application
+  application: Wallets
