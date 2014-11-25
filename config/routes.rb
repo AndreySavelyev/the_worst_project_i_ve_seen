@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :legal do
+  get 'policy/index'
+  end
+
   get 'password_recovery/request'
   get 'mood/set_mood'
   get 'avatar/upload'
@@ -56,5 +60,9 @@ Rails.application.routes.draw do
   post 'profile/recover' => 'password_recovery#recover', format: 'json'
   post 'profile/recover/token' => 'password_recovery#token', format: 'json'
   post 'profile//recover/password' => 'password_recovery#password', format: 'json'
+
+  get 'legal/terms' => 'legal/terms#index'
+  get 'legal/policy' => 'legal/policy#index'
+  get 'legal/tariffs' => 'legal/tariffs#index'
 
 end

@@ -1,0 +1,2 @@
+module Legal::PolicyHelper
+end
