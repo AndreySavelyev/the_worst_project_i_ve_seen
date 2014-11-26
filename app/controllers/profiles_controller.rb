@@ -165,6 +165,7 @@ class ProfilesController < ApplicationController
   end
 
   def save_profile
+
     profile =save_profile_params
 
     if profile[:firstName]
@@ -212,38 +213,17 @@ class ProfilesController < ApplicationController
       @user.contact_person_phone=profile[:cp_phone]
     end
 
-    unless @user.email || @user.confirm_type != 0 #в профиле не указан емэйл или он не подтвержден
-      if profile[:email] #в параметрах был передан мэйл
-        email_id = AccountValidators::get_email_match(profile[:email]) #проверка адреса
-        if email_id
-          #проверка, что указанный мэйл никем более не используется
-          search_result = Profile.where("user_token = :e_mail OR email = :e_mail", {e_mail: profile[:email]}).any?
-          unless search_result
-            @user.reg_token = SecureRandom.hex
-            @user.email = profile[:email]
 
-            domain = ApplicationHelper::get_domain_name
-
-            link = domain + "/confirm?token=#{@user.reg_token}"
-
-            send_confirm_mail(@user, link)
-          else
-            decline_already_registered
-            return
-          end
-        else
-          @result = {:result => 16, :message => "e-mail have incorrect format"}
-          respond_to do |format|
-            format.json { render :json => @result.as_json, status: :conflict }
-          end
-          return
-        end
-      end
+    if @user.confirm_type == 0 && @user.reg_token == nil
+      @user.reg_token = SecureRandom.hex
+      domain = ApplicationHelper::get_domain_name
+      link = domain + "/confirm?token=#{@user.reg_token}"
+      send_confirm_mail(@user, link)
     end
 
     @user.save!
-
     get_profile
+
   end
 
   def signin
@@ -315,9 +295,9 @@ class ProfilesController < ApplicationController
       @newUser.temp_account = FALSE
     else
       if founded_profile # обнаружен существующий аккаунт
-        @log.info("not registered. accountId have incorrect format")
+        @log.info('Already registered')
         @result = Object
-        @result = {:result => 4, :message => "not registered. accountId have incorrect format"}
+        @result = {:result => 4, :message => 'Already registered'}
         respond_to do |format|
           format.json { render :json => @result.as_json, status: :conflict }
         end
@@ -338,8 +318,7 @@ class ProfilesController < ApplicationController
     else
       email_id = AccountValidators::get_email_match(@sign_up.accountid)
       if email_id
-        @newUser.email=email_id[0]
-        @log.info("emailId:#{email_id}")
+        @newUser.email = email_id[0]
       else
         # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
         # if(phone)
@@ -365,12 +344,7 @@ class ProfilesController < ApplicationController
       @newUser.password = Digest::SHA2.hexdigest(@newUser.salt + @sign_up.password1)
     end
 
-    if AccountValidators::is_test_account(@sign_up.accountid)
-      @newUser.reg_token = 'confirm-token';
-    else
-      @newUser.reg_token= SecureRandom.hex;
-    end
-    @newUser.confirm_type=0; #not confirmed
+    @newUser.confirm_type = 0; #not confirmed
     # добавляем запись
 
     if !@newUser.save
@@ -382,70 +356,46 @@ class ProfilesController < ApplicationController
       Wallet.create_wallet(@newUser.user_token)
       return
     end
-
-    domain = ApplicationHelper::get_domain_name
-
-    link = domain + "/confirm?token=#{@newUser.reg_token}";
-
-    @log.debug(link)
-    #User was successfully created.
-    if @newUser.email
-      send_confirm_mail(@newUser, link)
-    end
-
     return_session(create_session(@newUser))
   end
 
   def confirm
+
     @result = Object
     reg_token = params[:token]
 
     unless reg_token
-      @result = {:result => 9, :message => 'confirm token not valid'}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :unauthorized }
-      end
+      @result = {:result => 9, :message => 'Confirmation token not valid'}
       return
     end
 
-    user = Profile.find_by_reg_token(reg_token);
+    user = Profile.find_by_reg_token(reg_token)
 
     unless user
-      @result = {:result => 5, :message => 'user not found or incorrect password'}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :unauthorized }
-      end
+      @result = {:result => 5, :message => 'User not found'}
       return
     end
 
     unless user.reg_token == reg_token
-      @result = {:result => 9, :message => 'confirm token not valid'}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :unauthorized }
-      end
+      @result = {:result => 9, :message => 'Confirmation token not valid'}
       return
     end
 
-    @result = {:result => 0, :message => "ok"}
-    if user && user.confirm_type!=0
-      @result = {:result => 0, :message => "already confirmed"}
+    @result = {:result => 0, :message => 'You email has been confirmed successfully.'}
+
+    if user && user.confirm_type != 0
+      @result = {:result => 0, :message => "You have already confirmed your email."}
+      return
     end
 
     unless user.update(confirm_type: 1)
-      @result = {:result => 14, :message => 'registration not confirmed. internal server error'}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :internal_server_error }
-      end
+      @result = {:result => 14, :message => 'Email not confirmed. internal server error'}
       return
     end
 
     user.update(reg_token: nil)
 
-    @get_result=Object.new
-    @get_result={:confirm => @result}
-    respond_to do |format|
-      format.json { render :json => @get_result.as_json, status: :ok }
-    end
+    @result
   end
 
   def tabs
@@ -735,7 +685,7 @@ class ProfilesController < ApplicationController
 
   def send_confirm_mail(sign_up, link)
     #if sign_up.valid?
-    Emailer.email_confirm(sign_up.email, link).deliver;
+    Emailer.email_confirm(sign_up, link).deliver;
     #end
   end
 

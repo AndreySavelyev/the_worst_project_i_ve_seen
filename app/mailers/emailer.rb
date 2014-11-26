@@ -22,9 +22,10 @@ class Emailer < ActionMailer::Base
     mail(to: @request.sourceWallet.profile.email, subject: 'Password recovery success.')
   end
 
-  def email_confirm(form_email, confirm_link)
+  def email_confirm(profile, confirm_link)
     @confirmation_link  = confirm_link #переменная дл  шаблона
-    mail(to: form_email, subject: 'Welcome to onlinepay.com')
+    @profile = profile
+    mail(to: profile.email, subject: 'Welcome to onlinepay.com')
   end
 
   def email_friend_invite(to_email, who_invite_profile)

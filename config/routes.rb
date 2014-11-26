@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get '/signoff', to: 'profiles#signOff', format: 'json'
   get '/session', to: 'profiles#check_session', format: 'json'
   #post '/confirm', to: 'profiles#confirm', format: 'json'
-  get '/confirm', to: 'profiles#confirm', format: 'json'
+  get '/confirm', to: 'profiles#confirm'
   post '/brief', to: 'profiles#brief', format: 'json'
   post '/catalog', to: 'profiles#catalog', format: 'json'
   post '/social/feed', to: 'feeds#feed', format: 'json'
