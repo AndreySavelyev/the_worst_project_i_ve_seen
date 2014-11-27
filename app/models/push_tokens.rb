@@ -13,18 +13,22 @@ class PushTokens < ActiveRecord::Base
   def self.send_payment_push(request)
 
     tokens = get_tokens(request.to_profile_id)
-
     app = init_application
 
-    tokens.each do |t|
-      n = Rpush::Apns::Notification.new
-      n.app = app
-      n.device_token = t.token
-      n.alert = "New money from: #{request.from_profile.surname} #{request.from_profile.name}"
-      n.data = FeedsHelper::format_feed(request).as_json
-      n.save!
+    begin
+      tokens.each do |t|
+        n = Rpush::Apns::Notification.new
+        n.app = app
+        n.device_token = t.token
+        n.alert = "New money from: #{request.from_profile.surname} #{request.from_profile.name}"
+        n.data = FeedsHelper::format_feed(request).as_json
+        n.save!
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::ERROR
+      @log.error e.message
     end
-
   end
 
   def self.send_charge_push(request)
@@ -32,15 +36,21 @@ class PushTokens < ActiveRecord::Base
     tokens = get_tokens(request.to_profile_id)
 
     app = init_application
-
-    tokens.each do |t|
-      n = Rpush::Apns::Notification.new
-      n.app = app
-      n.device_token = t.token
-      n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
-      n.data = FeedsHelper::format_feed(request).as_json
-      n.save!
+    begin
+      tokens.each do |t|
+        n = Rpush::Apns::Notification.new
+        n.app = app
+        n.device_token = t.token
+        n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
+        n.data = FeedsHelper::format_feed(request).as_json
+        n.save!
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::ERROR
+      @log.error e.message
     end
+
 
   end
 
@@ -49,14 +59,22 @@ class PushTokens < ActiveRecord::Base
     tokens = get_tokens(tissue.to_profile.id)
     app = init_application
 
-    tokens.each do |t|
-      n = Rpush::Apns::Notification.new
-      n.app = app
-      n.device_token = t.token
-      n.alert = "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}"
-      n.data = ChatHelper::format_tissue(tissue).as_json
-      n.save!
+    begin
+      tokens.each do |t|
+        n = Rpush::Apns::Notification.new
+        n.app = app
+        n.device_token = t.token
+        n.alert = "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}"
+        n.data = ChatHelper::format_tissue(tissue).as_json
+        n.save!
+      end
+
+    rescue ActiveRecord::RecordInvalid => e
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::ERROR
+      @log.error e.message
     end
+
 
   end
 
@@ -77,6 +95,7 @@ class PushTokens < ActiveRecord::Base
 
     app
   end
+
 
 
 end

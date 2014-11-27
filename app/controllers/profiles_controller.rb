@@ -142,7 +142,7 @@ class ProfilesController < ApplicationController
     friend_list=Array.new
     if founded
       founded.each { |friend|
-        friend_list<<
+        friend_list <<
             {
                 :accountid => friend.user_token,
                 :pic => friend.avatar_url,
@@ -213,6 +213,9 @@ class ProfilesController < ApplicationController
       @user.contact_person_phone=profile[:cp_phone]
     end
 
+    if profile[:email]
+      @user.email = profile[:email]
+    end
 
     if @user.confirm_type == 0 && @user.reg_token == nil
       @user.reg_token = SecureRandom.hex
@@ -480,11 +483,10 @@ class ProfilesController < ApplicationController
     rescue => e
       @log.error e.message
       e.backtrace.each { |line| @log.error line }
-    end
-
-
-    respond_to do |format|
-      format.json { render :json => @result.as_json, status: :ok }
+    ensure
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :ok }
+      end
     end
   end
 
