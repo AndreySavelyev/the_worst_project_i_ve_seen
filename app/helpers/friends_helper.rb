@@ -32,7 +32,9 @@ module FriendsHelper
         end
       end
       #  так, аккаунт еже сеть в любом случае. делаем ему предложение дружбы.
-      create_friendship_request(user, temp_profile)
+      req = create_friendship_request(user, temp_profile)
+
+      PushTokens::send_friendship_push(req)
       #
       unless temp_profile.temp_account #если временный аккаунт, то без посыла EMAIL
         Emailer.email_friend_invite(friend_account_id,user )
@@ -61,15 +63,16 @@ module FriendsHelper
       return #не давать создавать повторный запрос
     end
 
-    request= FriendshipRequest.new
-    request.from_profile=user
-    request.to_profile=friend
+    request = FriendshipRequest.new
+    request.from_profile = user
+    request.to_profile = friend
     request.fType = GlobalConstants::REQUEST_TYPES[:friendship]
     request.feed_date = Time.now
     request.privacy = 2 #friends
     request.message = 'be my friend'
     request.status = 0
-    return request.save
+    request.save!
+    request
   end
 
   def self.get_friendship_requests(user)

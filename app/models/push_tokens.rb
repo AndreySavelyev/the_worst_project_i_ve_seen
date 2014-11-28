@@ -22,6 +22,7 @@ class PushTokens < ActiveRecord::Base
         n.device_token = t.token
         n.alert = "New money from: #{request.from_profile.surname} #{request.from_profile.name}"
         n.data = FeedsHelper::format_feed(request).as_json
+        n.category = 'PAY'
         n.save!
       end
     rescue ActiveRecord::RecordInvalid => e
@@ -43,6 +44,7 @@ class PushTokens < ActiveRecord::Base
         n.device_token = t.token
         n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
         n.data = FeedsHelper::format_feed(request).as_json
+        n.category = 'CHARGE'
         n.save!
       end
     rescue ActiveRecord::RecordInvalid => e
@@ -66,6 +68,8 @@ class PushTokens < ActiveRecord::Base
         n.device_token = t.token
         n.alert = "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}"
         n.data = ChatHelper::format_tissue(tissue).as_json
+        n.category = 'TISSUE'
+        n.badge = 1
         n.save!
       end
 
@@ -75,7 +79,29 @@ class PushTokens < ActiveRecord::Base
       @log.error e.message
     end
 
+  end
 
+
+  def self.send_friendship_push(request)
+
+    tokens = get_tokens(request.to_profile_id)
+    app = init_application
+
+    begin
+      tokens.each do |t|
+        n = Rpush::Apns::Notification.new
+        n.app = app
+        n.device_token = t.token
+        n.alert = "#{request.from_profile.surname} #{request.from_profile.name} wants to be your friend."
+        n.data = FeedsHelper::format_feed(request).as_json
+        n.category = 'FRIEND'
+        n.save!
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::ERROR
+      @log.error e.message
+    end
   end
 
   :private
