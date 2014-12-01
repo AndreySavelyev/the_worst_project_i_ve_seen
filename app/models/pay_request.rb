@@ -111,7 +111,7 @@ class PayRequest < Feed
 
     self.commission_value = get_commission(self.status)
     self.commission_currency = currency.Alpha3Code
-    self.commission_amount =  (self.commission_value.to_f / self.source_amount.to_f) * 100
+    self.commission_amount =  (self.commission_value.to_f * self.source_amount.to_f) / 100
 
     self.conv_commission_id = get_conversation_commission_id
     self.conv_commission_amount = get_conv_commission(self.conv_commission_id, self.source_amount)
