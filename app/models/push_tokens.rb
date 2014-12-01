@@ -23,6 +23,7 @@ class PushTokens < ActiveRecord::Base
         n.alert = "New money from: #{request.from_profile.surname} #{request.from_profile.name}"
         n.data = FeedsHelper::format_feed(request).as_json
         n.category = 'PAY'
+        n.badge = 1
         n.save!
       end
     rescue ActiveRecord::RecordInvalid => e
@@ -45,6 +46,7 @@ class PushTokens < ActiveRecord::Base
         n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
         n.data = FeedsHelper::format_feed(request).as_json
         n.category = 'CHARGE'
+        n.badge = 1
         n.save!
       end
     rescue ActiveRecord::RecordInvalid => e
@@ -95,6 +97,7 @@ class PushTokens < ActiveRecord::Base
         n.alert = "#{request.from_profile.surname} #{request.from_profile.name} wants to be your friend."
         n.data = FeedsHelper::format_feed(request).as_json
         n.category = 'FRIEND'
+        n.badge = 1
         n.save!
       end
     rescue ActiveRecord::RecordInvalid => e
