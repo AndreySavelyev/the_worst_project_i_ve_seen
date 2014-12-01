@@ -477,6 +477,7 @@ class ProfilesController < ApplicationController
       Emailer.email_receipt(request).deliver
       PushTokens.send_payment_push(request)
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
+      @status = 200
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'no money for commission payment'}
       @status = 403
@@ -485,7 +486,7 @@ class ProfilesController < ApplicationController
       e.backtrace.each { |line| @log.error line }
     ensure
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :ok }
+        format.json { render :json => @result.as_json, status: @status }
       end
     end
   end
@@ -580,8 +581,8 @@ class ProfilesController < ApplicationController
 
     begin
       request = ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
-      @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       PushTokens::send_charge_push(request)
+      @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'no money for commission payment'}
