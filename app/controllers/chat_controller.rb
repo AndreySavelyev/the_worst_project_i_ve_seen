@@ -28,7 +28,7 @@ class ChatController < ApplicationController
     list = ChatHelper::get_tissue_message_format(list)
 
     respond_to do |format|
-      format.json { render :json => list.as_json, status: 200 }
+      format.json { render :json => list.as_json, status: :ok }
     end
 
   end

@@ -354,7 +354,7 @@ class ProfilesController < ApplicationController
       @result = Object
       @result = {:result => 4, :message => "not registered"}
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
+        format.json { render :json => @result.as_json, status: :internal_server_error }
       end
       Wallet.create_wallet(@newUser.user_token)
       return
@@ -479,7 +479,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'no money for commission payment'}
-      @status = :forbidden
+      @status = 403
     rescue => e
       @log.error e.message
       e.backtrace.each { |line| @log.error line }
@@ -582,10 +582,10 @@ class ProfilesController < ApplicationController
       request = ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       PushTokens::send_charge_push(request)
-      @status = :ok
+      @status = 200
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'no money for commission payment'}
-      @status = :forbidden
+      @status = 403
     rescue => e
       log.error e.message
       e.backtrace.each { |line| log.error line }
@@ -657,7 +657,7 @@ class ProfilesController < ApplicationController
     @result = Object
     @result = {:result => 8, :message => 'require param'}
     respond_to do |format|
-      format.json { render :json => @result.as_json, status: :error }
+      format.json { render :json => @result.as_json, status: :bad_request }
     end
   end
 
@@ -763,7 +763,7 @@ class ProfilesController < ApplicationController
       @result = Object
       @result = {:result => 1, :message => 'password1 not equal password2'}
       respond_to do |format|
-        format.json { render :json => @result.as_json, status: :error }
+        format.json { render :json => @result.as_json, status: :bad_request }
       end
       @sign_up = nil
       return
