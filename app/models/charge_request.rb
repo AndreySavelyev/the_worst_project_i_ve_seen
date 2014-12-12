@@ -17,9 +17,9 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
   charge_request.from_profile_id = from_user_id
   charge_request.to_profile_id = to_user_id
   charge_request.set_commission(charge_request.currency)
-
   if charge_request.check_balance
     charge_request.save!
+    charge_
     return charge_request
   else
     raise Entry::NoMoney.new

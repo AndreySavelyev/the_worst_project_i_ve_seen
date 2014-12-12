@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :shops do
+  get 'offer/new_offer'
+  end
+
+  namespace :shops do
+  get 'shop/new_shop'
+  end
+
   namespace :legal do
   get 'policy/index'
   end
@@ -64,5 +72,10 @@ Rails.application.routes.draw do
   get 'legal/terms' => 'legal/terms#index'
   get 'legal/policy' => 'legal/policy#index'
   get 'legal/tariffs' => 'legal/tariffs#index'
+
+  post 'shops/new' => 'shops/shop#new_shop', format: 'json'
+  post 'shops/upload' => 'avatar#upload_shop', format: 'json'
+  post 'shops/offers/new' => 'shops/offer#new_offer', format: 'json'
+
 
 end

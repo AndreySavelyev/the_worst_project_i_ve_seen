@@ -1,6 +1,6 @@
 class Profile < ActiveRecord::Base
   
-  ACCOUNT_TYPE = {personal: 0, green: 1, biz: 2, system: 100}
+  ACCOUNT_TYPE = {personal: 0, green: 1, biz: 2, partner: 4, pale: 5, system: 100}
   
   has_many :hot_offers, dependent: :destroy
   has_many :sourceFeeds, :class_name => 'Feed', :foreign_key => 'to_profile_id'
@@ -26,7 +26,7 @@ class Profile < ActiveRecord::Base
   attr_accessor :image_data, :image
 
   def get_friends_id
-    ids = lovers.pluck(:id);
+    lovers.pluck(:id);
   end
 
   def self.create(token)
@@ -88,7 +88,6 @@ class Profile < ActiveRecord::Base
   end
 
   def decode_image_data
-    puts "decoding"
     if self.image_data.present?
       # If image_data is present, it means that we were sent an image over
       # JSON and it needs to be decoded.  After decoding, the image is processed
