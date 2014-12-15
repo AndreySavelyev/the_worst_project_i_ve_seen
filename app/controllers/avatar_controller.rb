@@ -18,7 +18,7 @@ class AvatarController < ApplicationController
 
     upload_params = params.permit(:id, :image_data)
 
-    offer = Offer.get(upload_params[:id], $user.id)
+    offer = Shops::Offer.get(upload_params[:id], $user.id)
     offer.image_data = upload_params[:image_data]
     offer.decode_image_data
 
@@ -34,7 +34,7 @@ class AvatarController < ApplicationController
 
     upload_params = params.permit(:id, :image_data)
 
-    shop = Shop.get(upload_params[:id], $user.id)
+    shop = Shops::Shop.get(upload_params[:id], $user.id)
     shop.image_data = upload_params[:image_data]
     shop.decode_image_data
 

@@ -31,7 +31,7 @@ class Shops::Offer < ActiveRecord::Base
 
   def self.get(id, user_id)
 
-    offer = Offer.find(id)
+    offer = Shops::Offer.find(id)
 
     if (offer.shop.profile_id == user_id)
       offer
