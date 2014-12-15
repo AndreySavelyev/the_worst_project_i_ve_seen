@@ -14,9 +14,19 @@ class AvatarController < ApplicationController
     end
   end
 
-  def upload_offer(id)
+  def upload_offer
 
+    upload_params = params.permit(:id, :image_data)
 
+    offer = Offer.get(upload_params[:id], $user.id)
+    offer.image_data = upload_params[:image_data]
+    offer.decode_image_data
+
+    result = {:url =>  offer.avatar}
+
+    respond_to do |format|
+      format.json { render :json => result.as_json, status: :ok }
+    end
 
   end
 
@@ -28,7 +38,7 @@ class AvatarController < ApplicationController
     shop.image_data = upload_params[:image_data]
     shop.decode_image_data
 
-    result = {:url =>  $shop.avatar}
+    result = {:url =>  shop.avatar}
 
     respond_to do |format|
       format.json { render :json => result.as_json, status: :ok }

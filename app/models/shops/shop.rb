@@ -1,8 +1,8 @@
-class Shop::NotOwner < StandardError
+class NotShopOwner < StandardError
 
 end
 
-class Shop < ActiveRecord::Base
+class Shops::Shop < ActiveRecord::Base
 
   belongs_to :profile
 
@@ -13,7 +13,7 @@ class Shop < ActiveRecord::Base
 
   def self.create_shop(user, name, text)
 
-    shop = Shop.new
+    shop = Shops::Shop.new
     shop.profile_id = user.id
     shop.text = text
     shop.name = name
@@ -24,7 +24,7 @@ class Shop < ActiveRecord::Base
 
   def self.get(id, user_id)
 
-    shop = Shop.find(id)
+    shop = Shops::Shop.find(id)
 
     if (shop.profile_id == user_id)
       shop

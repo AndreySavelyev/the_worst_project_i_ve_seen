@@ -7,7 +7,7 @@ class Shops::ShopController < ApplicationController
     shop_params = params.require(:shop).permit(:name, :text)
 
     if ($user != nil) && ($user.wallet_type == Profile::ACCOUNT_TYPE[:biz])
-      shop = Shop.create_shop($user, shop_params[:name], shop_params[:text])
+      shop = Shops::Shop.create_shop($user, shop_params[:name], shop_params[:text])
       result = {:result => 0, :shop => shop.as_json, :message => 'ok'}
       respond_to do |format|
         format.json { render :json => result.as_json, status: :ok }
