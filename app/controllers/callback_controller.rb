@@ -1,36 +1,32 @@
 require 'openssl'
 
 class CallbackController < ApplicationController
-  #rescue_from ArgumentError, with: :argument_invalid
+  rescue_from ArgumentError, with: :argument_invalid
+
   def callback
     order = params[:orderXML]
 
     order_xml = Base64.decode64(order)
     ext_hash = params[:sha512]
 
-    secret = 'cqgL1Fw82K3Y';
+    my_hash_old = calc_hash(order_xml,'cqgL1Fw82K3Y')
+    my_hash_new = calc_hash(order_xml,'8vWJR3Xs0uw9')
 
-    my_order = order_xml + secret;
-    my_hash = OpenSSL::Digest.hexdigest("SHA512", my_order).force_encoding('utf-8');
+    p 'CallbackController : ext_hash : ' + ext_hash
+    p 'CallbackController : my_hash_old : ' + my_hash_old
+    p 'CallbackController : my_hash_new : ' + my_hash_new
 
-    p my_hash
-    p ext_hash
-
-    if my_hash == ext_hash
+    if my_hash_old == ext_hash || my_hash_new == ext_hash
       h = CallbackHelper.parse_callback(order_xml)
 
-      token = "";
+      puts 'CallbackController : env : ' + Rails.env
 
-      puts Rails.env
-  
-      if Rails.env == "development"
-        token =  "0d0e8674fc76aae2a587ba4c591ebd36"
-      else
-        token = h["order"]["number"]
-      end
+      token = Rails.env == 'development' ? '0d0e8674fc76aae2a587ba4c591ebd36' : h['order']['number']
 
-      amount = h["order"]["amount"]
-      puts order_xml
+      amount = h['order']['amount']
+
+      puts 'CallbackController : order_xml : ' + order_xml
+
       Entry.create_cashin_entry(amount, token)
     else
       raise ArgumentError.new('Hashes are not valid.')
@@ -40,6 +36,10 @@ class CallbackController < ApplicationController
       format.html { render :text => params , status: :ok }
       format.json { render :xml => params , status: :ok }
     end
+  end
+
+  def calc_hash(order_xml, secret)
+    OpenSSL::Digest.hexdigest('SHA512', order_xml + secret).force_encoding('utf-8')
   end
 
   def argument_invalid(error)
