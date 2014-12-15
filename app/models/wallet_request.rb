@@ -70,6 +70,8 @@ class WalletRequest < ActiveRecord::Base
 
   def self.create_password_recovery_request(wallet_id)
 
+
+
     wr = WalletRequest.new
     wr.req_type = Entry::OPERATION_CODES[:recovery]
     wr.sourceWallet_id = wallet_id
