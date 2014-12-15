@@ -163,6 +163,14 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 			<A href="#chat/tissue/send">/chat/tissue/send</A>
 			<BR>
 			<A href="#chat/tissue/get">/chat/tissue/get</A>
+			<BR>
+			<A href="#shops/new">/shops/new</A>
+			<BR>
+			<A href="#shops/upload">/shops/upload</A>
+			<BR>
+			<A href="#shops/offers/new">/shops/offers/new</A>
+			<BR>
+			<A href="#shops/upload">shops/offers/upload</A>
 
 			<!--
             <br	/>
@@ -1126,7 +1134,7 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 		<!-- end /social/friends/list-->
 
 		<!-- /social/friends/search -->
-		<H4><STRONG><A id="social/friends/search">/social/friends/search</A></STRONG></H4Request method: POST
+		<H4><STRONG><A id="social/friends/search">/social/friends/search</A></STRONG></H4>Request method: POST
 		<P>
 			Description: Makes a search for users by email.</P>
 		<H5>Headers::</H5>
@@ -1763,10 +1771,146 @@ lang="en" xmlns="http://www.w3.org/1999/xhtml">
 				</CODE>
 			</P>
 			<!-- end /chat/tissue/get -->
-
-
-
         <H2> Shopping.</H2>
+
+			<!-- /shops/new -->
+			<H4><STRONG> <A id="shops/new">/shops/new</A> </STRONG></H4>Request method: POST
+			<P>
+				Description: Creates a new shop for biz and partner accounts
+			</P>
+			<H5>Headers:</H5>
+			<SMALL>session-token:test-token;</SMALL>
+
+			<H5>Data:</H5>
+			<P>
+				<CODE>
+					<SMALL>
+						<SPAN class="l1">{</SPAN><BR/>
+							<SPAN class="l2">"shop" :</SPAN><BR/>
+								<SPAN class="l2">{</SPAN><BR/>
+									<SPAN class="l3">"name":"PublicWorld LTD.",</SPAN><BR/>
+									<SPAN class="l3">"text":"This is the magic of the Public."</SPAN><BR/>
+								<SPAN class="l2">}</SPAN><BR/>
+						<SPAN class="l1">}</SPAN><BR/>
+					</SMALL>
+				</CODE>
+			</P>
+
+			<H5>Returns:</H5>
+			<P>
+				<CODE>
+					<SMALL>
+
+						<SPAN class="l1">{</SPAN><BR/>
+						<SPAN class="l2">"result": 0,</SPAN><BR/>
+						<SPAN class="l2">"shop":    {</SPAN><BR/>
+						<SPAN class="l3">"id": 1,</SPAN><BR/>
+						<SPAN class="l3">"name": "PublicWorld LTD.",</SPAN><BR/>
+						<SPAN class="l3">"profile_id": 42,</SPAN><BR/>
+						<SPAN class="l3">"text": "This is the magic of the Public",</SPAN><BR/>
+						<SPAN class="l3">"created_at": "2014-12-15T13:37:23.799Z",</SPAN><BR/>
+						<SPAN class="l3">"updated_at": "2014-12-15T13:37:23.799Z",</SPAN><BR/>
+						<SPAN class="l3">"avatar_file_name": null,</SPAN><BR/>
+						<SPAN class="l3">"avatar_content_type": null,</SPAN><BR/>
+						<SPAN class="l3">"avatar_file_size": null,</SPAN><BR/>
+						<SPAN class="l3">"avatar_updated_at": null</SPAN><BR/>
+						<SPAN class="l2">},</SPAN><BR/>
+						<SPAN class="l2">"message": "ok"</SPAN><BR/>
+						<SPAN class="l1">}</SPAN><BR/>
+					</SMALL>
+				</CODE>
+			</P>
+			<!-- end /shops/new -->
+
+		<!-- /shops/upload -->
+		<H4><STRONG> <A id="shops/upload">/shops/upload [/shops/offers/upload]</A> </STRONG></H4>Request method: POST
+		<P>
+			Description: Uploads an avatar for the shop's or offer id provided.
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE>
+				<SMALL>
+					<SPAN class="l1">{</SPAN><BR/>
+					<SPAN class="l2">"id":"3", #shop's id [offer's id]</SPAN><BR/>
+					<SPAN class="l2">"image_data": Base64 encoded image</SPAN><BR/>
+					<SPAN class="l1">}</SPAN><BR/>
+				</SMALL>
+			</CODE>
+		</P>
+
+		<H5>Returns:</H5>
+		<P>
+			<CODE>
+				<SMALL>
+
+					<SPAN class="l1">{</SPAN><BR/>
+					<SPAN class="l2">"url": "{"url": "/system/shops/shops/avatars/000/000/001/original/1.jpeg?1418651230"}"</SPAN><BR/>
+					<SPAN class="l1">}</SPAN><BR/>
+				</SMALL>
+			</CODE>
+		</P>
+		<!-- /shops/upload -->
+
+		<!-- /shops/offers/new -->
+		<H4><STRONG> <A id="shops/offers/new">/shops/offers/new</A> </STRONG></H4>Request method: POST
+		<P>
+			Description: Creates an offer for the shop's id provided
+		</P>
+		<H5>Headers:</H5>
+		<SMALL>session-token:test-token;</SMALL>
+
+		<H5>Data:</H5>
+		<P>
+			<CODE>
+				<SMALL>
+					<SPAN class="l1">{</SPAN><BR/>
+					<SPAN class="l2">"offer":</SPAN><BR/>
+					<SPAN class="l2">{</SPAN><BR/>
+					<SPAN class="l3">"shop":"1",</SPAN><BR/>
+					<SPAN class="l3">"text":"new offer1",</SPAN><BR/>
+					<SPAN class="l3">"price":"13.10",</SPAN><BR/>
+					<SPAN class="l3">"old_price":"10.01",</SPAN><BR/>
+					<SPAN class="l3">"currency":"EUR",</SPAN><BR/>
+					<SPAN class="l3">"url":"test.com"</SPAN><BR/>
+						<SPAN class="l2">}</SPAN><BR/>
+					<SPAN class="l1">}</SPAN><BR/>
+				</SMALL>
+			</CODE>
+		</P>
+
+		<H5>Returns:</H5>
+		<P>
+			<CODE>
+				<SMALL>
+					<SPAN class="l1">{</SPAN><BR/>
+					<SPAN class="l2">"result": 0,</SPAN><BR/>
+					<SPAN class="l2">"offer":    {</SPAN><BR/>
+					<SPAN class="l3">"id": 2,</SPAN><BR/>
+					<SPAN class="l3">"text": "new offer2",</SPAN><BR/>
+					<SPAN class="l3">"price": "13.0",</SPAN><BR/>
+					<SPAN class="l3">"old_price": "10.0",</SPAN><BR/>
+					<SPAN class="l3">"currency": 3,</SPAN><BR/>
+					<SPAN class="l3">"shop_id": 1,</SPAN><BR/>
+					<SPAN class="l3">"created_at": "2014-12-15T14:39:49.310Z",</SPAN><BR/>
+					<SPAN class="l3">"updated_at": "2014-12-15T14:39:49.310Z",</SPAN><BR/>
+					<SPAN class="l3">"avatar_file_name": null,</SPAN><BR/>
+					<SPAN class="l3">"avatar_content_type": null,</SPAN><BR/>
+					<SPAN class="l3">"avatar_file_size": null,</SPAN><BR/>
+					<SPAN class="l3">"avatar_updated_at": null,</SPAN><BR/>
+					<SPAN class="l3">"url": "test.com"</SPAN><BR/>
+					<SPAN class="l2">},</SPAN><BR/>
+					<SPAN class="l2">"message": "ok"</SPAN><BR/>
+					<SPAN class="l1">}</SPAN><BR/>
+				</SMALL>
+			</CODE>
+		</P>
+		<!-- end /shops/offers/new -->
+
+
 		<H2> Services.</H2>
 		<H2> Shop integration API.</H2>
 		<H2> Service integration API.</H2>

@@ -8,7 +8,7 @@ class Shops::OfferController < ApplicationController
 
       if ($user != nil) && ($user.wallet_type == Profile::ACCOUNT_TYPE[:biz])
         offer = Shops::Offer.create_offer(offer_params[:shop], $user.id, offer_params[:text], offer_params[:price], offer_params[:old_price], offer_params[:currency], offer_params[:url])
-        result = {:result => 0, :shop => offer.as_json, :message => 'ok'}
+        result = {:result => 0, :offer => offer.as_json, :message => 'ok'}
         respond_to do |format|
           format.json { render :json => result.as_json, status: :ok }
         end
