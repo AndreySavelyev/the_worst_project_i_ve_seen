@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215101128) do
+ActiveRecord::Schema.define(version: 20141216095425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,7 @@ ActiveRecord::Schema.define(version: 20141215101128) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.integer  "mood"
+    t.string   "merchant_token"
   end
 
   create_table "providers", force: true do |t|
