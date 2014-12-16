@@ -42,6 +42,10 @@ class Profile < ActiveRecord::Base
                    OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
   end
 
+  def self.get_by_merchant_token(token)
+    Profile.where("merchant_token = :token",{token: token}).first
+  end
+
   def self.get_by_accountid(token)
     Profile.find_by_user_token(token)
   end

@@ -479,7 +479,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money for commission payment'}
+      @result = {:result => 101, :message => 'no money'}
       @status = 403
     rescue => e
       @log.error e.message
@@ -585,7 +585,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money for commission payment'}
+      @result = {:result => 101, :message => 'no money'}
       @status = 403
     rescue => e
       log.error e.message
@@ -603,6 +603,39 @@ class ProfilesController < ApplicationController
     requests = Feed.where("status = 0 and to_profile_id = :to_profile AND fType=3", {:to_profile => @user.id}).includes(:from_profile, :to_profile).all
     respond_to do |format|
       format.json { render :json => requests, status: :ok }
+    end
+  end
+
+
+  def merchant_order_pay
+    log = Logger.new(STDOUT)
+    log.level = Logger::INFO
+
+    prms = params.require(:order)
+    merchant_token = prms[:token]
+    amount = prms[:amount].to_f / 100
+    currency = prms[:currency]
+    message = prms[:message]
+    privacy = 2 #private
+
+    begin
+      charge_request = ChargeRequest::create_charge_request(Profile::get_by_merchant_token(merchant_token).id, @user.id, amount, message, privacy, currency)
+
+      charge_request.accept_charge(privacy)
+      #add push to user about payment
+
+      @result = {:result => 0, :message => 'ok', :request_id => charge_request.id}
+      @status = 200
+    rescue Entry::NoMoney
+      @result = {:result => 101, :message => 'no money', :request_id => charge_request.id}
+      @status = 403
+    rescue => e
+      log.error e.message
+      e.backtrace.each { |line| log.error line }
+    end
+
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: @status }
     end
   end
 
