@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216095425) do
+ActiveRecord::Schema.define(version: 20141216132248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,6 +214,8 @@ ActiveRecord::Schema.define(version: 20141216095425) do
     t.datetime "avatar_updated_at"
     t.integer  "mood"
     t.string   "merchant_token"
+    t.string   "merchant_success_url"
+    t.string   "merchant_fail_url"
   end
 
   create_table "providers", force: true do |t|

@@ -479,7 +479,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money'}
+      @result = {:result => 101, :message => 'not enough money'}
       @status = 403
     rescue => e
       @log.error e.message
@@ -585,7 +585,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money'}
+      @result = {:result => 101, :message => 'not enough money'}
       @status = 403
     rescue => e
       log.error e.message
@@ -619,15 +619,17 @@ class ProfilesController < ApplicationController
     privacy = 2 #private
 
     begin
-      charge_request = ChargeRequest::create_charge_request(Profile::get_by_merchant_token(merchant_token).id, @user.id, amount, message, privacy, currency)
+      merchant_profile = Profile::get_by_merchant_token(merchant_token)
+
+      charge_request = ChargeRequest::create_charge_request(merchant_profile.id, @user.id, amount, message, privacy, currency)
 
       charge_request.accept_charge(privacy)
       #add push to user about payment
 
-      @result = {:result => 0, :message => 'ok', :request_id => charge_request.id}
+      @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money', :request_id => charge_request.id}
+      @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
       @status = 403
     rescue => e
       log.error e.message

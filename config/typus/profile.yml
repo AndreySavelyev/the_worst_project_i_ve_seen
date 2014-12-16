@@ -3,7 +3,7 @@
 Profile:
   fields:
     default: id, created_at, user_token, name, surname, phone, reg_num, company_name, email,  web_site, address, birthday, temp_account, confirm_type, iso_currency, wallet_type
-    form: user_token, fb_token, pic_url, name, surname, phone, iban, reg_num, company_name, email, password, salt, result, message, reg_token, confirm_type, web_site, address, birthday, company_reg_number, contact_person_name, contact_person_position, contact_person_date_of_birth, contact_person_phone, friends_count, temp_account, available, holded, iso_currency, lock_version, avatar_file_name, avatar_file_size, mood, wallet_type, merchant_token
+    form: user_token, fb_token, pic_url, name, surname, phone, iban, reg_num, company_name, email, password, salt, result, message, reg_token, confirm_type, web_site, address, birthday, company_reg_number, contact_person_name, contact_person_position, contact_person_date_of_birth, contact_person_phone, friends_count, temp_account, available, holded, iso_currency, lock_version, avatar_file_name, avatar_file_size, mood, wallet_type, merchant_token, merchant_success_url, merchant_fail_url
   relationships: ibans, friends, patients, masters_profiles, lovers, wallet, session
   search: email, name, surname, user_token, fb_token
   order_by: -id
