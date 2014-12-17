@@ -479,17 +479,8 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      no_money =  GlobalConstants::RESULT_CODES[:no_money]
-      @result = {:result => no_money[:result], :message => no_money[:message]}
-      @status = no_money[:code]
-    rescue Limit::LimitReached
-      limit_reached = GlobalConstants::RESULT_CODES[:limit_reached]
-      @result = {:result => limit_reached[:result], :message => limit_reached[:message]}
-      @status = limit_reached[:code]
-    rescue Limit::LimitNotFound
-      limit_notfound = GlobalConstants::RESULT_CODES[:limit_notfound]
-      @result = {:result => limit_notfound[:result], :message => limit_notfound[:message]}
-      @status = limit_notfound[:code]
+      @result = {:result => 101, :message => 'no money for commission payment'}
+      @status = 403
     rescue => e
       @log.error e.message
       e.backtrace.each { |line| @log.error line }
@@ -593,7 +584,7 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money for commission payment'}
+      @result = {:result => 101, :message => 'not enough money'}
       @status = 403
     rescue => e
       log.error e.message
@@ -611,6 +602,41 @@ class ProfilesController < ApplicationController
     requests = Feed.where("status = 0 and to_profile_id = :to_profile AND fType=3", {:to_profile => @user.id}).includes(:from_profile, :to_profile).all
     respond_to do |format|
       format.json { render :json => requests, status: :ok }
+    end
+  end
+
+
+  def merchant_order_pay
+    log = Logger.new(STDOUT)
+    log.level = Logger::INFO
+
+    prms = params.require(:order)
+    merchant_token = prms[:token]
+    amount = prms[:amount].to_f / 100
+    currency = prms[:currency]
+    message = prms[:message]
+    privacy = 2 #private
+
+    begin
+      merchant_profile = Profile::get_by_merchant_token(merchant_token)
+
+      charge_request = ChargeRequest::create_charge_request(merchant_profile.id, @user.id, amount, message, privacy, currency)
+
+      charge_request.accept_charge(privacy)
+      #add push to user about payment
+
+      @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
+      @status = 200
+    rescue Entry::NoMoney
+      @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
+      @status = 403
+    rescue => e
+      log.error e.message
+      e.backtrace.each { |line| log.error line }
+    end
+
+    respond_to do |format|
+      format.json { render :json => @result.as_json, status: @status }
     end
   end
 

@@ -1,7 +1,7 @@
 class Profile < ActiveRecord::Base
-
-  include GlobalConstants
-
+  
+  ACCOUNT_TYPE = {personal: 0, green: 1, biz: 2, partner: 4, pale: 5, system: 100}
+  
   has_many :hot_offers, dependent: :destroy
   has_many :sourceFeeds, :class_name => 'Feed', :foreign_key => 'to_profile_id'
   has_many :destinationFeeds, :class_name => 'Feed', :foreign_key => 'from_profile_id'
@@ -32,13 +32,18 @@ class Profile < ActiveRecord::Base
   def self.create(token)
     profile = Profile.new
     profile.user_token = token
-    profile.wallet_type = GlobalConstants::ACCOUNT_TYPE[:personal]
+    profile.wallet_type = ACCOUNT_TYPE[:personal]
+    profile.merchant_token = SecureRandom.hex(18)
     return profile
   end
   
   def self.get_by_token(token)
     Profile.where("user_token = :accountid
-                   OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first!
+                   OR email = :accountid OR fb_token = :accountid OR phone = :accountid",{accountid: token}).first
+  end
+
+  def self.get_by_merchant_token(token)
+    Profile.where("merchant_token = :token",{token: token}).first
   end
 
   def self.get_by_accountid(token)
@@ -57,19 +62,19 @@ class Profile < ActiveRecord::Base
   end
 
   def get_balance
-
+    
     w = Wallet.get_wallet(self)
-
-    {
-        :wallet =>
-            {
-                :id => w.id,
-                :amount => WalletHelper::format_to_currency(w.available),
-                :currency => w.IsoCurrency.Alpha3Code,
-                :held => w.holded,
-                :limit => Limit.get(w.IsoCurrency.Alpha3Code, w.profile.wallet_type),
-                :revenue => w.get_revenue
-            }
+    
+   {
+      :wallet=>
+      {
+        :id=>w.id,
+        :amount=>WalletHelper::format_to_currency(w.available),
+        :currency=>w.IsoCurrency.Alpha3Code,
+        :held=>w.holded,
+        :limit=>2500,
+        :revenue=>w.get_revenue
+      }
     }
   end
   

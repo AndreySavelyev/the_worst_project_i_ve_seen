@@ -49,6 +49,8 @@ Rails.application.routes.draw do
   post '/social/money/pay', to: 'profiles#accept_charge', format: 'json'
   post '/social/money/pay/decline', to: 'wallet#decline_pay_request', format: 'json'
 
+  post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
+
   get '/social/money/get', to: 'profiles#social_money_get', format: 'json'
   get '/profile/new', to: 'profiles#get_new_requests', format: 'json'
   get '/profile/get', to: 'profiles#get_profile', format: 'json'
