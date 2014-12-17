@@ -1,6 +1,6 @@
 class Profile < ActiveRecord::Base
   
-  ACCOUNT_TYPE = {personal: 0, green: 1, biz: 2, partner: 4, pale: 5, system: 100}
+  include GlobalConstants
   
   has_many :hot_offers, dependent: :destroy
   has_many :sourceFeeds, :class_name => 'Feed', :foreign_key => 'to_profile_id'
@@ -32,7 +32,7 @@ class Profile < ActiveRecord::Base
   def self.create(token)
     profile = Profile.new
     profile.user_token = token
-    profile.wallet_type = ACCOUNT_TYPE[:personal]
+    profile.wallet_type = GlobalConstants::ACCOUNT_TYPE[:personal]
     profile.merchant_token = SecureRandom.hex(18)
     return profile
   end
