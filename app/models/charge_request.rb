@@ -59,13 +59,13 @@ end
 
 def get_commission
 
-  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:green]) &&
-      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:green])
+  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
+      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green])
     return GlobalConstants::COMMISSIONS[:personal_green]
   end
 
-  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:green]) &&
-      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:biz])
+  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
+      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
     GlobalConstants::COMMISSIONS[:personal_biz]
   end
 

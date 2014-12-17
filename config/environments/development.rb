@@ -43,5 +43,7 @@ Rails.application.configure do
     :domain => "chargebutton.com",
     :authentication => :plain
 }
+
+  config.cache_store = :memory_store, { size: 64.megabytes }
   
 end

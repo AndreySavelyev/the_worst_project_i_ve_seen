@@ -1,2 +1,2 @@
-class Tag < ActiveRecord::Base
+class Shops::Tag < ActiveRecord::Base
 end

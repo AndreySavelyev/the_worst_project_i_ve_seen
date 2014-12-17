@@ -20,7 +20,7 @@ class PayRequest < Feed
 
     send_request.set_commission(currency)
 
-    if send_request.check_balance
+    if send_request.check_balance && Limit::check(currency, send_request.from_profile)
       send_request.save!
       send_request.from_profile.get_wallet.hold(send_request)
     else
@@ -54,7 +54,7 @@ class PayRequest < Feed
 
     send_request.set_commission(currency)
 
-    if send_request.check_balance
+    if send_request.check_balance && Limit::check(currency, send_request.from_profile)
       send_request.save!
       send_request.from_profile.get_wallet.hold(send_request)
       Entry.create_payment_entry(send_request)
@@ -136,9 +136,8 @@ class PayRequest < Feed
 
   def get_commission(status)
 
-
-    if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:green]) &&
-    (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPES[:green])
+    if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
+    (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green])
         return status == 1 ? 0 : GlobalConstants::COMMISSIONS[:personal_green]
     end
 
@@ -149,5 +148,6 @@ class PayRequest < Feed
   def self.get_by_id(id)
        PayRequest.where(:id => request_id).includes(:to_profile, :from_profile).first!
   end
+
 
 end

@@ -479,8 +479,17 @@ class ProfilesController < ApplicationController
       @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
       @status = 200
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'no money for commission payment'}
-      @status = 403
+      no_money =  GlobalConstants::RESULT_CODES[:no_money]
+      @result = {:result => no_money[:result], :message => no_money[:message]}
+      @status = no_money[:code]
+    rescue Limit::LimitReached
+      limit_reached = GlobalConstants::RESULT_CODES[:limit_reached]
+      @result = {:result => limit_reached[:result], :message => limit_reached[:message]}
+      @status = limit_reached[:code]
+    rescue Limit::LimitNotFound
+      limit_notfound = GlobalConstants::RESULT_CODES[:limit_notfound]
+      @result = {:result => limit_notfound[:result], :message => limit_notfound[:message]}
+      @status = limit_notfound[:code]
     rescue => e
       @log.error e.message
       e.backtrace.each { |line| @log.error line }
@@ -493,7 +502,6 @@ class ProfilesController < ApplicationController
 
 
   def already_payed_error
-    #case 1 : юзер может подтверждать только свои запросы todo срочно! вынести все рендеринги ошибок в методы!
     result = {:result => 2, :message => "already paid"}
     respond_to do |format|
       format.json { render :json => result.as_json, status: :forbidden }
