@@ -5,16 +5,22 @@ echo "Good morning, Master. How are you? I will install the newer version."
 
 cd /home/rails/public_html/api.onlinepay.com
 
-git pull origin master
+#git pull origin master
 
-RAILS_ENV=test
+echo $1
 
-bundle exec rake db:migrate
+if [ -z $1 ]; then
+        ENV="test"
+else
+    	ENV=$1
+fi
 
-rpush stop
+RAILS_ENV=$ENV bundle exec rake db:migrate
+
+rpush stop --rails-env=$ENV
 
 service httpd restart
 
-rpush start
-rpush push
+rpush start --rails-env=$ENV
+rpush push --rails-env=$ENV
 
