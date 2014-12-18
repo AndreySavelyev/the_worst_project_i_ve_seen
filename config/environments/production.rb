@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.cache_store = :memory_store, { size: 64.megabytes }
 
-  #config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :sendmail
 
   #config.action_mailer.smtp_settings = {:address => '127.0.0.1'}
 

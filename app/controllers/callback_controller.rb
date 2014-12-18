@@ -33,8 +33,8 @@ class CallbackController < ApplicationController
       raise ArgumentError.new('Hashes are not valid.')
     end
 
-    respond_to do
-      render :text => 'OK'
+    respond_to do |format|
+      format.text { render :text => 'OK', status: :ok }
     end
   end
 
