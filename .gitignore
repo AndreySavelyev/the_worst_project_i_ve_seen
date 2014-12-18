@@ -22,3 +22,4 @@ config/secrets.yml
 /config/db/
 /public/system/
 /vendor/bundle/
+/certs/ios/push.pem

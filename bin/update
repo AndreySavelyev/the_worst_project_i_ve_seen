@@ -5,7 +5,7 @@ echo "Good morning, Master. How are you? I will install the newer version."
 
 cd /home/rails/public_html/api.onlinepay.com
 
-#git pull origin master
+git pull origin master
 
 echo $1
 
