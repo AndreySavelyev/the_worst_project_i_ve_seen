@@ -1,0 +1,20 @@
+#!/bin/bash
+clear
+
+echo "Good morning, Master. How are you? I will install the newer version."
+
+cd /home/rails/public_html/api.onlinepay.com
+
+git pull origin master
+
+RAILS_ENV=test
+
+bundle exec rake db:migrate
+
+rpush stop
+
+service httpd restart
+
+rpush start
+rpush push
+
