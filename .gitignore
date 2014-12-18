@@ -16,3 +16,9 @@
 /.idea
 config/database.yml
 config/secrets.yml
+
+# Ignore server generated files
+/ios/push.pem
+/config/db/
+/public/system/
+/vendor/bundle/
