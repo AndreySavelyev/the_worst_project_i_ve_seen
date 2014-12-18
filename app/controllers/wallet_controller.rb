@@ -84,7 +84,7 @@ class WalletController < ApplicationController
           hold_ok = GlobalConstants::RESULT_CODES[:hold_complete]
 
           cashout_result[:result] = hold_ok[:result]
-          cashout_result[:message] = "Cashout sum held:#{w.holded.to_f+e.amount}"
+          cashout_result[:message] = "Cashout sum held:#{e.amount}"
           cashout_result[:code] = hold_ok[:code]
 
           cashout_result[:request_id] = wr.id
@@ -106,6 +106,7 @@ class WalletController < ApplicationController
 
   def complete_cashout
     begin
+
       cashout=params.require(:complete_cashout).permit(:request_id)
 
       wr = WalletRequest.find_by_id(cashout[:request_id])
