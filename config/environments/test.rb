@@ -38,4 +38,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   
   config.action_mailer.delivery_method = :smtp;
+
+  config.cache_store = :memory_store, { size: 64.megabytes }
+
 end

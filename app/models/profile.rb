@@ -62,19 +62,19 @@ class Profile < ActiveRecord::Base
   end
 
   def get_balance
-    
+
     w = Wallet.get_wallet(self)
-    
-   {
-      :wallet=>
-      {
-        :id=>w.id,
-        :amount=>WalletHelper::format_to_currency(w.available),
-        :currency=>w.IsoCurrency.Alpha3Code,
-        :held=>w.holded,
-        :limit=>2500,
-        :revenue=>w.get_revenue
-      }
+
+    {
+        :wallet =>
+            {
+                :id => w.id,
+                :amount => WalletHelper::format_to_currency(w.available),
+                :currency => w.IsoCurrency.Alpha3Code,
+                :held => w.holded,
+                :limit => Limit::get(w.IsoCurrency.Alpha3Code, w.profile.wallet_type).value,
+                :revenue => w.get_revenue
+            }
     }
   end
   

@@ -433,6 +433,7 @@ class ProfilesController < ApplicationController
   end
 
   def stats_profile
+
     position=profile_stats_params
 
     #todo добавить skip для position
