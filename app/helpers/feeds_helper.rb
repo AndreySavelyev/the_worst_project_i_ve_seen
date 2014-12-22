@@ -25,7 +25,7 @@ module FeedsHelper
           :likes => feed.likes,
           :paymentId => feed.id,
           :for => feed.description,
-          :pic => feed.from_profile.pic_url,
+          :pic => feed.from_profile.avatar.url(:thumb),
           :type => ProfilesHelper.get_feed_type_string(feed.fType, feed.status), #available types[charge, charge new, request, request new]
           :amount => feed.amount,
           :currency => feed.currency,
