@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   post '/social/money/pay/decline', to: 'wallet#decline_pay_request', format: 'json'
 
   post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
+  post '/merchant/user/enter', to: 'profiles#merchant_user_enter', format: 'json'
 
   get '/social/money/get', to: 'profiles#social_money_get', format: 'json'
   get '/profile/new', to: 'profiles#get_new_requests', format: 'json'
@@ -69,7 +70,7 @@ Rails.application.routes.draw do
 
   post 'profile/recover' => 'password_recovery#recover', format: 'json'
   post 'profile/recover/token' => 'password_recovery#token', format: 'json'
-  post 'profile//recover/password' => 'password_recovery#password', format: 'json'
+  post 'profile/recover/password' => 'password_recovery#password', format: 'json'
 
   get 'legal/terms' => 'legal/terms#index'
   get 'legal/policy' => 'legal/policy#index'
