@@ -6,6 +6,7 @@ module GlobalConstants
   REQUEST_TYPES = {pay: 2, charge: 3, friendship:0, ad: 20}
   SERVICE_EMAILS = {support: 'support@onlinepay.com'}
   DOMAIN_NAME = {production: 'https://api.onlinepay.com', test: 'http://test.chargebutton.com', development: 'http://localhost:3000'}
+  CONTENT_STATE = {new: 0, published: 1, deleted: 2 }
 
   #result codes
   RESULT_CODES = {no_money: {result: 101, message: 'not enough money', code: 403},

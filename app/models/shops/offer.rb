@@ -4,6 +4,8 @@ end
 
 class Shops::Offer < ActiveRecord::Base
 
+  include GlobalConstants
+
   belongs_to :shop
 
   has_attached_file :avatar, styles: {medium: ['300x300>', :png], thumb: ['51x51>', :png]}
@@ -22,6 +24,7 @@ class Shops::Offer < ActiveRecord::Base
       offer.currency = IsoCurrency.find_by_Alpha3Code(currency).id
       offer.shop = shop
       offer.url = url
+      offer.published = GlobalConstants::CONTENT_STATE[:new]
       offer.save!
       offer
     else
@@ -57,6 +60,27 @@ class Shops::Offer < ActiveRecord::Base
       end
     end
   end
+
+  def self.get_all(content_state)
+    Shops::Offer.where(published: content_state)
+  end
+
+  def self.update_offer(id, user_id, content_type, text, price, old_price, currency, url)
+    offer = Shops::Offer.get(id, user_id)
+
+    if (content_type < 3)
+      offer.published = content_type
+    end
+
+    offer.text = text
+    offer.price = price
+    offer.old_price = old_price
+    offer.currency = IsoCurrency.find_by_Alpha3Code(currency).id
+    offer.url = url
+    offer.save!
+    offer
+  end
+
 
 
 end

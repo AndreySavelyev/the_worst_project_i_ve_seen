@@ -2,7 +2,7 @@ class Shops::OfferController < ApplicationController
 
   include GlobalConstants
 
-  before_action :set_user_from_session, only:  [:new_offer]
+  before_action :set_user_from_session, only:  [:new_offer, :list, :change]
 
   def new_offer
 
@@ -22,4 +22,29 @@ class Shops::OfferController < ApplicationController
       end
 
   end
+
+  def list
+    offers = Shops::Offer.get_all(params[:published])
+    result = {:result => 0, :offers => offers.as_json, :message => 'ok'}
+    respond_to do |format|
+      format.json { render :json => result.as_json, status: :ok }
+    end
+  end
+
+  def change
+    offer_params = params.require(:offer).permit(:id, :text, :price, :old_price, :currency, :url, :published)
+    if ($user != nil) && ($user.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
+      offer = Shops::Offer.update_offer(offer_params[:id], $user.id, offer_params[:published], offer_params[:text], offer_params[:price], offer_params[:old_price], offer_params[:currency], offer_params[:url])
+      result = {:result => 0, :offer => offer.as_json, :message => 'ok'}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :ok }
+      end
+    else
+      result = {:result => -1, :message => 'forbidden'}
+      respond_to do |format|
+        format.json { render :json => result.as_json, status: :forbidden }
+      end
+    end
+  end
+
 end

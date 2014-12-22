@@ -78,7 +78,9 @@ Rails.application.routes.draw do
   post 'shops/new' => 'shops/shop#new_shop', format: 'json'
   post 'shops/upload' => 'avatar#upload_shop', format: 'json'
   post 'shops/offers/new' => 'shops/offer#new_offer', format: 'json'
+  post 'shops/offers/change' => 'shops/offer#change', format: 'json'
   post 'shops/offers/upload' => 'avatar#upload_offer', format: 'json'
+  get 'shops/offers/list' => 'shops/offer#list', format: 'json'
 
 
 end
