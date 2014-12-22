@@ -299,11 +299,8 @@ class ProfilesController < ApplicationController
     else
       if founded_profile # обнаружен существующий аккаунт
         @log.info('Already registered')
-        @result = Object
-        @result = {:result => 4, :message => 'Already registered'}
-        respond_to do |format|
-          format.json { render :json => @result.as_json, status: :conflict }
-        end
+
+        decline_already_registered
         return
       end
 
@@ -617,9 +614,6 @@ class ProfilesController < ApplicationController
 
 
   def merchant_order_pay
-    log = Logger.new(STDOUT)
-    log.level = Logger::INFO
-
     prms = params.require(:order)
     merchant_token = prms[:token]
     amount = prms[:amount].to_f / 100
@@ -641,13 +635,56 @@ class ProfilesController < ApplicationController
       @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
       @status = 403
     rescue => e
-      log.error e.message
+      logger.error e.message
       e.backtrace.each { |line| log.error line }
     end
 
     respond_to do |format|
       format.json { render :json => @result.as_json, status: @status }
     end
+  end
+
+  def merchant_user_enter
+    email = params.require(:email)
+
+    profile = Profile.find_by_user_token(email)
+
+    if profile # обнаружен существующий аккаунт
+      @log.info('Invited user has been already registered')
+
+      decline_already_registered
+      return
+    end
+
+    @newUser = Profile.create(email)
+
+      email_id = AccountValidators::get_email_match(email)
+      if email_id
+        @newUser.email = email_id[0]
+      else
+        @log.info("not registered. accountId have incorrect format")
+        @result = Object
+        @result = {:result => 4, :message => "not registered. accountId have incorrect format"}
+        respond_to do |format|
+          format.json { render :json => @result.as_json, status: :conflict }
+        end
+        return
+      end
+
+    @newUser.confirm_type = 1; #confirmed
+    @newUser.wallet_type = GlobalConstants::ACCOUNT_TYPE[:pale]
+
+    if !@newUser.save
+      @result = Object
+      @result = {:result => 4, :message => "not registered"}
+      respond_to do |format|
+        format.json { render :json => @result.as_json, status: :internal_server_error }
+      end
+      Wallet.create_wallet(@newUser.user_token)
+      return
+    end
+    return_session(create_session(@newUser))
+
   end
 
   #method /profile/new
