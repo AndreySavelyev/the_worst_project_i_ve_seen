@@ -10,10 +10,10 @@ class ProfilesController < ApplicationController
   before_action :set_user_from_session_and_check_registration, only: [:social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
 
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
-  before_action :set_user_from_session, except: [:signin, :signup, :confirm, :merchant_user_enter, :social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
+  before_action :set_user_from_session, except: [:signin, :signup, :confirm, :merchant_lead_register, :social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
 
   #проверка app-token только для  :signin,:signUp
-  before_action :set_app_profile, only: [:signin, :signup, :merchant_user_enter]
+  before_action :set_app_profile, only: [:signin, :signup, :merchant_lead_register]
 
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
@@ -288,10 +288,6 @@ class ProfilesController < ApplicationController
   end
 
   def signup
-
-    @log = Logger.new(STDOUT)
-    @log.level = Logger::INFO
-
     founded_profile = Profile.get_by_token(@sign_up.accountid)
 
     if founded_profile && founded_profile.temp_account
@@ -299,7 +295,7 @@ class ProfilesController < ApplicationController
       @newUser.temp_account = FALSE
     else
       if founded_profile # обнаружен существующий аккаунт
-        @log.info('Already registered')
+        logger.info('Already registered')
 
         decline_already_registered
         return
@@ -315,7 +311,7 @@ class ProfilesController < ApplicationController
 
     if facebook_id
       @newUser.fb_token=facebook_id[0]
-      @log.info("facebookId:#{facebook_id}")
+      logger.info("facebookId:#{facebook_id}")
     else
       email_id = AccountValidators::get_email_match(@sign_up.accountid)
       if email_id
@@ -324,9 +320,9 @@ class ProfilesController < ApplicationController
         # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
         # if(phone)
         #   @newUser.phone=@sign_up.accountid
-        #   @log.info("phone:#{phone}")
+        #   logger.info("phone:#{phone}")
         # else
-        @log.info("not registered. accountId have incorrect format")
+        logger.info("not registered. accountId have incorrect format")
         @result = Object
         @result = {:result => 4, :message => "not registered. accountId have incorrect format"}
         respond_to do |format|
@@ -400,8 +396,6 @@ class ProfilesController < ApplicationController
   end
 
   def tabs
-    @log = Logger.new(STDOUT)
-    @log.level = Logger::INFO
     #validating user token
     @tabs = ProfilesHelper::get_tabs_format(@user, @user.session.application);
     respond_to do |format|
@@ -464,10 +458,6 @@ class ProfilesController < ApplicationController
   end
 
   def social_money_send_internal (amount, message, privacy, accountid, currency)
-
-    @log = Logger.new(STDOUT)
-    @log.level = Logger::INFO
-
     f_amount = amount.to_s.gsub(',', '.').to_f
     to_profile = Profile.get_by_token(accountid)
 
@@ -490,8 +480,8 @@ class ProfilesController < ApplicationController
       @result = {:result => limit_reached[:result], :message => limit_reached[:message]}
       @status = limit_reached[:code]
     rescue => e
-      @log.error e.message
-      e.backtrace.each { |line| @log.error line }
+      logger.error e.message
+      e.backtrace.each { |line| logger.error line }
     ensure
       respond_to do |format|
         format.json { render :json => @result.as_json, status: @status }
@@ -575,9 +565,6 @@ class ProfilesController < ApplicationController
 
   def social_money_charge
 
-    log = Logger.new(STDOUT)
-    log.level = Logger::INFO
-
     prms = params.require(:chargeMoney)
     to_user_token = prms[:accountid]
     amount = prms[:amount]
@@ -595,8 +582,8 @@ class ProfilesController < ApplicationController
       @result = {:result => 101, :message => 'not enough money'}
       @status = 403
     rescue => e
-      log.error e.message
-      e.backtrace.each { |line| log.error line }
+      logger.error e.message
+      e.backtrace.each { |line| logger.error line }
     end
 
     respond_to do |format|
@@ -625,19 +612,24 @@ class ProfilesController < ApplicationController
     begin
       merchant_profile = Profile::get_by_merchant_token(merchant_token)
 
-      charge_request = ChargeRequest::create_charge_request(merchant_profile.id, @user.id, amount, message, privacy, currency)
+      if merchant_profile == nil
+        @result = {:result => 110, :message => 'Merchant token is incorrect'}
+        @status = 404
+      else
+        charge_request = ChargeRequest::create_charge_request(merchant_profile.id, @user.id, amount, message, privacy, currency)
 
-      charge_request.accept_charge(privacy)
-      #add push to user about payment
+        charge_request.accept_charge(privacy)
+        #add push to user about payment
 
-      @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
-      @status = 200
+        @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
+        @status = 200
+      end
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
       @status = 403
     rescue => e
       logger.error e.message
-      e.backtrace.each { |line| log.error line }
+      e.backtrace.each { |line| logger.error line }
     end
 
     respond_to do |format|
@@ -651,7 +643,7 @@ class ProfilesController < ApplicationController
     @profile = Profile.find_by_user_token(email)
 
     if @profile && @profile.wallet_type != GlobalConstants::ACCOUNT_TYPE[:pale]
-      @log.info('Merchant user has been already registered')
+      logger.info('Merchant user has been already registered')
       decline_already_registered
       return
     end
@@ -663,7 +655,7 @@ class ProfilesController < ApplicationController
       if email_id
         @profile.email = email_id[0]
       else
-        @log.info("not registered. accountId have incorrect format")
+        logger.info("not registered. accountId have incorrect format")
         @result = Object
         @result = {:result => 4, :message => "not registered. accountId have incorrect format"}
         respond_to do |format|
@@ -738,7 +730,7 @@ class ProfilesController < ApplicationController
 
   def decline_required_param(param_name)
     @result = Object
-    @result = {:result => 8, :message => 'require param'}
+    @result = {:result => 8, :message => 'require param: ' + param_name}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :bad_request }
     end
