@@ -8,11 +8,12 @@ class ProfilesController < ApplicationController
 
   #проверка session-token + регистрации для всех запросов, кроме :signin,:signUp, confirm
   before_action :set_user_from_session_and_check_registration, only: [:social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
+
   #проверка session-token БЕЗ регистрации для всех запросов только для get_profile
-  before_action :set_user_from_session, except: [:signin, :signup, :confirm, :social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
+  before_action :set_user_from_session, except: [:signin, :signup, :confirm, :merchant_user_enter, :social_money_send, :social_money_charge, :receive_pay, :social_money_get, :get_new_requests]
+
   #проверка app-token только для  :signin,:signUp
-  before_action :set_app_profile, only: [:signin, :signup]
-  #before_action :save_profile_params, only: [:save_profile]
+  before_action :set_app_profile, only: [:signin, :signup, :merchant_user_enter]
 
   before_action :signin_params, only: [:signin]
   before_action :signup_params, only: [:signup]
@@ -644,23 +645,23 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def merchant_user_enter
+  def merchant_lead_register
     email = params.require(:email)
 
-    profile = Profile.find_by_user_token(email)
+    @profile = Profile.find_by_user_token(email)
 
-    if profile # обнаружен существующий аккаунт
-      @log.info('Invited user has been already registered')
-
+    if @profile && @profile.wallet_type != GlobalConstants::ACCOUNT_TYPE[:pale]
+      @log.info('Merchant user has been already registered')
       decline_already_registered
       return
     end
 
-    @newUser = Profile.create(email)
+    if !@profile
+      @profile = Profile.create(email)
 
       email_id = AccountValidators::get_email_match(email)
       if email_id
-        @newUser.email = email_id[0]
+        @profile.email = email_id[0]
       else
         @log.info("not registered. accountId have incorrect format")
         @result = Object
@@ -671,20 +672,20 @@ class ProfilesController < ApplicationController
         return
       end
 
-    @newUser.confirm_type = 1; #confirmed
-    @newUser.wallet_type = GlobalConstants::ACCOUNT_TYPE[:pale]
+      @profile.confirm_type = 1; #confirmed
+      @profile.wallet_type = GlobalConstants::ACCOUNT_TYPE[:pale]
 
-    if !@newUser.save
-      @result = Object
-      @result = {:result => 4, :message => "not registered"}
-      respond_to do |format|
-        format.json { render :json => @result.as_json, status: :internal_server_error }
+      if !@profile.save
+        @result = Object
+        @result = {:result => 4, :message => "not registered"}
+        respond_to do |format|
+          format.json { render :json => @result.as_json, status: :internal_server_error }
+        end
+        return
       end
-      Wallet.create_wallet(@newUser.user_token)
-      return
     end
-    return_session(create_session(@newUser))
 
+    return_session(create_session(@profile))
   end
 
   #method /profile/new
