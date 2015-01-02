@@ -26,7 +26,7 @@ class Wallet < ActiveRecord::Base
     Wallet.where('id = :id', id: id).includes(:IsoCurrency).first!
   end
   
-  def hold(pay_request)         
+  def hold(pay_request)
      wr = WalletRequest.create_send_money_wallet_request(pay_request)
      Entry.create_hold_entry(wr, pay_request.amount)    
   end
@@ -37,9 +37,7 @@ class Wallet < ActiveRecord::Base
   end
 
   def get_revenue
-    credit = Entry.where("credit_wallet_id = :credit_wallet_id", credit_wallet_id: self.id).sum(:amount)
-    debit = Entry.where("debit_wallet_id = :debit_wallet_id", debit_wallet_id: self.id).sum(:amount)
-    credit + debit
+    Entry.where("credit_wallet_id = :wallet_id OR debit_wallet_id = :wallet_id", wallet_id: self.id).sum(:amount)
   end
   
 end
