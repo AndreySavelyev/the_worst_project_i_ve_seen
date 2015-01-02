@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'tabs/get_tabs'
+
   namespace :shops do
   get 'offer/new_offer'
   end
