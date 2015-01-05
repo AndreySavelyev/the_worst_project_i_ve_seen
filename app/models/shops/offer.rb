@@ -66,7 +66,7 @@ class Shops::Offer < ActiveRecord::Base
   end
 
   def self.get_all(content_state)
-    Shops::Offer.where(published: content_state)
+    Shops::Offer.joins(:shop).where(published: content_state).order(created_at: :desc)
   end
 
   def self.update_offer(id, user_id, content_type, text, price, old_price, currency, url)
