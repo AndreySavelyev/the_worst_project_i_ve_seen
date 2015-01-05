@@ -24,8 +24,22 @@ class Shops::OfferController < ApplicationController
   end
 
   def list
-    offers = Shops::Offer.get_all(params[:published])
+    offers = Array.new
+
+    Shops::Offer.get_all(params[:published]) do |offer|
+      offers << {
+          :id=> offer.id,
+          :text=> offer.text,
+          :currency=> IsoCurrency.find(offer.currency).Alpha3Code,
+          :price=> offer.price,
+          :shopname=> offer.shop.name,
+          :shoppic=> offer.shop.avatar_url,
+          :pic=> offer.avatar_url,
+          :url=> offer.url
+      } end
+
     result = {:result => 0, :offers => offers.as_json, :message => 'ok'}
+
     respond_to do |format|
       format.json { render :json => result.as_json, status: :ok }
     end

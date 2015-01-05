@@ -13,6 +13,10 @@ class Shops::Offer < ActiveRecord::Base
 
   attr_accessor :image_data, :image
 
+  def avatar_url
+    avatar.url(:thumb)
+  end
+
   def self.create_offer(shop_id, user_id, text, price, old_price, currency, url)
 
     shop = Shops::Shop.find(shop_id)
