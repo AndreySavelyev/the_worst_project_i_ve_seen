@@ -51,9 +51,6 @@ Rails.application.routes.draw do
   post '/social/money/pay', to: 'profiles#accept_charge', format: 'json'
   post '/social/money/pay/decline', to: 'wallet#decline_pay_request', format: 'json'
 
-  post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
-  post '/merchant/user/enter', to: 'profiles#merchant_user_enter', format: 'json'
-
   get '/social/money/get', to: 'profiles#social_money_get', format: 'json'
   get '/profile/new', to: 'profiles#get_new_requests', format: 'json'
   get '/profile/get', to: 'profiles#get_profile', format: 'json'
@@ -85,5 +82,7 @@ Rails.application.routes.draw do
   post 'shops/offers/upload' => 'avatar#upload_offer', format: 'json'
   get 'shops/offers/list' => 'shops/offer#list', format: 'json'
 
+  post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
+  post '/merchant/lead/register', to: 'profiles#merchant_lead_register', format: 'json'
 
 end

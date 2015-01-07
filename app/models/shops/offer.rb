@@ -13,6 +13,10 @@ class Shops::Offer < ActiveRecord::Base
 
   attr_accessor :image_data, :image
 
+  def avatar_url
+    avatar.url(:thumb)
+  end
+
   def self.create_offer(shop_id, user_id, text, price, old_price, currency, url)
 
     shop = Shops::Shop.find(shop_id)
@@ -62,7 +66,7 @@ class Shops::Offer < ActiveRecord::Base
   end
 
   def self.get_all(content_state)
-    Shops::Offer.where(published: content_state)
+    Shops::Offer.joins(:shop).where(published: content_state).order(created_at: :desc)
   end
 
   def self.update_offer(id, user_id, content_type, text, price, old_price, currency, url)

@@ -11,6 +11,10 @@ class Shops::Shop < ActiveRecord::Base
 
   attr_accessor :image_data, :image
 
+  def avatar_url
+    avatar.url(:thumb)
+  end
+
   def self.create_shop(user, name, text)
 
     shop = Shops::Shop.new

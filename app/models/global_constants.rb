@@ -16,6 +16,5 @@ module GlobalConstants
                   hold_complete: {result: 105, message: '', code: 200},
                   limit_reached: {result:106, message:'limit has been reached', code: 403},
                   limit_notfound: {result:107, message:'limit not found', code: 404}
-
   }
 end
