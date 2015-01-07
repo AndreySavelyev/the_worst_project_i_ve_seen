@@ -35,19 +35,20 @@ class Shops::Shop < ActiveRecord::Base
   end
 
   def decode_image_data
-    if self.image_data.present?
+    if self.image_data.present? do
       # If image_data is present, it means that we were sent an image over
       # JSON and it needs to be decoded.  After decoding, the image is processed
       # normally via Paperclip.
       if self.image_data.present?
         data = StringIO.new(Base64.decode64(self.image_data))
         puts data
-        data.class.class_eval {attr_accessor :original_filename, :content_type}
+        data.class.class_eval { attr_accessor :original_filename, :content_type }
         data.original_filename = self.id.to_s + ".jpeg"
         data.content_type = "image/jpeg"
         self.avatar = data
         self.save!
       end
+    end
     end
   end
 
