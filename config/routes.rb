@@ -82,6 +82,12 @@ Rails.application.routes.draw do
   post 'shops/offers/upload' => 'avatar#upload_offer', format: 'json'
   get 'shops/offers/list' => 'shops/offer#list', format: 'json'
 
+  post 'services/new' => 'services/service#new_service', format: 'json'
+  post 'services/upload' => 'avatar#upload_service', format: 'json'
+  post 'services/change' => 'services/service#change', format: 'json'
+  get 'services/list' => 'services/service#list', format: 'json'
+
+
   post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
   post '/merchant/lead/register', to: 'profiles#merchant_lead_register', format: 'json'
 

@@ -30,6 +30,22 @@ class AvatarController < ApplicationController
 
   end
 
+  def upload_service
+
+    upload_params = params.permit(:id, :image_data)
+
+    service = Services::Service.get(upload_params[:id], $user.id)
+    service.image_data = upload_params[:image_data]
+    service.decode_image_data
+
+    result = {:url =>  service.avatar}
+
+    respond_to do |format|
+      format.json { render :json => result.as_json, status: :ok }
+    end
+
+  end
+
   def upload_shop
 
     upload_params = params.permit(:id, :image_data)

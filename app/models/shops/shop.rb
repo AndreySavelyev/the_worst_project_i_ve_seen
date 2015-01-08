@@ -56,6 +56,4 @@ class Shops::Shop < ActiveRecord::Base
     end
   end
 
-
-
 end
