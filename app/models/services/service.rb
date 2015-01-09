@@ -11,6 +11,8 @@ class Services::Service < ActiveRecord::Base
 
   attr_accessor :image_data, :image
 
+  scope :all_tags, -> (tags){where('tags @> ARRAY[?] AND published = 1', tags)}
+
   def avatar_url
     avatar.url(:thumb)
   end
@@ -75,5 +77,18 @@ class Services::Service < ActiveRecord::Base
     Services::Service.where(published: content_state).order(created_at: :desc)
   end
 
+  def set_tags(tags, remove)
+
+    tags_array = tags.split(',').collect(&:strip).uniq
+
+    if self.tags == nil || remove
+      self.update(tags: tags_array)
+    else
+      self.update(tags: self.tags | tags_array)
+    end
+
+    self.save!
+    self
+  end
 
 end

@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :tags do
+  get 'tag/tag_service'
+  end
+
   get 'tabs/get_tabs'
 
   namespace :shops do
@@ -87,6 +91,8 @@ Rails.application.routes.draw do
   post 'services/change' => 'services/service#change', format: 'json'
   get 'services/list' => 'services/service#list', format: 'json'
 
+  post 'tags/services' => 'tags/tag#get_services', format: 'json'
+  post 'tags/services/tag' => 'tags/tag#tag_services', format: 'json'
 
   post '/merchant/order/pay', to: 'profiles#merchant_order_pay', format: 'json'
   post '/merchant/lead/register', to: 'profiles#merchant_lead_register', format: 'json'

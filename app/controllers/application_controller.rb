@@ -3,10 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
 
-
   $user = nil
 
-  
   def set_user_from_session_and_check_registration
     set_user_from_session
     if(@user)

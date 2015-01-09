@@ -10,7 +10,7 @@ class Services::ServiceController < ApplicationController
 
     if ($user != nil) && ($user.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
       service = Services::Service.create_service($user, service_params[:name], service_params[:text], service_params[:meta])
-      result = {:result => 0, :offer => service.as_json, :message => 'ok'}
+      result = {:result => 0, :service => service.as_json, :message => 'ok'}
       respond_to do |format|
         format.json { render :json => result.as_json, status: :ok }
       end
@@ -31,7 +31,9 @@ class Services::ServiceController < ApplicationController
           :id => service.id,
           :text => service.text,
           :meta => service.meta,
-          :name => service.name
+          :name => service.name,
+          :tags => service.tags,
+          :pic => service.avatar.url(:thumb)
       }
     end
 
@@ -46,7 +48,7 @@ class Services::ServiceController < ApplicationController
     service_params = params.require(:service).permit(:id, :text, :meta, :name, :published)
     if ($user != nil) && ($user.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
       service = Services::Service.update_service(service_params[:id], $user.id, service_params[:published], service_params[:text], service_params[:name], service_params[:meta])
-      result = {:result => 0, :offer => service.as_json, :message => 'ok'}
+      result = {:result => 0, :service => service.as_json, :message => 'ok'}
       respond_to do |format|
         format.json { render :json => result.as_json, status: :ok }
       end
