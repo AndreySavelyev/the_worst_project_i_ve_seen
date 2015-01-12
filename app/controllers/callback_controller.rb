@@ -34,7 +34,7 @@ class CallbackController < ApplicationController
     end
 
     respond_to do |format|
-      format.text { render :text => 'OK', status: :ok }
+      format.all { render :text => 'OK', status: :ok }
     end
   end
 

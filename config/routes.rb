@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   get '/social/friends/list', to: 'profiles#social_friends_list', format: 'json'
   get '/social/friends/count', to: 'profiles#social_friends_count', format: 'json'
   post '/social/friends/search', to: 'profiles#social_friends_search', format: 'json'
-  post '/callback' => 'callback#callback'
+  post '/callback' => 'callback#callback', defaults: { format: 'text' }
 
   get '/social/money/rates', to: 'profiles#get_currency_rates_json', format: 'json'
   post '/social/money/rates', to: 'profiles#add_currency_rate', format: 'json'
