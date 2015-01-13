@@ -144,9 +144,13 @@ class PayRequest < Feed
 
   def get_commission(status)
 
+    if(status == 1)
+      return 0
+    end
+
     if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
     (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green])
-        return status == 1 ? 0 : GlobalConstants::COMMISSIONS[:personal_green]
+        return GlobalConstants::COMMISSIONS[:personal_green]
     end
 
     GlobalConstants::COMMISSIONS[:personal_biz]
