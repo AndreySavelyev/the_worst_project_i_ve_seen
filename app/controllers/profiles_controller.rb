@@ -288,7 +288,8 @@ class ProfilesController < ApplicationController
   end
 
   def signup
-    founded_profile = Profile.get_by_token(@sign_up.accountid)
+
+    founded_profile = Profile.get_by_token(@sign_up.accountid.downcase)
 
     if founded_profile && founded_profile.temp_account
       @newUser = founded_profile
@@ -302,18 +303,18 @@ class ProfilesController < ApplicationController
       end
 
       # временный профайл не найден
-      @newUser = Profile.create(@sign_up.accountid)
+      @newUser = Profile.create(@sign_up.accountid.downcase)
     end
 
 
     #todo вынести все это безобразие в отдельный модуль
-    facebook_id = AccountValidators::get_fbid_match(@sign_up.accountid)
+    facebook_id = AccountValidators::get_fbid_match(@sign_up.accountid.downcase)
 
     if facebook_id
       @newUser.fb_token=facebook_id[0]
       logger.info("facebookId:#{facebook_id}")
     else
-      email_id = AccountValidators::get_email_match(@sign_up.accountid)
+      email_id = AccountValidators::get_email_match(@sign_up.accountid.downcase)
       if email_id
         @newUser.email = email_id[0]
       else
