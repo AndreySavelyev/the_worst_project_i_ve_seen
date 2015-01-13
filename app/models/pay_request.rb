@@ -56,6 +56,7 @@ class PayRequest < Feed
 
     if send_request.check_balance && Limit::check(currency, send_request.from_profile)
       send_request.save!
+
       send_request.from_profile.get_wallet.hold(send_request)
       Entry.create_payment_entry(send_request)
       send_request.save!

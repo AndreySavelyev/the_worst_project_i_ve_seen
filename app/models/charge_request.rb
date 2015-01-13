@@ -37,7 +37,7 @@ def set_commission(currency)
   self.commission_value = get_commission
 
   self.commission_currency = currency.id
-  self.commission_amount = (self.commission_value.to_f / self.source_amount.to_f) * 100
+  self.commission_amount = (self.commission_value.to_f * self.source_amount.to_f) / 100
 
   self.conv_commission_id = get_conversation_commission_id
   self.conv_commission_amount = get_conv_commission(self.conv_commission_id, self.source_amount)
@@ -55,16 +55,20 @@ def get_conv_commission(conv_commission_id, source_amount)
   0
 end
 
-
 def get_commission
 
-  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
-      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green])
+  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] ||
+      self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]
+  ) && (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] ||
+      self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]
+  )
     return GlobalConstants::COMMISSIONS[:personal_green]
   end
 
-  if (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] || self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green]) &&
-      (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
+  if (self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:personal] ||
+      self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:green] ||
+      self.to_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:pale]
+  ) && (self.from_profile.wallet_type == GlobalConstants::ACCOUNT_TYPE[:biz])
     GlobalConstants::COMMISSIONS[:personal_biz]
   end
 
