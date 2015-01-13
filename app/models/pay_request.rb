@@ -54,13 +54,6 @@ class PayRequest < Feed
 
     send_request.set_commission(currency)
 
-    logger.debug "create_accepted_request :: send_request.check_balance && Limit::check(currency, send_request.from_profile) :: " + (!!send_request.check_balance).to_s + ' ' + (!!Limit::check(currency, send_request.from_profile)).to_s
-    logger.debug "create_accepted_request :: self.from_profile.wallet.available  self.commission_amount.to_f self.conv_commission_amount self.source_amount :: " +
-                     send_request.from_profile.wallet.available.to_s + ' ' +
-                     send_request.commission_amount.to_f.to_s + ' ' +
-                     send_request.conv_commission_amount.to_s + ' ' +
-                     send_request.source_amount.to_s
-
     if send_request.check_balance && Limit::check(currency, send_request.from_profile)
       send_request.save!
 

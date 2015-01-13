@@ -625,9 +625,9 @@ class ProfilesController < ApplicationController
         @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
         @status = 200
       end
-    # rescue Entry::NoMoney
-    #   @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
-    #   @status = 403
+    rescue Entry::NoMoney
+      @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
+      @status = 403
     rescue => e
       logger.error e.message
       e.backtrace.each { |line| logger.error line }
