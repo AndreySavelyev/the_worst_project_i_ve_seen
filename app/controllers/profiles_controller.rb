@@ -623,11 +623,11 @@ class ProfilesController < ApplicationController
         charge_request.accept_charge(privacy)
         #add push to user about payment
 
-        @result = {:result => 0, :message => 'ok', :request_id => charge_request.id, :url => merchant_profile.merchant_success_url}
+        @result = {:result => 0, :message => 'ok', :payment => charge_request, :user => @user, :callback => merchant_profile.merchant_callback}
         @status = 200
       end
     rescue Entry::NoMoney
-      @result = {:result => 101, :message => 'not enough money', :request_id => charge_request.id, :url => merchant_profile.merchant_fail_url}
+      @result = {:result => 101, :message => 'not enough money', :payment => charge_request, :user => @user, :callback => merchant_profile.merchant_callback}
       @status = 403
     rescue => e
       logger.error e.message
