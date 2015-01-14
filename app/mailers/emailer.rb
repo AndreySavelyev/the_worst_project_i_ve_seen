@@ -12,8 +12,9 @@ class Emailer < ActionMailer::Base
     mail(to: email_profile[:email], subject: "Sign in notification from onlinepay.com")
   end
 
-  def email_recovery(request)
+  def email_recovery(request, url)
     @request = request
+    @request.url = url
     mail(to: @request.sourceWallet.profile.email, subject: 'Password recovery request.')
   end
 
