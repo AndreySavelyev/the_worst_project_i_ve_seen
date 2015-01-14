@@ -1,5 +1,6 @@
 require 'wallet_module.rb'
 require 'friends_helper.rb'
+
 class ProfilesController < ApplicationController
 
   include WalletModule

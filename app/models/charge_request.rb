@@ -104,6 +104,7 @@ def pay_commission
 end
 
 def accept_charge(privacy)
+
   set_privacy(privacy)
   currency_object = IsoCurrency.find_by_Alpha3Code(self.currency)
   PayRequest::create_accepted_request(self.to_profile_id, self.from_profile_id, self.amount, self.message, self.privacy, currency_object.Alpha3Code)

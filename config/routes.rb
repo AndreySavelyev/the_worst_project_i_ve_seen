@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   get '/profile/get', to: 'profiles#get_profile', format: 'json'
   post '/profile/save', to: 'profiles#save_profile', format: 'json'
   post '/profile/stats', to: 'profiles#stats_profile', format: 'json'
-  get '/tabs', to: 'profiles#tabs', format: 'json'
+  get '/tabs', to: 'tabs#get_tabs', format: 'json'
     
   post '/cashin' => 'wallet#cashin', format: 'json'
   post '/cashout/new' => 'wallet#cashout', format: 'json'

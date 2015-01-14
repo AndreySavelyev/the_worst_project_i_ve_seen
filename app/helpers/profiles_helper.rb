@@ -6,6 +6,7 @@ module ProfilesHelper
 
     #@apps = user.BizAccountService;
     apps = Array.new
+
     BizAccountService.all.collect do |srvc|
       apps << {
           :id => user.user_token,
@@ -20,11 +21,11 @@ module ProfilesHelper
       hotOffers << {
           :id => hotOffer.id,
           :title => hotOffer.title,
-          :currency=> hotOffer.currency,
-          :price=>hotOffer.price,
-          :username=> hotOffer.profile.name,
-          :userpic=> hotOffer.profile.pic_url,
-          :pic=> hotOffer.pic_url
+          :currency => hotOffer.currency,
+          :price => hotOffer.price,
+          :username => hotOffer.profile.name,
+          :userpic => hotOffer.profile.pic_url,
+          :pic => hotOffer.pic_url
       } end
 
     services = Services.new;
@@ -40,9 +41,9 @@ module ProfilesHelper
     shopping.hotoffer = hotOffers;
 
     tabs = Tabs.new;
-    tabs.services=services;
-    tabs.social =social;
-    tabs.shopping= shopping;
+    tabs.services = services;
+    tabs.social = social;
+    tabs.shopping = shopping;
 
     return tabs;
   end
