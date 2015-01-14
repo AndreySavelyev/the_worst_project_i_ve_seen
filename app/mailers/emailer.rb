@@ -14,7 +14,7 @@ class Emailer < ActionMailer::Base
 
   def email_recovery(request, url)
     @request = request
-    @request.url = url
+    @url = url
     mail(to: @request.sourceWallet.profile.email, subject: 'Password recovery request.')
   end
 
