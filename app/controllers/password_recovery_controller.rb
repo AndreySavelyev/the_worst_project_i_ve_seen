@@ -11,7 +11,7 @@ class PasswordRecoveryController < ApplicationController
 
     r = WalletRequest::create_password_recovery_request(w.id)
 
-    Emailer.email_recovery(r, Settings.wallet_url + '/recover/changepass').deliver
+    Emailer.email_recovery(r, Settings.wallet_url + '/recovery/changepass').deliver
 
     @result = {:result => 0,:message => 'recovery email was sent'}
 
