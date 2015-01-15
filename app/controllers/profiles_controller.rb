@@ -655,10 +655,6 @@ class ProfilesController < ApplicationController
         format.json { render :json => @result.as_json, status: @status }
       end
     end
-
-    respond_to do |format|
-      format.json { render :json => @result.as_json, status: @status }
-    end
   end
 
   def merchant_lead_register
