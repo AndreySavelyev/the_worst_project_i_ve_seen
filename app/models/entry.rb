@@ -17,7 +17,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = r.targetWallet.id
     e.debit_wallet_id = r.sourceWallet.id
     e.amount = amount
-    e.currency_id = r.sourceWallet.IsoCurrency.id
+    e.currency_id = r.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:cashin]
     e.save!
 
@@ -36,7 +36,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = r.targetWallet.id
     e.debit_wallet_id = r.sourceWallet.id
     e.amount = amount
-    e.currency_id = r.sourceWallet.IsoCurrency.id
+    e.currency_id = r.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:hold]
     e.save!
 
@@ -55,7 +55,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = r.targetWallet.id
     e.debit_wallet_id = r.sourceWallet.id
     e.amount = amount
-    e.currency_id = r.sourceWallet.IsoCurrency.id
+    e.currency_id = r.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:cancellation]
     e.save!
 
@@ -74,7 +74,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = sys_wallet.id
     e.debit_wallet_id = r.wallet_request.sourceWallet.id
     e.amount = r.conv_commission_amount.to_f + r.commission_amount.to_f
-    e.currency_id = r.wallet_request.sourceWallet.IsoCurrency.id
+    e.currency_id = r.wallet_request.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:commission]
     e.save!
 
@@ -93,7 +93,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = r.wallet_request.targetWallet.id
     e.debit_wallet_id = r.wallet_request.sourceWallet.id
     e.amount = r.amount
-    e.currency_id = r.wallet_request.sourceWallet.IsoCurrency.id
+    e.currency_id = r.wallet_request.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:payment]
     e.save!
 
@@ -111,7 +111,7 @@ class Entry < ActiveRecord::Base
     e.credit_wallet_id = r.targetWallet.id
     e.debit_wallet_id = r.sourceWallet.id
     e.amount = amount
-    e.currency_id = r.sourceWallet.IsoCurrency.id
+    e.currency_id = r.sourceWallet.currency
     e.operation_code = OPERATION_CODES[:cashout]
     e.save!
 
@@ -119,13 +119,10 @@ class Entry < ActiveRecord::Base
 
   end
 
-
-
-
   def rollover()
 
-    credit_wallet = Wallet.get_wallet_by_id(self.credit_wallet_id);
-    debit_wallet = Wallet.get_wallet_by_id(self.debit_wallet_id);
+    credit_wallet = Wallet.get_wallet_by_id(self.credit_wallet_id)
+    debit_wallet = Wallet.get_wallet_by_id(self.debit_wallet_id)
 
     case self.operation_code
       when OPERATION_CODES[:cashin]
@@ -133,11 +130,11 @@ class Entry < ActiveRecord::Base
         credit_wallet.save!
       when OPERATION_CODES[:hold]
         debit_wallet.decrement(:available, by = self.amount)
-        debit_wallet.increment(:holded, by = self.amount)
+        debit_wallet.increment(:held, by = self.amount)
         debit_wallet.save!
       when OPERATION_CODES[:cancellation]
         debit_wallet.increment(:available, by = self.amount)
-        debit_wallet.decrement(:holded, by = self.amount)
+        debit_wallet.decrement(:held, by = self.amount)
         debit_wallet.save!
       when OPERATION_CODES[:commission]
         credit_wallet.increment(:available, by = self.amount)
@@ -146,11 +143,11 @@ class Entry < ActiveRecord::Base
         debit_wallet.save!
       when OPERATION_CODES[:payment]
         credit_wallet.increment(:available, by = self.amount)
-        debit_wallet.decrement(:holded, by = self.amount)
+        debit_wallet.decrement(:held, by = self.amount)
         credit_wallet.save!
         debit_wallet.save!
       when OPERATION_CODES[:cashout]
-        debit_wallet.decrement(:holded, by = self.amount)
+        debit_wallet.decrement(:held, by = self.amount)
         debit_wallet.save!
       else
     end

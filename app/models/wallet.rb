@@ -1,29 +1,34 @@
 class Wallet < ActiveRecord::Base
+
   belongs_to :profile
   belongs_to :IsoCurrency
   belongs_to :session
   has_many :requests
     
-  def self.create_wallet(profile)    
+  def self.create_wallet(profile, currency)
     wallet = Wallet.new
-    wallet.profile = profile
-    wallet.IsoCurrency =  IsoCurrency.find_by! Alpha3Code: profile.iso_currency
+    wallet.profile_id = profile.id
+    wallet.currency = currency
     wallet.available = 0
-    wallet.holded = 0
+    wallet.held = 0
     wallet.save!
     return wallet
   end
 
-  def self.get_wallet(profile)
-    w = Wallet.where("profile_id = :id", id: profile.id).includes(:IsoCurrency).first
+  def self.get_wallet(profile, currency)
+    w = Wallet.where("profile_id = :id AND currency = :currency", id: profile.id, currency: currency.upcase).first
     if w == nil
-      w = create_wallet(profile)
+      w = create_wallet(profile, currency.upcase)
     end
     return w
   end
+
+  def self.get_wallets(profile)
+    Wallet.where("profile_id = :id", id: profile.id)
+  end
   
   def self.get_wallet_by_id(id)
-    Wallet.where('id = :id', id: id).includes(:IsoCurrency).first!
+    Wallet.where('id = :id', id: id).first!
   end
   
   def hold(pay_request)

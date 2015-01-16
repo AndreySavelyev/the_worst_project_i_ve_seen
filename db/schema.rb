@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109080441) do
+ActiveRecord::Schema.define(version: 20150115135145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20150109080441) do
     t.datetime "updated_at"
     t.integer  "credit_wallet_id",             null: false
     t.integer  "debit_wallet_id",              null: false
+    t.string   "currency"
   end
 
   create_table "feeds", force: true do |t|
@@ -95,14 +96,13 @@ ActiveRecord::Schema.define(version: 20150109080441) do
     t.integer  "status",                            default: 0
     t.integer  "viewed",                            default: 0
     t.string   "type",                   limit: 40, default: "Feed"
-    t.integer  "source_currency"
     t.float    "source_amount"
     t.integer  "rate_id"
     t.float    "conv_commission_amount"
     t.integer  "conv_commission_id"
     t.float    "commission_value"
-    t.integer  "commission_currency"
     t.float    "commission_amount"
+    t.string   "commission_currency"
   end
 
   create_table "friends", id: false, force: true do |t|
@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(version: 20150109080441) do
     t.boolean  "temp_account",                 default: false
     t.float    "available",                    default: 0.0
     t.float    "holded",                       default: 0.0
-    t.string   "iso_currency",                 default: "EUR"
     t.integer  "lock_version",                 default: 0
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
@@ -374,11 +373,12 @@ ActiveRecord::Schema.define(version: 20150109080441) do
 
   create_table "wallets", force: true do |t|
     t.float    "available"
-    t.float    "holded"
+    t.float    "held"
     t.integer  "profile_id"
     t.integer  "IsoCurrency_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "currency"
   end
 
   add_index "wallets", ["IsoCurrency_id"], name: "index_wallets_on_IsoCurrency_id", using: :btree

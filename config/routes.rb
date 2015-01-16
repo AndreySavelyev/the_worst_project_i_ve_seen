@@ -63,6 +63,8 @@ Rails.application.routes.draw do
   get '/tabs', to: 'tabs#get_tabs', format: 'json'
     
   post '/cashin' => 'wallet#cashin', format: 'json'
+  post '/cashin/complete' => 'callback#complete_cashin', format: 'json'
+
   post '/cashout/new' => 'wallet#cashout', format: 'json'
   post '/cashout/complete' => 'wallet#complete_cashout', format: 'json'
   post '/cashout/list' => 'wallet#list', format: 'json'

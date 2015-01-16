@@ -3,6 +3,23 @@ require 'openssl'
 class CallbackController < ApplicationController
   rescue_from ArgumentError, with: :argument_invalid
 
+  def complete_cashin
+
+    if Rails.env == 'development'
+      token = params[:token]
+      amount = params[:amount]
+      Entry.create_cashin_entry(amount, token)
+
+      respond_to do |format|
+        format.all { render :text => 'OK', status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.all { render :text => 'Forbidden', status: :forbidden }
+      end
+    end
+  end
+
   def callback
     order = params[:orderXML]
 

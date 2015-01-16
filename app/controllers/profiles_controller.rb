@@ -160,7 +160,14 @@ class ProfilesController < ApplicationController
 
   def get_profile
     @profile = Object
-    @profile = ProfilesHelper::get_profile_format(@user)
+
+    currency = GlobalConstants::DEFAULT_CURRENCY
+
+    if params[:currency] != nil
+      currency = params[:currency]
+    end
+
+    @profile = ProfilesHelper::get_profile_format(@user, currency)
     respond_to do |format|
       format.json { render :json => @profile.as_json, status: :ok }
     end
@@ -168,7 +175,7 @@ class ProfilesController < ApplicationController
 
   def save_profile
 
-    profile =save_profile_params
+    profile = save_profile_params
 
     if profile[:firstName]
       @user.name=profile[:firstName]
@@ -319,14 +326,9 @@ class ProfilesController < ApplicationController
       if email_id
         @newUser.email = email_id[0]
       else
-        # phone =  AccountValidators::get_phone_match(@sign_up.accountid)
-        # if(phone)
-        #   @newUser.phone=@sign_up.accountid
-        #   logger.info("phone:#{phone}")
-        # else
-        logger.info("not registered. accountId have incorrect format")
+        logger.info('not registered. accountid has incorrect format')
         @result = Object
-        @result = {:result => 4, :message => "not registered. accountId have incorrect format"}
+        @result = {:result => 4, :message => 'not registered. accountid has incorrect format'}
         respond_to do |format|
           format.json { render :json => @result.as_json, status: :conflict }
         end
@@ -352,10 +354,12 @@ class ProfilesController < ApplicationController
       respond_to do |format|
         format.json { render :json => @result.as_json, status: :internal_server_error }
       end
-      Wallet.create_wallet(@newUser.user_token)
       return
+    else
+      Wallet.create_wallet(@newUser, 'USD')
+      Wallet.create_wallet(@newUser, 'EUR')
+      return_session(create_session(@newUser))
     end
-    return_session(create_session(@newUser))
   end
 
   def confirm
@@ -455,19 +459,20 @@ class ProfilesController < ApplicationController
 
   #methods with required confirmation email
   def social_money_send
-    parms=params.require(:sendMoney).permit(:accountid, :amount, :currency, :message, :global)
+    parms = params.require(:sendMoney).permit(:accountid, :amount, :currency, :message, :global)
     social_money_send_internal(parms[:amount], parms[:message], parms[:global], parms[:accountid], parms[:currency])
   end
 
   def social_money_send_internal (amount, message, privacy, accountid, currency)
+
     f_amount = amount.to_s.gsub(',', '.').to_f
     to_profile = Profile.get_by_token(accountid)
 
     begin
-      request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency)
+      request = PayRequest.create_pay_request(@user.id, to_profile.id, f_amount, message, privacy, currency.upcase)
       Emailer.email_receipt(request).deliver
       PushTokens.send_payment_push(request)
-      @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
+      @result = {:result => 0, :message => "ok", :available => @user.get_wallet(currency.upcase).available, :holded => @user.get_wallet(currency.upcase).held}
       @status = 200
     rescue Entry::NoMoney
       no_money = GlobalConstants::RESULT_CODES[:no_money]
@@ -530,7 +535,7 @@ class ProfilesController < ApplicationController
 
     payment_request.accept_pay_request(privacy)
 
-    @result = {:result => 0, :message => "ok", :available => payment_request.to_profile.get_wallet.available, :holded => payment_request.to_profile.get_wallet.holded}
+    @result = {:result => 0, :message => "ok", :available => payment_request.to_profile.get_wallet(payment_request.currency).available, :holded => payment_request.to_profile.get_wallet(payment_request.currency).held}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :ok }
     end
@@ -558,7 +563,7 @@ class ProfilesController < ApplicationController
     end
     charge_request.accept_charge(privacy)
 
-    @result = {:result => 0, :message => "ok", :available => charge_request.to_profile.get_wallet.available, :holded => charge_request.to_profile.get_wallet.holded}
+    @result = {:result => 0, :message => "ok", :available => charge_request.to_profile.get_wallet(charge_request.currency).available, :holded => charge_request.to_profile.get_wallet(charge_request.currency).held}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :ok }
     end
@@ -567,18 +572,18 @@ class ProfilesController < ApplicationController
 
   def social_money_charge
 
-    prms = params.require(:chargeMoney)
-    to_user_token = prms[:accountid]
-    amount = prms[:amount]
+    p = params.require(:chargeMoney)
+    to_user_token = p[:accountid]
+    amount = p[:amount]
     f_amount = amount.to_s.gsub(',', '.').to_f
-    currency = prms[:currency]
-    message = prms[:message]
-    privacy = prms[:global]
+    currency = p[:currency].upcase
+    message = p[:message]
+    privacy = p[:global]
 
     begin
       request = ChargeRequest::create_charge_request(@user.id, Profile::get_by_token(to_user_token).id, f_amount, message, privacy, currency)
       PushTokens::send_charge_push(request)
-      @result = {:result => 0, :message => "ok", :available => @user.get_wallet.available, :holded => @user.get_wallet.holded}
+      @result = {:result => 0, :message => "ok", :available => @user.get_wallet(currency).available, :holded => @user.get_wallet(currency).held}
       @status = 200
     rescue Entry::NoMoney
       @result = {:result => 101, :message => 'not enough money'}
@@ -607,7 +612,7 @@ class ProfilesController < ApplicationController
     prms = params.require(:order)
     merchant_token = prms[:token]
     amount = prms[:amount].to_f / 100
-    currency = prms[:currency]
+    currency = prms[:currency].upcase
     message = prms[:message]
     privacy = 2 #private
 
@@ -769,7 +774,7 @@ class ProfilesController < ApplicationController
   end
 
   def return_session(session)
-    @result = {:result => 0, :message => "ok", :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : ""}
+    @result = {:result => 0, :message => 'ok', :expiration => session ? session.TimeToDie.to_s(:session_date_time) : "", :session => session ? session.SessionId : ""}
     respond_to do |format|
       format.json { render :json => @result.as_json, status: :ok }
     end

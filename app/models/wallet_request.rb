@@ -20,8 +20,8 @@ class WalletRequest < ActiveRecord::Base
     
     wr = WalletRequest.new
     wr.req_type = Entry::OPERATION_CODES[:payment]
-    wr.sourceWallet_id = pay_request.from_profile.get_wallet.id
-    wr.targetWallet_id = pay_request.to_profile.get_wallet.id
+    wr.sourceWallet_id = pay_request.from_profile.get_wallet(pay_request.currency).id
+    wr.targetWallet_id = pay_request.to_profile.get_wallet(pay_request.currency).id
     wr.feed_id = pay_request.id 
     wr.token = SecureRandom.hex
     wr.save
@@ -69,8 +69,6 @@ class WalletRequest < ActiveRecord::Base
   end
 
   def self.create_password_recovery_request(wallet_id)
-
-
 
     wr = WalletRequest.new
     wr.req_type = Entry::OPERATION_CODES[:recovery]

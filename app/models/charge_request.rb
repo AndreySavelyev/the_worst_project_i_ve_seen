@@ -10,14 +10,14 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
   charge_request.fType = GlobalConstants::REQUEST_TYPES[:charge]
   charge_request.source_amount = amount.to_f
   charge_request.amount = amount.to_f
-  charge_request.currency = IsoCurrency.find_by_Alpha3Code(currency).Alpha3Code
+  charge_request.currency = currency
   charge_request.privacy = privacy
   charge_request.message = message
 
   charge_request.from_profile_id = from_user_id
   charge_request.to_profile_id = to_user_id
   charge_request.set_commission(charge_request.currency)
-  if charge_request.check_balance
+  if charge_request.check_balance(currency)
     charge_request.save!
     return charge_request
   else
@@ -26,24 +26,20 @@ def self.create_charge_request(from_user_id, to_user_id, amount, message, privac
 
 end
 
-def check_balance
-  self.from_profile.wallet.available - self.commission_amount.to_f - self.conv_commission_amount.to_f >= 0
+def check_balance(currency)
+  self.from_profile.get_wallet(currency).available - self.commission_amount.to_f - self.conv_commission_amount.to_f >= 0
 end
 
 def set_commission(currency)
 
-  currency = IsoCurrency.find_by_Alpha3Code(currency.upcase)
-
   self.commission_value = get_commission
 
-  self.commission_currency = currency.id
+  self.commission_currency = currency
   self.commission_amount = (self.commission_value.to_f * self.source_amount.to_f) / 100
 
   self.conv_commission_id = get_conversation_commission_id
   self.conv_commission_amount = get_conv_commission(self.conv_commission_id, self.source_amount)
   self.amount = self.source_amount #not convertible by currency rate
-  self.source_currency = currency.id
-  self.rate_id = IsoCurrency.get_currency_conversion_rate(self.source_currency, self.currency)
 
 end
 
@@ -98,7 +94,7 @@ end
 
 
 def pay_commission
-  sys_w = Profile.get_sys_profile(self.to_profile.iso_currency.upcase).get_wallet
+  sys_w = Profile.get_sys_profile.get_wallet(self.currency)
   self.wallet_request = WalletRequest.create_send_money_wallet_request(self)
   Entry.create_commission_entry(self, sys_w)
 end
@@ -106,10 +102,10 @@ end
 def accept_charge(privacy)
 
   set_privacy(privacy)
-  currency_object = IsoCurrency.find_by_Alpha3Code(self.currency)
-  PayRequest::create_accepted_request(self.to_profile_id, self.from_profile_id, self.amount, self.message, self.privacy, currency_object.Alpha3Code)
 
-  if check_balance
+  PayRequest::create_accepted_request(self.to_profile_id, self.from_profile_id, self.amount, self.message, self.privacy, self.currency)
+
+  if check_balance(currency)
     pay_commission
     self.status = 1 #accepted charge
     self.save!

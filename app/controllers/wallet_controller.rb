@@ -5,7 +5,15 @@ class WalletController < ApplicationController
   before_action :set_user_from_session, only: [:cashin, :cashout, :complete_cashout, :list, :decline_pay_request]
 
   def cashin
-    w = Wallet::get_wallet($user)
+
+    currency = GlobalConstants::DEFAULT_CURRENCY
+
+    if params[:currency] != nil
+      currency = params[:currency]
+    end
+
+    w = Wallet::get_wallet($user, currency)
+
     wr = WalletRequest.create_cash_in_wallet_request(w.id)
     respond_to do |format|
       format.json { render :json => wr.as_json, status: :ok }
@@ -25,7 +33,14 @@ class WalletController < ApplicationController
       iban = Iban.get_iban($user, iban_num)
       cashout_result = {:result => '0', :request_id => '-1', :code => 200}
 
-      w = Wallet.get_wallet($user)
+
+      currency = GlobalConstants::DEFAULT_CURRENCY
+
+      if params[:currency] != nil
+        currency = params[:currency]
+      end
+
+      w = Wallet.get_wallet($user, currency)
 
       if amount.to_f > w.available
         no_money_error = GlobalConstants::RESULT_CODES[:no_money]
@@ -38,6 +53,7 @@ class WalletController < ApplicationController
           wr = WalletRequest.get_wallet_request_for_iban(iban, w)
 
           if code.to_s.empty?
+
             Emailer
             .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
@@ -75,6 +91,7 @@ class WalletController < ApplicationController
             cashout_result[:code] = not_match[:code]
 
             cashout_result[:request_id] = wr.id
+
           end
         elsif iban.verified == true
 

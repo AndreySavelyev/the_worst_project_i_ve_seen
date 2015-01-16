@@ -32,7 +32,7 @@ class Limit < ActiveRecord::Base
 
   def self.check(currency, profile)
     limit_val = Limit.get(currency, profile.wallet_type)
-    limit_val.check_amount(profile.get_wallet.get_revenue)
+    limit_val.check_amount(profile.get_wallet(currency).get_revenue)
     true
   end
 

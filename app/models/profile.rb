@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
   has_many :hot_offers, dependent: :destroy
   has_many :sourceFeeds, :class_name => 'Feed', :foreign_key => 'to_profile_id'
   has_many :destinationFeeds, :class_name => 'Feed', :foreign_key => 'from_profile_id'
-  has_one :wallet
+  has_many :wallet
   has_one :session
   has_many :BizAccountService, dependent: :destroy
   has_many :ibans, dependent: :destroy
@@ -54,25 +54,22 @@ class Profile < ActiveRecord::Base
     Profile.where("email = :email",{email: email}).first!
   end
   
-  def get_wallet
-    if self.wallet == nil
-      Wallet.create_wallet(self)
-    end
-    return wallet
+  def get_wallet(currency)
+      Wallet::get_wallet(self, currency)
   end
 
-  def get_balance
+  def get_balance(currency)
 
-    w = Wallet.get_wallet(self)
+    w = Wallet.get_wallet(self, currency)
 
     {
         :wallet =>
             {
                 :id => w.id,
                 :amount => WalletHelper::format_to_currency(w.available),
-                :currency => w.IsoCurrency.Alpha3Code,
-                :held => w.holded,
-                :limit => Limit::get(w.IsoCurrency.Alpha3Code, w.profile.wallet_type).value,
+                :currency => w.currency,
+                :held => w.held,
+                :limit => Limit::get(w.currency, w.profile.wallet_type).value,
                 :revenue => w.get_revenue
             }
     }
@@ -88,8 +85,8 @@ class Profile < ActiveRecord::Base
     }
   end
   
-  def self.get_sys_profile(currency)
-    Profile.where(:wallet_type =>  100, :iso_currency => currency).first!    
+  def self.get_sys_profile
+    Profile.where(:wallet_type =>  100).first!
   end
 
   def decode_image_data
