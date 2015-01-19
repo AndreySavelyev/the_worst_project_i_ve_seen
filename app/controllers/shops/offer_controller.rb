@@ -34,7 +34,7 @@ class Shops::OfferController < ApplicationController
           :price=> offer.price,
           :shopname=> offer.shop.name,
           :shoppic=> offer.shop.avatar_url,
-          :pic=> offer.avatar_url,
+          :pic=> offer.avatar_medium_url,
           :url=> offer.url
       }
     end

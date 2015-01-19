@@ -17,6 +17,10 @@ class Shops::Offer < ActiveRecord::Base
     avatar.url(:thumb)
   end
 
+  def avatar_medium_url
+    avatar.url(:medium)
+  end
+
   def self.create_offer(shop_id, user_id, text, price, old_price, currency, url)
 
     shop = Shops::Shop.find(shop_id)
