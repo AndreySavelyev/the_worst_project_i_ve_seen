@@ -35,7 +35,7 @@ class TabsController < ApplicationController
     result = Array.new
 
     offers.collect do |offer|
-      offers << {
+      result << {
           :id => offer.id,
           :title => offer.text,
           :currency => IsoCurrency.find(offer.currency).Alpha3Code,
