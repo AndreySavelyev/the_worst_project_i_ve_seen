@@ -222,8 +222,7 @@ ActiveRecord::Schema.define(version: 20150115135145) do
     t.datetime "avatar_updated_at"
     t.integer  "mood"
     t.string   "merchant_token"
-    t.string   "merchant_success_url"
-    t.string   "merchant_fail_url"
+    t.string   "merchant_callback"
   end
 
   create_table "providers", force: true do |t|
