@@ -2,7 +2,7 @@
 
 WalletRequest:
   fields:
-    default: req_status, sourceWallet_id, targetWallet_id, token, feed_id
-    form: req_status, sourceWallet_id, targetWallet_id, token, feed_id
+    default: req_status, held, sourceWallet_id, targetWallet_id, token, feed_id, currency
+    form: req_status, held, sourceWallet_id, targetWallet_id, token, feed_id, currency
   relationships: 
   application: Wallets

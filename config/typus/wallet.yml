@@ -2,7 +2,7 @@
 
 Wallet:
   fields:
-    default: available, holded, profile_id, IsoCurrency_id
-    form: available, holded, profile_id, IsoCurrency_id
+    default: id, available, held, profile_id, currency
+    form: id, available, held, profile_id, currency
   relationships: requests
   application: Wallets

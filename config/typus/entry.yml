@@ -2,7 +2,7 @@
 
 Entry:
   fields:
-    default: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id
-    form: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id
+    default: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id, currency
+    form: payment_request_id, credit_profile_id, debt_profile_id, amount, currency_id, operation_code, credit_wallet_id, debit_wallet_id, currency
   relationships: 
   application: Wallets
