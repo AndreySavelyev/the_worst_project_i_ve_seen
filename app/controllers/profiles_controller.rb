@@ -618,6 +618,7 @@ class ProfilesController < ApplicationController
 
     charge_request = ''
     callback = ''
+    merchant_private_key = ''
 
     begin
       merchant_profile = Profile::get_by_merchant_token(merchant_token)
@@ -627,6 +628,7 @@ class ProfilesController < ApplicationController
         @status = 404
       else
         callback = merchant_profile.merchant_callback
+        merchant_private_key = merchant_profile.merchant_private_key
 
         charge_request = ChargeRequest::create_charge_request(merchant_profile.id, @user.id, amount, message, privacy, currency)
 
@@ -655,6 +657,7 @@ class ProfilesController < ApplicationController
       @result[:payment] = charge_request
       @result[:user] = @user
       @result[:callback] = callback
+      @result[:key] = merchant_private_key
 
       respond_to do |format|
         format.json { render :json => @result.as_json, status: @status }

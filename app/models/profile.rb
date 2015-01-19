@@ -34,6 +34,7 @@ class Profile < ActiveRecord::Base
     profile.user_token = token
     profile.wallet_type = GlobalConstants::ACCOUNT_TYPE[:personal]
     profile.merchant_token = SecureRandom.hex(18)
+    profile.merchant_private_key = SecureRandom.hex(10)
     return profile
   end
   
