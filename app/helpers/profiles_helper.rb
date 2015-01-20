@@ -126,7 +126,7 @@ module ProfilesHelper
     end
   end
 
-  def self.get_profile_format(user, currency)
+  def self.format_profile(user, currency)
     {
         :profile =>
             {
@@ -149,6 +149,7 @@ module ProfilesHelper
                 :cp_birth => user.contact_person_date_of_birth,
                 :cp_phone => user.contact_person_phone,
                 :balance => user.get_balance(currency),
+                :balances => user.get_balances(),
                 :stats => user.get_stats,
                 :pic => user.avatar_url,
                 :mood => user.mood

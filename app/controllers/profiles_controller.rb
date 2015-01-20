@@ -167,7 +167,7 @@ class ProfilesController < ApplicationController
       currency = params[:currency]
     end
 
-    @profile = ProfilesHelper::get_profile_format(@user, currency)
+    @profile = ProfilesHelper::format_profile(@user, currency)
     respond_to do |format|
       format.json { render :json => @profile.as_json, status: :ok }
     end

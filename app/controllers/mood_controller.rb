@@ -17,7 +17,7 @@ class MoodController < ApplicationController
    end
 
    respond_to do |format|
-     format.json { render :json => ProfilesHelper::get_profile_format($user), status: :ok }
+     format.json { render :json => ProfilesHelper::format_profile($user), status: :ok }
     end
 
   end

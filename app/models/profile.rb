@@ -59,21 +59,33 @@ class Profile < ActiveRecord::Base
       Wallet::get_wallet(self, currency)
   end
 
-  def get_balance(currency)
-
-    w = Wallet.get_wallet(self, currency)
-
+  def format_balance(wallet)
     {
         :wallet =>
             {
-                :id => w.id,
-                :amount => WalletHelper::format_to_currency(w.available),
-                :currency => w.currency,
-                :held => w.held,
-                :limit => Limit::get(w.currency, w.profile.wallet_type).value,
-                :revenue => w.get_revenue
+                :id => wallet.id,
+                :amount => WalletHelper::format_to_currency(wallet.available),
+                :currency => wallet.currency,
+                :held => wallet.held,
+                :limit => Limit::get(wallet.currency, wallet.profile.wallet_type).value,
+                :revenue => wallet.get_revenue
             }
     }
+  end
+
+  def get_balance(currency)
+    w = Wallet.get_wallet(self, currency)
+    format_balance w
+  end
+
+  def get_balances()
+    wallets = Array.new
+
+    Wallet.get_wallets(self).collect do |w|
+      wallets << format_balance(w)
+    end
+
+    wallets
   end
   
   def get_stats
