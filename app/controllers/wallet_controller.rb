@@ -55,7 +55,7 @@ class WalletController < ApplicationController
           if code.to_s.empty?
 
             Emailer
-            .email_unverified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
+            .email_unverified_iban('support@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
 
             not_verified = GlobalConstants::RESULT_CODES[:not_verified]
@@ -73,7 +73,7 @@ class WalletController < ApplicationController
             e = Entry.create_hold_entry(wr, amount)
 
             Emailer
-            .email_verified_iban('vk@onlinepay.com', $user, iban_num, amount, wr.id)
+            .email_verified_iban('support@onlinepay.com', $user, iban_num, amount, wr.id)
             .deliver
 
             verified = GlobalConstants::RESULT_CODES[:verified]
@@ -149,7 +149,7 @@ class WalletController < ApplicationController
         Emailer.email_payout_success($user.email, iban.iban_num, sum_cashout, wr.id)
         .deliver
 
-        Emailer.email_payout_success('vk@onlinepay.com', iban.iban_num, sum_cashout, wr.id)
+        Emailer.email_payout_success('support@onlinepay.com', iban.iban_num, sum_cashout, wr.id)
         .deliver
         result='Cashout succesfull'
         status=:ok
