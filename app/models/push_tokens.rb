@@ -116,7 +116,12 @@ class PushTokens < ActiveRecord::Base
       app = Rpush::Apns::App.new
       app.name = "ios_app"
       app.certificate = File.read("./certs/ios/push.pem")
-      app.environment = "production" # APNs environment.
+      if Rails.env == 'production'
+        app.environment = "production" # APNs environment.
+      else
+        app.environment = "sandbox" # APNs environment.
+      end
+
       app.password = "123456"
       app.connections = 1
       app.save!
@@ -128,3 +133,4 @@ class PushTokens < ActiveRecord::Base
 
 
 end
+
