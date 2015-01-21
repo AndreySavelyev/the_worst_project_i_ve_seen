@@ -2,8 +2,8 @@ class PushTokens < ActiveRecord::Base
 
   belongs_to :Profile
 
-  def self.get_by_token(token, profile_id)
-    PushTokens.where(profile_id: profile_id, token: token).first_or_create
+  def self.get_by_token(token, platform, profile_id)
+    PushTokens.where(profile_id: profile_id, token: token, platform: platform).first_or_create
   end
 
   def self.get_tokens(profile_id)
@@ -130,7 +130,4 @@ class PushTokens < ActiveRecord::Base
     app
   end
 
-
-
 end
-
