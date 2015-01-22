@@ -5,9 +5,9 @@ class Wallet < ActiveRecord::Base
   belongs_to :session
   has_many :requests
     
-  def self.create_wallet(profile, currency)
+  def self.create_wallet(profile_id, currency)
     wallet = Wallet.new
-    wallet.profile_id = profile.id
+    wallet.profile_id = profile_id
     wallet.currency = currency
     wallet.available = 0
     wallet.held = 0
@@ -15,16 +15,16 @@ class Wallet < ActiveRecord::Base
     return wallet
   end
 
-  def self.get_wallet(profile, currency)
-    w = Wallet.where("profile_id = :id AND currency = :currency", id: profile.id, currency: currency.upcase).first
+  def self.get_wallet(profile_id, currency)
+    w = Wallet.where("profile_id = :id AND currency = :currency", id: profile_id, currency: currency.upcase).first
     if w == nil
-      w = create_wallet(profile, currency.upcase)
+      w = create_wallet(profile_id, currency.upcase)
     end
     return w
   end
 
-  def self.get_wallets(profile)
-    Wallet.where("profile_id = :id", id: profile.id)
+  def self.get_wallets(profile_id)
+    Wallet.where("profile_id = :id", id: profile_id)
   end
   
   def self.get_wallet_by_id(id)

@@ -56,7 +56,7 @@ class Profile < ActiveRecord::Base
   end
   
   def get_wallet(currency)
-      Wallet::get_wallet(self, currency)
+      Wallet::get_wallet(self.id, currency)
   end
 
   def format_balance(wallet)
@@ -74,14 +74,14 @@ class Profile < ActiveRecord::Base
   end
 
   def get_balance(currency)
-    w = Wallet.get_wallet(self, currency)
+    w = Wallet.get_wallet(self.id, currency)
     format_balance w
   end
 
   def get_balances()
     wallets = Array.new
 
-    Wallet.get_wallets(self).collect do |w|
+    Wallet.get_wallets(self.id).collect do |w|
       wallets << format_balance(w)
     end
 

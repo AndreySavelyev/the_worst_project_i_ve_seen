@@ -12,7 +12,7 @@ class WalletController < ApplicationController
       currency = params[:currency]
     end
 
-    w = Wallet::get_wallet($user, currency)
+    w = Wallet::get_wallet($user.id, currency)
 
     wr = WalletRequest.create_cash_in_wallet_request(w.id)
     respond_to do |format|
@@ -40,7 +40,7 @@ class WalletController < ApplicationController
         currency = params[:currency]
       end
 
-      w = Wallet.get_wallet($user, currency)
+      w = Wallet.get_wallet($user.id, currency)
 
       if amount.to_f > w.available
         no_money_error = GlobalConstants::RESULT_CODES[:no_money]

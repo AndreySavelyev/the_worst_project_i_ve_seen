@@ -166,11 +166,17 @@ class ProfilesController < ApplicationController
     if params[:currency] != nil
       currency = params[:currency]
     end
+    
+    check_wallet_existance_for_supported_currencies(@user.id)
 
     @profile = ProfilesHelper::format_profile(@user, currency)
     respond_to do |format|
       format.json { render :json => @profile.as_json, status: :ok }
     end
+  end
+
+  def check_wallet_existance_for_supported_currencies(profile_id)
+    GlobalConstants::SUPPORTED_CURRENCIES.each { |cur| Wallet::get_wallet(profile_id, cur) }
   end
 
   def save_profile
@@ -356,8 +362,8 @@ class ProfilesController < ApplicationController
       end
       return
     else
-      Wallet.create_wallet(@newUser, 'USD')
-      Wallet.create_wallet(@newUser, 'EUR')
+      Wallet.create_wallet(@newUser.id, 'USD')
+      Wallet.create_wallet(@newUser.id, 'EUR')
       return_session(create_session(@newUser))
     end
   end

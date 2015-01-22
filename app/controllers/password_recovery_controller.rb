@@ -1,4 +1,5 @@
 class PasswordRecoveryController < ApplicationController
+  include GlobalConstants
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
 
@@ -7,7 +8,7 @@ class PasswordRecoveryController < ApplicationController
     email = params.require(:recovery).permit(:email)
 
     profile = Profile::get_by_email(email[:email])
-    w = profile.get_wallet
+    w = profile.get_wallet GlobalConstants::DEFAULT_CURRENCY
 
     r = WalletRequest::create_password_recovery_request(w.id)
 
