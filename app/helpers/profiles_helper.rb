@@ -14,7 +14,7 @@ module ProfilesHelper
           :data=> srvc.api_data
       } end
 
-    feeds = get_feed_message_format(Feed.where('privacy = 0 AND status = 1 AND "fType" != 3').includes(:from_profile, :to_profile).order(id: :desc).first(3))
+    feeds = get_feed_message_format(Feed.where('privacy = 0 AND status = 1 AND "fType" != 3').includes(:from_profile, :to_profile).order(id: :desc).first(5))
 
     hotOffers = Array.new
     HotOffer.all.order('created_at DESC').collect   do |hotOffer|
