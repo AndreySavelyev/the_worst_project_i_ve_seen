@@ -13,41 +13,26 @@ class PushTokens < ActiveRecord::Base
   def self.send_payment_push(request)
 
     tokens = get_tokens(request.to_profile_id)
-    app = init_application
 
     begin
       tokens.each do |t|
-        n = Rpush::Apns::Notification.new
-        n.app = app
-        n.device_token = t.token
-        n.alert = "New money from: #{request.from_profile.surname} #{request.from_profile.name}"
-        n.data = FeedsHelper::format_feed(request).as_json
-        n.category = 'PAY'
-        n.badge = 1
-        n.save!
+        send_push(t.platform, t.token, "New money from: #{request.from_profile.surname} #{request.from_profile.name}", FeedsHelper::format_feed(request).as_json, 'PAY')
       end
     rescue ActiveRecord::RecordInvalid => e
       @log = Logger.new(STDOUT)
       @log.level = Logger::ERROR
       @log.error e.message
     end
+
   end
 
   def self.send_charge_push(request)
 
     tokens = get_tokens(request.to_profile_id)
 
-    app = init_application
     begin
       tokens.each do |t|
-        n = Rpush::Apns::Notification.new
-        n.app = app
-        n.device_token = t.token
-        n.alert = "New charge from: #{request.from_profile.surname} #{request.from_profile.name}"
-        n.data = FeedsHelper::format_feed(request).as_json
-        n.category = 'CHARGE'
-        n.badge = 1
-        n.save!
+        send_push(t.platform, t.token, "New charge from: #{request.from_profile.surname} #{request.from_profile.name}", FeedsHelper::format_feed(request).as_json, 'CHARGE')
       end
     rescue ActiveRecord::RecordInvalid => e
       @log = Logger.new(STDOUT)
@@ -55,24 +40,15 @@ class PushTokens < ActiveRecord::Base
       @log.error e.message
     end
 
-
   end
 
   def self.send_tissue_push(tissue)
 
     tokens = get_tokens(tissue.to_profile.id)
-    app = init_application
 
     begin
       tokens.each do |t|
-        n = Rpush::Apns::Notification.new
-        n.app = app
-        n.device_token = t.token
-        n.alert = "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}"
-        n.data = ChatHelper::format_tissue(tissue).as_json
-        n.category = 'TISSUE'
-        n.badge = 1
-        n.save!
+        send_push(t.platform, t.token, "You have a new tissue from: #{tissue.from_profile.surname} #{tissue.from_profile.name}", ChatHelper::format_tissue(tissue).as_json, 'TISSUE')
       end
 
     rescue ActiveRecord::RecordInvalid => e
@@ -87,18 +63,10 @@ class PushTokens < ActiveRecord::Base
   def self.send_friendship_push(request)
 
     tokens = get_tokens(request.to_profile_id)
-    app = init_application
 
     begin
       tokens.each do |t|
-        n = Rpush::Apns::Notification.new
-        n.app = app
-        n.device_token = t.token
-        n.alert = "#{request.from_profile.surname} #{request.from_profile.name} wants to be your friend."
-        n.data = FeedsHelper::format_feed(request).as_json
-        n.category = 'FRIEND'
-        n.badge = 1
-        n.save!
+        send_push(t.platform, t.token, "#{request.from_profile.surname} #{request.from_profile.name} wants to be your friend.", FeedsHelper::format_feed(request).as_json, 'FRIEND')
       end
     rescue ActiveRecord::RecordInvalid => e
       @log = Logger.new(STDOUT)
@@ -109,20 +77,58 @@ class PushTokens < ActiveRecord::Base
 
   :private
 
-  def self.init_application
-    app = Rpush::Apns::App.find_by_name("ios_app")
+  def self.send_push(platform, token, message, payload, category)
+    case platform
+      when 'ios'
+        n = Rpush::Apns::Notification.new
+        n.app = get_or_create_ios_app
+        n.device_token = token
+        n.alert = message
+        n.data = payload
+        n.category = category
+        n.badge = 1
+        n.save!
+      when 'android'
+        n = Rpush::Gcm::Notification.new
+        n.app = get_or_create_android_app
+        n.registration_ids = [token]
+        n.data = { message: message }
+        n.save!
+    end
+
+  end
+
+  def self.get_or_create_ios_app
+    app = Rpush::Apns::App.find_by_name('ios_app')
 
     if app == nil
       app = Rpush::Apns::App.new
-      app.name = "ios_app"
-      app.certificate = File.read("./certs/ios/push.pem")
+      app.name = 'ios_app'
+      app.certificate = File.read('./certs/ios/push.pem')
       if Rails.env == 'production'
-        app.environment = "production" # APNs environment.
+        app.environment = 'production' # APNs environment.
       else
-        app.environment = "sandbox" # APNs environment.
+        app.environment = 'sandbox' # APNs environment.
       end
 
-      app.password = "123456"
+      app.password = '123456'
+      app.connections = 1
+      app.save!
+    end
+    app
+  end
+
+  def self.get_or_create_android_app
+    app = Rpush::Gcm::App.find_by_name('android_app')
+
+    if app == nil
+      app = Rpush::Gcm::App.new
+      app.name = :android_app
+      if Rails.env == 'production'
+        app.auth_key = 'AIzaSyBLwnSCoxjA9NgmG5H2RrqRwQN_KlFug9M'
+      else
+        app.auth_key = 'AIzaSyBLwnSCoxjA9NgmG5H2RrqRwQN_KlFug9M'
+      end
       app.connections = 1
       app.save!
     end
