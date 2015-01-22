@@ -92,7 +92,7 @@ class PushTokens < ActiveRecord::Base
         n = Rpush::Gcm::Notification.new
         n.app = get_or_create_android_app
         n.registration_ids = [token]
-        n.data = { message: message }
+        n.data = { message: message, context: payload, category: category }
         n.save!
     end
 
