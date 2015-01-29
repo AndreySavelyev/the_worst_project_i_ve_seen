@@ -92,6 +92,7 @@ Rails.application.routes.draw do
   post 'services/upload' => 'avatar#upload_service', format: 'json'
   post 'services/change' => 'services/service#change', format: 'json'
   get 'services/list' => 'services/service#list', format: 'json'
+  post 'services/pay' => 'services/service#pay', format: 'json'
 
   post 'tags/services' => 'tags/tag#get_services', format: 'json'
   post 'tags/services/tag' => 'tags/tag#tag_services', format: 'json'

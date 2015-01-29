@@ -60,4 +60,10 @@ class Services::ServiceController < ApplicationController
     end
   end
 
+  def pay
+    respond_to do |format|
+      format.json { render :json => 'OK'.as_json, status: :ok }
+    end
+  end
+
 end

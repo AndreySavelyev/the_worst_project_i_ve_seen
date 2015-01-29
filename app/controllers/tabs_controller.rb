@@ -42,7 +42,8 @@ class TabsController < ApplicationController
           :price => offer.price,
           :username =>  offer.shop.name,
           :userpic => offer.shop.avatar_url,
-          :pic => offer.avatar_medium_url
+          :pic => offer.avatar_medium_url,
+          :url=> offer.url
       }
     end
     result
